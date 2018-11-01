@@ -1,0 +1,44 @@
+{
+    "__version": "2.3.0",
+    "__comments": "vCSA65 with an Embedded-PSC on an ESXi host.",
+    "new.vcsa": {
+        "esxi": {
+            "hostname": "192.168.1.20",
+            "username": "root",
+            "password": "VMware1!",
+            "deployment.network": "VM Network",
+            "datastore": "datastore1"
+        },
+        "appliance": {
+            "thin.disk.mode": true,
+            "deployment.option": "tiny",
+            "name": "lab-vcsa-01"
+        },
+        "network": {
+            "ip.family": "ipv4",
+            "mode": "static",
+            "ip": "192.168.1.30",
+            "dns.servers": [
+                "192.168.1.101",
+                "192.168.1.102"
+            ],
+            "prefix": "24",
+            "gateway": "192.168.1.1",
+            "system.name": "192.168.1.30"
+        },
+        "os": {
+            "password": "VMware1!",
+            "ssh.enable": true
+        },
+        "sso": {
+            "password": "VMware1!",
+            "domain-name": "vsphere.local",
+            "site-name": "default-site"
+        }
+    },
+    "ceip": {
+        "settings": {
+            "ceip.enabled": false
+        }
+    }
+}
