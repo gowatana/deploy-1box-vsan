@@ -77,5 +77,5 @@ PowerCLI> ./setup_vSAN-Cluster_Hybrid.ps1 ./config_vSAN-Cluster-01.ps1
 * ラボ環境の vSAN クラスタ初期化。（vSAN クラスタ ～ ESXi VM まで削除）
 
 ```
-PowerCLI> .\destroy_vSAN-Cluster.ps1 ./config_vSAN-Cluster-01.ps1
+PowerCLI> ./destroy_vSAN-Cluster.ps1 ./config_vSAN-Cluster-01.ps1
 ```
