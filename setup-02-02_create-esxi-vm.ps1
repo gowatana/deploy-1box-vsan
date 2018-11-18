@@ -1,12 +1,7 @@
-$vm_name = "vm-esxi-template-01"
-$hv_name = "192.168.1.20"
-
-$guest_id = "vmkernel65Guest"
-$num_cpu = 2
-$memory_gb = 6
-$ds_name = "datastore1"
-$vmdk_gb = 16
-$pg_name = "Nested-Trunk-Network"
+# Load Config file.
+$config_file_name = $args[0]
+. $config_file_name
+if($? -eq $false){"config file not found."; exit}
 
 $vm = New-VM -Name $vm_name -VMHost $hv_name `
     -GuestId $guest_id `
