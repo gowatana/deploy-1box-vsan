@@ -46,7 +46,8 @@ $vm_num_start..$vm_num_end | % {
     "network ip interface ipv4 set --interface-name=vmk0 --type=static --ipv4=$hv_ip_vmk0 --netmask=$hv_subnetmask --gateway=$hv_gw",
     "network ip dns server add --server=$dns_1",
     "network ip dns server add --server=$dns_2" |
-    %{
+    % {
         nested_esxcli -ESXiVM:$vm_name -ESXiUser:$hv_user -ESXiPass:$hv_pass -ESXCLICmd $_
+        sleep 1
     }
 }
