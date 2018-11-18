@@ -63,7 +63,7 @@ PowerCLI> ./setup-02-02_create-esxi-vm.ps1
 * ラボ環境にあわせて、設定情報を config_vSAN-Cluster-01.ps1 のようなファイルを作成。
 
 ```
-PowerCLI> ./setup_vSAN-Cluster.ps1 ./config_vSAN-Cluster-01.ps1
+PowerCLI> ./setup_vSAN-Cluster_AllFlash.ps1 ./config_vSAN-Cluster-01.ps1
 ```
 
 or
@@ -74,8 +74,8 @@ PowerCLI> ./setup_vSAN-Cluster_Hybrid.ps1 ./config_vSAN-Cluster-01.ps1
 
 ### ラボの初期化。
 
-* ラボ環境の vSAN クラスタ初期化。（vSAN ～ ESXi VM まで削除）
+* ラボ環境の vSAN クラスタ初期化。（vSAN クラスタ ～ ESXi VM まで削除）
 
 ```
-PowerCLI> .\destroy_vsan-vms.ps1 ./config_vSAN-Cluster-01.ps1
+PowerCLI> .\destroy_vSAN-Cluster.ps1 ./config_vSAN-Cluster-01.ps1
 ```
