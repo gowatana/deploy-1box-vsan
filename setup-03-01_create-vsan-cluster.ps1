@@ -5,6 +5,7 @@ if($? -eq $false){"config file not found."; exit}
 
 $cluster = Get-Datacenter | New-Cluster -Name $cluster_name
 
+# Add ESXi to Cluster
 $vc_hv_name_list | %{
     $hv_name = $_
     Add-VMHost -Name $hv_name -Location $cluster -User $hv_user -Password $hv_pass -Force

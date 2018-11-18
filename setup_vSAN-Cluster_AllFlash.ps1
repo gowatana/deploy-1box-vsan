@@ -14,6 +14,6 @@ Disconnect-VIServer * -Confirm:$false
 Connect-VIServer -Server $nest_vc_address `
     -User $nest_vc_user -Password $nest_vc_pass -Force
 ./setup-03-01_create-vsan-cluster.ps1 $config_file_name
-./setup-03-01a_setup-vsan-disk_hybrid.ps1 $config_file_name
+./setup-03-01a_setup-vsan-disk_allflash.ps1 $config_file_name
 ./setup-03-02_setup-vsan-cluster.ps1 $config_file_name
 Disconnect-VIServer * -Confirm:$false
