@@ -26,8 +26,11 @@ $vm_num_end = 6
 $cluster_name = "vSAN-Cluster-04"
 
 # vSAN Disk setting
+$vsan_cache_disk_size_gb = 40
 $vsan_cache_dev = "mpx.vmhba0:C0:T1:L0"
-$vsan_capacity_dev = "mpx.vmhba0:C0:T2:L0", "mpx.vmhba0:C0:T3:L0"
+$vsan_capacity_disk_size_gb = 80
+$vsan_capacity_disk_count = 1
+$vsan_capacity_dev = "mpx.vmhba0:C0:T2:L0"
 
 # VM / ESXi List
 $nest_hv_hostname_prefix = "esxi-"

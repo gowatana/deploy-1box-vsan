@@ -12,9 +12,10 @@ $vm_name_list | % {
     $vm = New-VM -VM $template_vm_name -Name $vm_name -VMHost (Get-VMHost $base_hv_name) -StorageFormat Thin
 
     # Add VMDK
-    $vm | New-HardDisk -SizeGB 20 -StorageFormat Thin
-    $vm | New-HardDisk -SizeGB 50 -StorageFormat Thin
-    $vm | New-HardDisk -SizeGB 50 -StorageFormat Thin
+    $vm | New-HardDisk -SizeGB $vsan_cache_disk_size_gb -StorageFormat Thin
+    for($i=1; $i -le $vsan_capacity_disk_count; $i++){
+        $vm | New-HardDisk -SizeGB $vsan_capacity_disk_size_gb -StorageFormat Thin
+    }
     $vm | Start-VM | ft -AutoSize Name,VMHost,PowerState
 }
 
