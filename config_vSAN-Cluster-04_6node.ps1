@@ -22,8 +22,8 @@ $base_hv_name = "192.168.1.20"
 
 # Cluster setting
 $vm_num_start = 1
-$vm_num_end = 3
-$cluster_name = "vSAN-Cluster-01"
+$vm_num_end = 6
+$cluster_name = "vSAN-Cluster-04"
 
 # vSAN Disk setting
 $vsan_cache_dev = "mpx.vmhba0:C0:T1:L0"

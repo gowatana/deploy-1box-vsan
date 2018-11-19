@@ -3,7 +3,7 @@ $base_dc_name = "LAB-DC"
 $base_cluster_name = "MGMT-Cluster"
 
 # Base ESXi Setting
-$hv_name = "192.168.1.20"
+$base_hv_name = "192.168.1.20"
 $hv_user = "root"
 $hv_pass = "VMware1!"
 $pg_name = "Nested-Trunk-Network"

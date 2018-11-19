@@ -18,7 +18,6 @@ $hv_pass = "VMware1!"
 
 # Base ESXi Setting
 $template_vm_name = "vm-esxi-template-01"
-$hv_name = "192.168.1.20"
 $base_hv_name = "192.168.1.20"
 
 # Cluster setting
