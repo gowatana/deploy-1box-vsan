@@ -1,3 +1,6 @@
+# https://communities.vmware.com/people/gowatana/blog/2018/04/23/powercli-vsan-witness
+
+
 # Load Config file.
 $config_file_name = $args[0]
 . $config_file_name
@@ -33,22 +36,18 @@ function nested_esxcli {
     $pm.ListProcessesInGuest($vm_Id, $cred, $gos_pid) | % {$_.CmdLine}
 }
 
-$n = 0
-$vm_num_start..$vm_num_end | % {
-    $i = $_
-    $vm_name = @($vm_name_list)[$n]
-    $nest_hv_hostname = @($nest_hv_hostname_list)[$n]
-    $hv_ip_vmk0 = @($hv_ip_vmk0_list)[$n]
-    $n += 1
-    
-    # esxcli ...
-    "system hostname set --host $nest_hv_hostname --domain $domain",
-    "network ip interface ipv4 set --interface-name=vmk0 --type=static --ipv4=$hv_ip_vmk0 --netmask=$hv_subnetmask --gateway=$hv_gw",
-    "network ip route ipv4 add --network=0.0.0.0/0 --gateway=$hv_gw",
-    "network ip dns server add --server=$dns_1",
-    "network ip dns server add --server=$dns_2" |
-    % {
-        nested_esxcli -ESXiVM:$vm_name -ESXiUser:$hv_user -ESXiPass:$hv_pass -ESXCLICmd $_
-        sleep 1
-    }
+$vm_name = $vsan_witness_va_name
+$nest_hv_hostname = $vsan_witness_host_name
+$hv_ip_vmk0 = $vsan_witness_host
+
+# esxcli ...
+"system hostname set --host $nest_hv_hostname --domain $domain",
+"network ip interface ipv4 set --interface-name=vmk0 --type=static --ipv4=$hv_ip_vmk0 --netmask=$hv_subnetmask --gateway=$hv_gw",
+"network ip route ipv4 add --network=0.0.0.0/0 --gateway=$hv_gw",
+"network ip dns server add --server=$dns_1",
+"network ip dns server add --server=$dns_2" |
+# "vsan network ip add -i vmk0 -T=witness" |
+% {
+    nested_esxcli -ESXiVM:$vm_name -ESXiUser:$hv_user -ESXiPass:$hv_pass -ESXCLICmd $_
+    sleep 1
 }

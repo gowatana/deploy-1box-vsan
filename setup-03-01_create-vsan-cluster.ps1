@@ -3,7 +3,7 @@ $config_file_name = $args[0]
 . $config_file_name
 if($? -eq $false){"config file not found."; exit}
 
-$cluster = Get-Datacenter | New-Cluster -Name $cluster_name
+$cluster = Get-Datacenter $base_dc_name | New-Cluster -Name $cluster_name
 
 # Add ESXi to Cluster
 $vc_hv_name_list | % {
