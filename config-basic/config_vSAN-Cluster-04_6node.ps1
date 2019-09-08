@@ -7,7 +7,7 @@ $nest_vc_address = "192.168.1.30"
 $nest_vc_user = "administrator@vsphere.local"
 $nest_vc_pass = "VMware1!"
 
-$domain = "go.lab.jp"
+$domain = "go-lab.jp"
 $hv_ip_prefix_vmk0 = "192.168.1."
 $hv_subnetmask = "255.255.255.0" # /24
 $hv_ip_4octet_base_vmk0 = 30
