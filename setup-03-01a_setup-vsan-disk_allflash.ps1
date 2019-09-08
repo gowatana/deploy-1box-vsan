@@ -3,7 +3,7 @@ $config_file_name = $args[0]
 . $config_file_name
 if($? -eq $false){"config file not found."; exit}
 
-$cluster = Get-Cluster -Name $cluster_name
+$cluster = Get-Cluster -Name $nest_cluster_name
 
 function set_satp_rule {
     param (

@@ -20,13 +20,15 @@ $hv_pass = "VMware1!"
 
 # Base ESXi Setting
 $template_vm_name = "vm-esxi-template-01"
+$base_dc_name = "LAB-DC"
+$base_cluster_name = "MGMT-Cluster"
 $base_hv_name = "192.168.1.20"
 
 # Cluster setting
 $vm_num_start = 7
 $vm_num_end = 9
-$base_dc_name = "LAB-DC"
-$cluster_name = "vSAN-Cluster-03"
+$nest_dc_name = "LAB-DC"
+$nest_cluster_name = "vSAN-Cluster-03"
 
 # vSAN Disk setting
 $vsan_cache_disk_size_gb = 20

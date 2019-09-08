@@ -14,7 +14,7 @@ $global:DefaultVIServers | % {
 # Remove vSAN Cluster
 Connect-VIServer -Server $nest_vc_address `
     -User $nest_vc_user -Password $nest_vc_pass -Force
-$cluster = Get-Cluster $cluster_name
+$cluster = Get-Cluster $nest_cluster_name
 $cluster | Get-VMHost | Set-VMHost -State Disconnected -Confirm:$false
 $cluster | Get-VMHost | Remove-VMHost -Confirm:$false
 $cluster | Remove-Cluster -Confirm:$false
