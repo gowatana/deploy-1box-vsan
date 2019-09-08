@@ -23,6 +23,7 @@ $base_hv_name = "192.168.1.20"
 # Cluster setting
 $vm_num_start = 4
 $vm_num_end = 6
+$base_dc_name = "LAB-DC"
 $cluster_name = "vSAN-Cluster-02"
 
 # vSAN Disk setting
