@@ -21,7 +21,12 @@ $vc_hv_name_list | % {
     Get-VMHost $hv_name | Remove-Datastore -Datastore "datastore*" -Confirm:$false -ErrorAction:Ignore
 }
 
-"Enable vSAN Traffic: "
+"Set UserVars.SuppressShellWarning = 1:"
+$cluster | Get-VMHost | Get-AdvancedSetting -Name "UserVars.SuppressShellWarning" |
+    Set-AdvancedSetting -Value 1 -Confirm:$false |
+    select Entity,Name,Value | ft -AutoSize
+
+"Enable vSAN Traffic:"
 $cluster | Get-VMHost | Get-VMHostNetworkAdapter -Name vmk0 | 
     Set-VMHostNetworkAdapter -VsanTrafficEnabled:$true -Confirm:$false |
     ft -AutoSize VMHost,DeviceName,Mac,IP,SubnetMask,VsanTrafficEnabled
