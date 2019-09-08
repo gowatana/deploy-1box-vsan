@@ -10,6 +10,8 @@ $nest_vc_pass = "VMware1!"
 $domain = "go.lab.jp"
 $hv_ip_prefix_vmk0 = "192.168.1."
 $hv_subnetmask = "255.255.255.0" # /24
+$hv_ip_4octet_base_vmk0 = 30
+# $hv_ip_prefix_vmk0 + $hv_ip_4octet_base_vmk0 => 192.168.1.30
 $hv_gw = "192.168.1.1"
 $dns_1 = "192.168.1.101"
 $dns_2 = "192.168.1.102"
@@ -49,11 +51,11 @@ $nest_hv_hostname_list = $vm_num_start..$vm_num_end | % {
 
 $hv_ip_vmk0_list = $vm_num_start..$vm_num_end | % {
     $i = $_
-    $hv_ip_prefix_vmk0 + (30 + $i).ToString()
+    $hv_ip_prefix_vmk0 + ($hv_ip_4octet_base_vmk0 + $i).ToString()
 }
 
 $vc_hv_name_list = $vm_num_start..$vm_num_end | % {
     $i = $_
-    $hv_ip_prefix_vmk0 + (30 + $i).ToString()
+    $hv_ip_prefix_vmk0 + ($hv_ip_4octet_base_vmk0 + $i).ToString()
 }
 
