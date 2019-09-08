@@ -1,6 +1,6 @@
 # Load Config file.
 $config_file_name = $args[0]
-ls $config_file_name
+ls $config_file_name | Out-Null
 if($? -eq $false){"config file not found."; exit}
 . $config_file_name
 

@@ -33,6 +33,7 @@ function nested_esxcli {
     $pm.ListProcessesInGuest($vm_Id, $cred, $gos_pid) | % {$_.CmdLine}
 }
 
+
 $n = 0
 $vm_num_start..$vm_num_end | % {
     $i = $_
@@ -41,6 +42,7 @@ $vm_num_start..$vm_num_end | % {
     $hv_ip_vmk0 = @($hv_ip_vmk0_list)[$n]
     $n += 1
     
+    "Configure Nested ESXi: " + $vm_name
     # esxcli ...
     "system hostname set --host $nest_hv_hostname --domain $domain",
     "network ip interface ipv4 set --interface-name=vmk0 --type=static --ipv4=$hv_ip_vmk0 --netmask=$hv_subnetmask --gateway=$hv_gw",

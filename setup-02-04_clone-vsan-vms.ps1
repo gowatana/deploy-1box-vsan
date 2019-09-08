@@ -9,13 +9,22 @@ $vm_name_list
 # Clone Nested ESXi VMs
 $vm_name_list | % {
     $vm_name = $_
-    $vm = New-VM -VM $template_vm_name -Name $vm_name -VMHost (Get-VMHost $base_hv_name) -StorageFormat Thin
 
-    # Add VMDK
-    $vm | New-HardDisk -SizeGB $vsan_cache_disk_size_gb -StorageFormat Thin
+    "Clone VM: $vm_name"
+    $vm = New-VM -VM $template_vm_name -Name $vm_name -VMHost (Get-VMHost $base_hv_name) -StorageFormat Thin
+    $vm | select Name,NumCpu,MemoryGB,Folder,VMHost, Version, GuestId | Format-List
+
+    "Add VMDK (Cache device): " + $vm.Name
+    $vm | New-HardDisk -SizeGB $vsan_cache_disk_size_gb -StorageFormat Thin |
+        select Parent,Name,CapacityGB | ft -AutoSize
+    
+    "Add VMDK (Capacity device): " + $vm.Name
     for($i=1; $i -le $vsan_capacity_disk_count; $i++){
-        $vm | New-HardDisk -SizeGB $vsan_capacity_disk_size_gb -StorageFormat Thin
+        $vm | New-HardDisk -SizeGB $vsan_capacity_disk_size_gb -StorageFormat Thin |
+            select Parent,Name,CapacityGB | ft -AutoSize
     }
+
+    "Start VM: $vm_name"
     $vm | Start-VM | ft -AutoSize Name,VMHost,PowerState
 }
 
