@@ -4,7 +4,13 @@ $config_file_name = $args[0]
 . $config_file_name
 if($? -eq $false){"config file not found."; exit}
 
-Disconnect-VIServer * -Confirm:$false -Force -ErrorAction:SilentlyContinue
+# Disconnect from All vCeners
+$global:DefaultVIServers | % {
+    $vc = $_
+    "Disconnect from VC: " + $vc.Name
+    $vc | Disconnect-VIServer -Confirm:$false
+}
+
 # Remove vSAN Cluster
 Connect-VIServer -Server $nest_vc_address `
     -User $nest_vc_user -Password $nest_vc_pass -Force

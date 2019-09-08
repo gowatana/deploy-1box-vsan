@@ -4,7 +4,13 @@ ls $config_file_name
 if($? -eq $false){"config file not found."; exit}
 . $config_file_name
 
-Disconnect-VIServer * -Confirm:$false -Force -ErrorAction:SilentlyContinue
+# Disconnect from All vCeners
+$global:DefaultVIServers | % {
+    $vc = $_
+    "Disconnect from VC: " + $vc.Name
+    $vc | Disconnect-VIServer -Confirm:$false
+}
+
 Connect-VIServer -Server $base_vc_address `
     -User $base_vc_user -Password $base_vc_pass -Force
 ./setup-02-04_clone-vsan-vms.ps1 $config_file_name
