@@ -26,8 +26,9 @@ if($vsan_witness_host){
         Remove-Datacenter $witness_dc -Confirm:$false
     }    
 }
-Disconnect-VIServer * -Confirm:$false
+Disconnect-VIServer $nest_vc_address -Confirm:$false
 
+# Remove ESXi VMs
 Connect-VIServer -Server $base_vc_address `
     -User $base_vc_user -Password $base_vc_pass -Force
 Get-VM $vm_name_list | Stop-VM -Confirm:$false
@@ -36,4 +37,4 @@ if($vsan_witness_va_name){
     Get-VM $vsan_witness_va_name | Stop-VM -Confirm:$false
     Get-VM $vsan_witness_va_name | Remove-VM -DeletePermanently -Confirm:$false    
 }
-Disconnect-VIServer * -Confirm:$false
+Disconnect-VIServer $base_vc_address -Confirm:$false
