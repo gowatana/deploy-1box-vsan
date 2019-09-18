@@ -7,7 +7,7 @@ $nest_vc_address = "192.168.1.30"
 $nest_vc_user = "administrator@vsphere.local"
 $nest_vc_pass = "VMware1!"
 
-$domain = "go.lab.jp"
+$domain = "go-lab.jp"
 $hv_ip_prefix_vmk0 = "192.168.1."
 $hv_subnetmask = "255.255.255.0" # /24
 $hv_gw = "192.168.1.1"
@@ -18,20 +18,22 @@ $hv_pass = "VMware1!"
 
 # Base ESXi Setting
 $template_vm_name = "vm-esxi-template-01"
+$base_dc_name = "LAB-DC"
+$base_cluster_name = "MGMT-Cluster"
 $base_hv_name = "192.168.1.20"
 
 # Cluster setting
 $vm_num_start = 1
 $vm_num_end = 4
-$base_dc_name = "LAB-DC"
-$cluster_name = "vSAN-Cluster-20181207"
+$nest_dc_name = "LAB-DC"
+$nest_cluster_name = "vSAN-Cluster-20181219"
 
 # vSAN Disk setting
 $vsan_cache_disk_size_gb = 40
 $vsan_cache_dev = "mpx.vmhba0:C0:T1:L0"
-$vsan_capacity_disk_size_gb = 80
-$vsan_capacity_disk_count = 8
-$vsan_capacity_dev = "mpx.vmhba0:C0:T2:L0","mpx.vmhba0:C0:T3:L0","mpx.vmhba0:C0:T4:L0","mpx.vmhba0:C0:T5:L0","mpx.vmhba0:C0:T6:L0","mpx.vmhba0:C0:T7:L0","mpx.vmhba0:C0:T8:L0","mpx.vmhba0:C0:T9:L0"
+$vsan_capacity_disk_size_gb = 100
+$vsan_capacity_disk_count = 1
+$vsan_capacity_dev = "mpx.vmhba0:C0:T2:L0"
 
 # VM / ESXi List
 $nest_hv_hostname_prefix = "esxi-"
@@ -57,3 +59,10 @@ $vc_hv_name_list = $vm_num_start..$vm_num_end | % {
     $hv_ip_prefix_vmk0 + (30 + $i).ToString()
 }
 
+# vSAN Witness VA Setting
+$witness_dc = "LAB-DC-Witness"
+$vsan_witness_host = "192.168.1.61"
+
+$vsan_witness_template_name = "lab-vsan-witness-00"
+$vsan_witness_va_name = "vm-esxi-w-01"
+$vsan_witness_host_name = "esxi-w-01"

@@ -3,7 +3,7 @@ $config_file_name = $args[0]
 . $config_file_name
 if($? -eq $false){"config file not found."; exit}
 
-$cluster = Get-Cluster -Name $cluster_name
+$cluster = Get-Cluster -Name $nest_cluster_name
 
 function set_satp_rule {
     param (
@@ -31,13 +31,13 @@ function set_satp_rule {
     }
 }
 
-# Add SSD Mark
+"Add SSD Mark to Cache device:"
 $cluster | Get-VMHost | Sort-Object Name | % {
     $hv = $_
     set_satp_rule -esxi $hv -dev_list $vsan_cache_dev -satp_rule_option "enable_ssd"
 }
 
-# Add HDD Mark
+"Add HDD Mark to Capacity device:"
 $cluster | Get-VMHost | Sort-Object Name | % {
     $hv = $_
     set_satp_rule -esxi $hv -dev_list $vsan_capacity_dev -satp_rule_option "disable_ssd"
