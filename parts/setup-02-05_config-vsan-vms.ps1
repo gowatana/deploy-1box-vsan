@@ -30,8 +30,7 @@ function nested_esxcli {
 
 
 $n = 0
-$vm_num_start..$vm_num_end | % {
-    $i = $_
+for($i=1; $i -le $vm_num; $i++){ 
     $vm_name = @($vm_name_list)[$n]
     $nest_hv_hostname = @($nest_hv_hostname_list)[$n]
     $hv_ip_vmk0 = @($hv_ip_vmk0_list)[$n]
