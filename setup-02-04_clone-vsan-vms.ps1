@@ -11,7 +11,7 @@ $vm_name_list | % {
     $vm_name = $_
 
     "Clone VM: $vm_name"
-    $vm = New-VM -VM $template_vm_name -Name $vm_name -VMHost (Get-VMHost $base_hv_name) -StorageFormat Thin
+    $vm = New-VM -VM $template_vm_name -Name $vm_name -VMHost (Get-VMHost $base_hv_name) -Datastore $base_ds_name -StorageFormat Thin
     $vm | select Name,NumCpu,MemoryGB,Folder,VMHost, Version, GuestId | Format-List
 
     "Add VMDK (Cache device): " + $vm.Name

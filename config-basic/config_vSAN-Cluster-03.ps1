@@ -23,6 +23,7 @@ $template_vm_name = "vm-esxi-template-01"
 $base_dc_name = "LAB-DC"
 $base_cluster_name = "MGMT-Cluster"
 $base_hv_name = "192.168.1.20"
+$base_ds_name = "datastore1" # Clone Target Datastore
 
 # Cluster setting
 $vm_num_start = 7
