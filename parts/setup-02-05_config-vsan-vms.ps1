@@ -36,7 +36,7 @@ for($i=1; $i -le $vm_num; $i++){
     $hv_ip_vmk0 = @($hv_ip_vmk0_list)[$n]
     $n += 1
     
-    "Configure Nested ESXi: " + $vm_name
+    task_message "02-05_01" ("Configure Nested ESXi: " + $vm_name)
     # esxcli ...
     "system hostname set --host $nest_hv_hostname --domain $domain",
     "network ip interface ipv4 set --interface-name=vmk0 --type=static --ipv4=$hv_ip_vmk0 --netmask=$hv_subnetmask --gateway=$hv_gw",

@@ -1,7 +1,7 @@
 # Cluster setting
 $nest_dc_name = "LAB-DC"
 $nest_cluster_name = "vSAN-Cluster-02"
-$vm_num = 1
+$vm_num = 3
 $hv_ip_4oct_start = 34 #ESXi-vmk0-IP 4 Octet
 
 # VM / ESXi Prefix
@@ -20,6 +20,7 @@ $hv_user = "root"
 $hv_pass = "VMware1!"
 
 # vSAN Disk setting
+$vsan_dg_type = "AllFlash" # Hybrid or AllFlash
 $vsan_cache_disk_size_gb = 20
 $vsan_cache_dev = "mpx.vmhba0:C0:T1:L0"
 $vsan_capacity_disk_size_gb = 50

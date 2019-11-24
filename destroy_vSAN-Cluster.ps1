@@ -9,8 +9,15 @@ ls $config_file_name | Out-Null
 if($? -eq $false){"config file not found."; exit}
 . $config_file_name
 
+# Load Functions
+. ./parts/functions.ps1
+
 # Generate VM / ESXi List
-. ./parts/generate_obj_lists.ps1
+#. ./parts/generate_obj_lists.ps1
+$vm_name_list = gen_vm_name_list $vm_num $hv_ip_4oct_start
+$nest_hv_hostname_list = gen_nest_hv_hostname_list $vm_num $hv_ip_4oct_start $nest_hv_hostname_prefix
+$hv_ip_vmk0_list = gen_hv_ip_vmk0_list $vm_num $hv_ip_4oct_start $hv_ip_prefix_vmk0
+$vc_hv_name_list = $hv_ip_vmk0_list
 
 # Disconnect from All vCeners
 $global:DefaultVIServers | % {
