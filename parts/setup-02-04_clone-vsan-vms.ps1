@@ -9,6 +9,10 @@ $vm_name_list | % {
     $vm = New-VM -VM $template_vm_name -Name $vm_name -VMHost (Get-VMHost $base_hv_name) -Datastore $base_ds_name -StorageFormat Thin
     $vm | select Name,NumCpu,MemoryGB,Folder,VMHost, Version, GuestId | Format-List
 
+    task_message "02-04_01a" ("Set vNIC#1: " + $vm_name)
+    $vm | Get-NetworkAdapter -Name "* 1" | Set-NetworkAdapter -NetworkName $base_pg_name -Confirm:$false |
+        select Parent,Name,NetworkName | ft -AutoSize
+
     task_message "02-04_02" ("Add VMDK (Cache device): " + $vm_name)
     $vm | New-HardDisk -SizeGB $vsan_cache_disk_size_gb -StorageFormat Thin |
         select Parent,Name,CapacityGB | ft -AutoSize
