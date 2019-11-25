@@ -4,8 +4,8 @@ $base_cluster_name = "MGMT-Cluster"
 
 # Base ESXi Setting
 $base_hv_name = "192.168.1.20"
-#$hv_user = "root"
-#$hv_pass = "VMware1!"
+$base_hv_user = "root"
+$base_hv_pass = "VMware1!"
 
 # ESXi VM Setting
 $vm_name = "vm-esxi-template-67u3"
@@ -14,5 +14,5 @@ $num_cpu = 2
 $memory_gb = 6
 $vmdk_gb = 16
 
-$pg_name = "Nested-Trunk-Network"
-$ds_name = "datastore1"
+$base_pg_name = "Nested-Trunk-Network"
+$base_ds_name = "datastore1"
