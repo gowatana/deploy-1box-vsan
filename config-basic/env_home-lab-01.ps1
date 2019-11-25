@@ -8,7 +8,7 @@ $nest_vc_user = "administrator@vsphere.local"
 $nest_vc_pass = "VMware1!"
 
 # Base ESXi Setting
-$template_vm_name = "vm-esxi-template-01"
+$template_vm_name = "vm-esxi-template-67u3"
 $base_dc_name = "LAB-DC"
 $base_cluster_name = "MGMT-Cluster"
 $base_hv_name = "192.168.1.20"
