@@ -52,7 +52,7 @@ PowerCLI> ./setup-02-01_create-nested-pg.ps1 ./config_Base-ESXi.ps1
 ESXi VM の作成
 
 ```
-PowerCLI> ./setup-02-02_create-esxi-vm.ps1 ./config_Base-ESXi.ps1
+PowerCLI> ./create-esxi-vm.ps1 ./config_Base-ESXi.ps1
 ```
 
 ## vSAN Cluster セットアップ
