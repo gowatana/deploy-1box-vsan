@@ -1,7 +1,7 @@
 # Cluster setting
 $nest_dc_name = "LAB-DC"
 $nest_cluster_name = "vSAN-Cluster-03"
-$vm_num = 4 # 4-Nodes
+$vm_num = 1 # Single-Node
 $hv_ip_4oct_start = 39 # 4th Octet for ESXi-vmk0-IP
 
 # VM / ESXi Prefix
