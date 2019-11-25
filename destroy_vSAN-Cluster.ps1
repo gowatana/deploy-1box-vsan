@@ -20,11 +20,7 @@ $hv_ip_vmk0_list = gen_hv_ip_vmk0_list $vm_num $hv_ip_4oct_start $hv_ip_prefix_v
 $vc_hv_name_list = $hv_ip_vmk0_list
 
 # Disconnect from All vCeners
-$global:DefaultVIServers | % {
-    $vc = $_
-    "Disconnect from VC: " + $vc.Name
-    $vc | Disconnect-VIServer -Confirm:$false
-}
+disconnect_all_vc
 
 # Remove vSAN Cluster
 Connect-VIServer -Server $nest_vc_address `
