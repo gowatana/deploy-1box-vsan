@@ -1,5 +1,4 @@
 # Lab Global Setting.
-
 $base_vc_address = "192.168.1.30"
 $base_vc_user = "administrator@vsphere.local"
 $base_vc_pass = "VMware1!"
