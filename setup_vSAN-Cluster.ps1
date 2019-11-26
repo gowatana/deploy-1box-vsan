@@ -21,25 +21,31 @@ $vc_hv_name_list = $hv_ip_vmk0_list
 task_message "Main-01" ("Disconnect from All vCeners")
 disconnect_all_vc
 
-task_message "Main-02" ("Setup Base-vSphere")
+task_message "Main-02_Start" ("Setup Base-vSphere")
 Connect-VIServer -Server $base_vc_address `
     -User $base_vc_user -Password $base_vc_pass -Force |
     select Name,Version,Build,IsConnected | Format-List
 ./parts/setup-02-04_clone-vsan-vms.ps1
 ./parts/setup-02-05_config-vsan-vms.ps1
+
+task_message "Main-02_End" ("Setup Base-vSphere")
 disconnect_all_vc
 
-task_message "Main-03" ("Setup Nested-vSphere")
+task_message "Main-03_Start" ("Setup Nested-vSphere")
 Connect-VIServer -Server $nest_vc_address `
     -User $nest_vc_user -Password $nest_vc_pass -Force |
     select Name,Version,Build,IsConnected | Format-List
 ./parts/setup-03-01_create-vsphere-cluster.ps1
+
+task_message "Main-03_End" ("Setup Nested-vSphere")
 disconnect_all_vc
 
-task_message "Main-04" ("Setup vSAN")
+task_message "Main-04_Start" ("Setup vSAN")
 Connect-VIServer -Server $nest_vc_address `
     -User $nest_vc_user -Password $nest_vc_pass -Force |
     select Name,Version,Build,IsConnected | Format-List
 ./parts/setup-03-01a_setup-vsan-disk.ps1
 ./parts/setup-03-02_setup-vsan-cluster.ps1
+
+task_message "Main-04_End" ("Setup vSAN")
 disconnect_all_vc
