@@ -8,7 +8,7 @@ $vm = New-VM -Name $vm_name -VMHost $base_hv_name `
     -NumCpu $num_cpu -CoresPerSocket $num_cpu `
     -MemoryGB $memory_gb `
     -DiskGB $vmdk_gb -Datastore $base_ds_name -StorageFormat Thin `
-    -NetworkName $base_pg_name
+    -Portgroup $base_pg_name
 
 $vm = Get-VM -Name $vm_name
 $vm_config_spec = New-Object VMware.Vim.VirtualMachineConfigSpec
