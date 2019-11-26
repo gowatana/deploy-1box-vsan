@@ -27,14 +27,14 @@ Connect-VIServer -Server $base_vc_address `
     select Name,Version,Build,IsConnected | Format-List
 ./parts/setup-02-04_clone-vsan-vms.ps1
 ./parts/setup-02-05_config-vsan-vms.ps1
-Disconnect-VIServer -Server $base_vc_address -Confirm:$false
+disconnect_all_vc
 
 task_message "Main-03" ("Setup Nested-vSphere")
 Connect-VIServer -Server $nest_vc_address `
     -User $nest_vc_user -Password $nest_vc_pass -Force |
     select Name,Version,Build,IsConnected | Format-List
 ./parts/setup-03-01_create-vsphere-cluster.ps1
-Disconnect-VIServer -Server $nest_vc_address -Confirm:$false
+disconnect_all_vc
 
 task_message "Main-04" ("Setup vSAN")
 Connect-VIServer -Server $nest_vc_address `
@@ -42,4 +42,4 @@ Connect-VIServer -Server $nest_vc_address `
     select Name,Version,Build,IsConnected | Format-List
 ./parts/setup-03-01a_setup-vsan-disk.ps1
 ./parts/setup-03-02_setup-vsan-cluster.ps1
-Disconnect-VIServer -Server $nest_vc_address -Confirm:$false
+disconnect_all_vc
