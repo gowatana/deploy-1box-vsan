@@ -1,13 +1,9 @@
 $hv_ip_4oct = $hv_ip_4oct_start
 $vc_hv_name_list | ForEach-Object {
     $hv_name = $_
-
     $hv_vmk1_ip = $hv_ip_prefix_vmk1 + $hv_ip_4oct
-    $hv_vmk1_subnetmask
-
     $hv_vmk2_ip = $hv_ip_prefix_vmk2 + $hv_ip_4oct
-    $hv_vmk2_subnetmask
-
+    
     task_message "02-02_01" ("Add vSS-Portgroup for vmk1 (vMotion): " + $hv_name)
     add_vss $hv_name $vmotion_vmk_vss $vmotion_vmk_pg $vmotion_vmk_vlan
     
