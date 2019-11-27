@@ -35,12 +35,39 @@ function gen_hv_ip_vmk0_list($vm_num, $hv_ip_4oct_start, $hv_ip_prefix_vmk0) {
     } 
 }
 
+# ----------------------------------------
+# ESXi setting
+
 function disconnect_all_vc() {
     $global:DefaultVIServers | ForEach-Object {
         $vc = $_
         "Disconnect from VC: " + $vc.Name
         $vc | Disconnect-VIServer -Confirm:$false
     }
+}
+
+function add_vss {
+    param (
+        $hv_name,
+        $vss_name,
+        $vss_pg_name,
+        $vlan_id
+    )
+    Get-VMHost -Name $hv_name | Get-VirtualSwitch -Name $vss_name |
+        New-VirtualPortGroup -Name $vss_pg_name -VLanId $vlan_id
+}
+
+function add_vss_vmk_port {
+    param (
+        $hv_name,
+        $vss_name,
+        $vss_pg_name,
+        $vmk_ip,
+        $subnetmask
+    )
+    Get-VMHost -Name $hv_name |
+        New-VMHostNetworkAdapter -VirtualSwitch $vss_name -PortGroup $vss_pg_name `
+            -IP $vmk_ip -SubnetMask $subnetmask
 }
 
 # ----------------------------------------

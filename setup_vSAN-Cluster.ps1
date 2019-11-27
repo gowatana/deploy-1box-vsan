@@ -36,6 +36,7 @@ Connect-VIServer -Server $nest_vc_address `
     -User $nest_vc_user -Password $nest_vc_pass -Force |
     select Name,Version,Build,IsConnected | Format-List
 ./parts/step_2-1_create-vsphere-cluster.ps1
+./parts/step_2-2_create-vmk-port_on-vss.ps1
 
 task_message "Main-02_End" ("Setup Nested-vSphere")
 disconnect_all_vc
