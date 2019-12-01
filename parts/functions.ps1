@@ -11,7 +11,7 @@ function task_message($task_id, $task_message) {
 # ----------------------------------------
 # Generate VM / ESXi List
 
-function gen_vm_name_list($vm_num,$hv_ip_4oct_start) {
+function gen_vm_name_list($vm_num, $hv_ip_4oct_start, $hv_ip_prefix_vmk0) {
     $hv_ip_4oct = $hv_ip_4oct_start  
     for($i=1; $i -le $vm_num; $i++){  
         $vm_name_prefix + $hv_ip_prefix_vmk0 + $hv_ip_4oct.ToString()
