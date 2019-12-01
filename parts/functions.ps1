@@ -68,7 +68,7 @@ function add_vss_vmk_port {
     Get-VMHost -Name $hv_name |
         New-VMHostNetworkAdapter -VirtualSwitch $vss_name -PortGroup $vss_pg_name `
             -IP $vmk_ip -SubnetMask $subnetmask |
-            select DeviceName,PortGroupName Mac,IP,SubnetMask | ft -AutoSize
+            select DeviceName,PortGroupName,Mac,IP,SubnetMask | ft -AutoSize
 }
 
 # ----------------------------------------
