@@ -12,18 +12,18 @@
 
 CLI で VCSA をデプロイする。
 * PowerShell で実行。（cmd でも可）
-* コマンドラインの例は、ISOマウントがドライブ。
+* コマンドラインの例は、ISOマウントが F: ドライブ。
 * .json ファイルのパスは適宜変更する。
 * JSON は VCSA65 でも利用できる形式で記載。
 
 ```
-PS> D:/vcsa-cli-installer/win32/vcsa-deploy.exe install `
+PS> F:/vcsa-cli-installer/win32/vcsa-deploy.exe install `
 --no-esx-ssl-verify --accept-eula --precheck-only `
-～/simple-vsan-vc.json
+～/lab-vcsa-67u3.json
 
-PS> D:\vcsa-cli-installer\win32\vcsa-deploy.exe install `
+PS> F:\vcsa-cli-installer\win32\vcsa-deploy.exe install `
 --no-esx-ssl-verify --accept-eula `
-～/simple-vsan-vc.json
+～/lab-vcsa-67u3.json
 ```
 
 ## PowerCLIでのVCへの接続
