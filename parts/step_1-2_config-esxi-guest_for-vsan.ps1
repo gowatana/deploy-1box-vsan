@@ -1,8 +1,3 @@
-# Load Config file.
-$config_file_name = $args[0]
-. $config_file_name
-if($? -eq $false){"config file not found."; exit}
-
 function nested_esxcli {
     param(
         $ESXiVM, $ESXiUser, $ESXiPass, $ESXCLICmd
@@ -35,17 +30,16 @@ function nested_esxcli {
 
 
 $n = 0
-$vm_num_start..$vm_num_end | % {
-    $i = $_
+for($i=1; $i -le $vm_num; $i++){ 
     $vm_name = @($vm_name_list)[$n]
     $nest_hv_hostname = @($nest_hv_hostname_list)[$n]
     $hv_ip_vmk0 = @($hv_ip_vmk0_list)[$n]
     $n += 1
     
-    "Configure Nested ESXi: " + $vm_name
+    task_message "01-02_01" ("Configure Nested ESXi: " + $vm_name)
     # esxcli ...
     "system hostname set --host $nest_hv_hostname --domain $domain",
-    "network ip interface ipv4 set --interface-name=vmk0 --type=static --ipv4=$hv_ip_vmk0 --netmask=$hv_subnetmask --gateway=$hv_gw",
+    "network ip interface ipv4 set --interface-name=vmk0 --type=static --ipv4=$hv_ip_vmk0 --netmask=$hv_vmk0_subnetmask --gateway=$hv_gw",
     "network ip route ipv4 add --network=0.0.0.0/0 --gateway=$hv_gw",
     "network ip dns server add --server=$dns_1",
     "network ip dns server add --server=$dns_2" |

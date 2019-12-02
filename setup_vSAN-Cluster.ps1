@@ -18,39 +18,35 @@ $nest_hv_hostname_list = gen_nest_hv_hostname_list $vm_num $hv_ip_4oct_start $ne
 $hv_ip_vmk0_list = gen_hv_ip_vmk0_list $vm_num $hv_ip_4oct_start $hv_ip_prefix_vmk0
 $vc_hv_name_list = $hv_ip_vmk0_list
 
-task_message "Main-01" ("Disconnect from All vCeners")
+task_message "Main-00" ("Disconnect from All vCeners")
 disconnect_all_vc
 
-task_message "Main-02" ("Setup Base-vSphere")
+task_message "Main-01_Start" ("Setup Base-vSphere")
 Connect-VIServer -Server $base_vc_address `
     -User $base_vc_user -Password $base_vc_pass -Force |
     select Name,Version,Build,IsConnected | Format-List
-./parts/setup-02-04_clone-vsan-vms.ps1
-./parts/setup-02-05_config-vsan-vms.ps1
-Disconnect-VIServer -Server $base_vc_address -Confirm:$false
+./parts/step_1-1_clone-esxi-vms_for-vsan.ps1
+./parts/step_1-2_config-esxi-guest_for-vsan.ps1
 
-task_message "Main-03" ("Setup Nested-vSphere")
+task_message "Main-01_End" ("Setup Base-vSphere")
+disconnect_all_vc
+
+task_message "Main-02_Start" ("Setup Nested-vSphere")
 Connect-VIServer -Server $nest_vc_address `
     -User $nest_vc_user -Password $nest_vc_pass -Force |
     select Name,Version,Build,IsConnected | Format-List
-./parts/setup-03-01_create-vsphere-cluster.ps1
-Disconnect-VIServer -Server $nest_vc_address -Confirm:$false
+./parts/step_2-1_create-vsphere-cluster.ps1
+./parts/step_2-2_create-vmk-port_on-vss.ps1
 
-task_message "Main-04" ("Setup vSAN")
+task_message "Main-02_End" ("Setup Nested-vSphere")
+disconnect_all_vc
+
+task_message "Main-04_Start" ("Setup vSAN")
 Connect-VIServer -Server $nest_vc_address `
     -User $nest_vc_user -Password $nest_vc_pass -Force |
     select Name,Version,Build,IsConnected | Format-List
-./parts/setup-03-01a_setup-vsan-disk.ps1
-./parts/setup-03-02_setup-vsan-cluster.ps1
-Disconnect-VIServer -Server $nest_vc_address -Confirm:$false
+./parts/step_3-1_setup-vsan-disk.ps1
+./parts/step_3-2_setup-vsan-cluster.ps1
 
-task_message "Main-05" ("add vSAN vmk1")
-"WIP"
-
-task_message "Main-06" ("vSAN Witness Setting")
-Connect-VIServer -Server $nest_vc_address `
-    -User $nest_vc_user -Password $nest_vc_pass -Force
-./Witness/clone-vSAN-Witness-VA.ps1 $config_file_name
-./Witness/setup-vSAN-Witness-VA.ps1 $config_file_name
-./Witness/setup-vSAN-Witness-Host.ps1 $config_file_name
-Disconnect-VIServer * -Confirm:$false
+task_message "Main-04_End" ("Setup vSAN")
+disconnect_all_vc

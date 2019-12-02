@@ -40,33 +40,37 @@ PowerCLI> Connect-VIServer 192.168.1.30 -User administrator@vsphere.local -Passw
 設定情報は config_Base-ESXi.ps1 ファイルに記載する。
 
 ```
-PowerCLI> ./setup-01-04_create-base-inventory.ps1 ./config_Base-ESXi.ps1
+PowerCLI> cd ./setup/
+PowerCLI> ./step_1_create-base-inventory.ps1 ./config_Base-ESXi.ps1
 ```
 
 ポートグループの作成
 
 ```
-PowerCLI> ./setup-02-01_create-nested-pg.ps1 ./config_Base-ESXi.ps1
+PowerCLI> ./step_2_create-nested-pg.ps1 ./config_Base-ESXi.ps1
 ```
 
 ESXi VM の作成
 
 ```
-PowerCLI> ./setup-02-02_create-esxi-vm.ps1 ./config_Base-ESXi.ps1
+PowerCLI> ./step_3_create-esxi-vm.ps1 ./config_Base-ESXi.ps1
+PowerCLI> ../
 ```
 
 ## vSAN Cluster セットアップ
 
 ラボ環境にあわせて、設定情報を config_vSAN-Cluster-01.ps1 のようなファイルを作成。
+* $args[0]: デプロイ先ラボ環境のパラメータ ファイル
+* $args[1]: デプロイする vSAN クラスタのパラメータ ファイル
 
 ```
-PowerCLI> ./setup_vSAN-Cluster_AllFlash.ps1 ./config-basic/config_vSAN-Cluster-01.ps1
+PowerCLI> ./setup_vSAN-Cluster.ps1 ./config-basic/env_home-lab-01.ps1 ./config-basic/conf_vSAN-Cluster-01_Hybrid.ps1
 ```
 
 or
 
 ```
-PowerCLI> ./setup_vSAN-Cluster_Hybrid.ps1 ./config-basic/config_vSAN-Cluster-01.ps1
+PowerCLI> ./setup_vSAN-Cluster.ps1 ./config-basic/env_home-lab-01.ps1 ./config-basic/conf_vSAN-Cluster-02_AllFlash.ps1
 ```
 
 ## ラボの初期化
@@ -74,5 +78,5 @@ PowerCLI> ./setup_vSAN-Cluster_Hybrid.ps1 ./config-basic/config_vSAN-Cluster-01.
 ラボ環境の vSAN クラスタ初期化。（vSAN クラスタ ～ ESXi VM まで削除）
 
 ```
-PowerCLI> ./destroy_vSAN-Cluster.ps1 ./config-basic/config_vSAN-Cluster-01.ps1
+PowerCLI> ./destroy_vSAN-Cluster.ps1 ./config-basic/env_home-lab-01.ps1 ./config-basic/conf_vSAN-Cluster-01_Hybrid.ps1
 ```
