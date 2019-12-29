@@ -28,7 +28,7 @@
             ],
             "prefix": "24",
             "gateway": "192.168.1.1",
-            "system_name": "192.168.1.55"
+            "system_name": "192.168.1.30"
         },
         "os": {
             "password": "VMware1!",
