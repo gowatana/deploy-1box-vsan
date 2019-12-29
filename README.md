@@ -80,3 +80,24 @@ PowerCLI> ./setup_vSAN-Cluster.ps1 ./config-basic/env_home-lab-01.ps1 ./config-b
 ```
 PowerCLI> ./destroy_vSAN-Cluster.ps1 ./config-basic/env_home-lab-01.ps1 ./config-basic/conf_vSAN-Cluster-01_Hybrid.ps1
 ```
+
+## Witness VA のデプロイ / セットアップ
+
+* 事前に Witness VA の .ova ファイルをデプロイしておく。
+* 下記で、Witness VA のクローン / ネットワーク設定 / VC 登録が実行される。
+* ストレッチクラスタ作成時に、監視ホストとしてこの Witness VA を指定する。
+
+```
+PowerCLI> cd ./deploy-1box-vsan/
+PowerCLI> ./Witness/setup_vSAN-Witness-Host.ps1 ./config-basic/env_home-lab-01.ps1 ./Witness/config/conf_Witness-VA_192.168.1.99.ps1
+```
+
+## Witness VA の削除
+
+* 事前に、監視ホストを利用していた vSAN クラスタは削除しておく。
+* 下記で、VC から Witness Host がインベントリ削除、Witness VA もディスクから削除される。
+
+```
+PowerCLI> cd ./deploy-1box-vsan/
+PowerCLI> ./Witness/destroy_vSAN-Witness-Host.ps1 ./config-basic/env_home-lab-01.ps1 ./Witness/config/conf_Witness-VA_192.168.1.99.ps1
+```
