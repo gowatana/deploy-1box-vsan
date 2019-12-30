@@ -19,10 +19,20 @@ if($vsan_wts -eq $true){
     Get-VMHost $vsan_witness_host_vcname | Get-VMHostNetworkAdapter -Name vmk0 |
         Set-VMHostNetworkAdapter -VsanTrafficEnabled:$true -Confirm:$false
 
-    task_message "Witness-3-04" "WTS - Disable vSAN Traffic(vmk1): $vsan_witness_host_vcname"
+    task_message "Witness-3-05" "WTS - Disable vSAN Traffic(vmk1): $vsan_witness_host_vcname"
     Get-VMHost $vsan_witness_host_vcname | Get-VMHostNetworkAdapter -Name vmk1 |
         Set-VMHostNetworkAdapter -VsanTrafficEnabled:$false -Confirm:$false    
 }
 
 task_message "Witness-3-06" "Enable TSM-SSH: $vsan_witness_host_vcname"
-Get-VMHost $vsan_witness_host_vcname | Get-VMHostService | where {$_.key -eq "TSM-SSH"} | Start-VMHostService
+Get-VMHost $vsan_witness_host_vcname | Get-VMHostService | where {$_.key -eq "TSM-SSH"} | % {
+    $_ | Start-VMHostService
+    $_ | Set-VMHostService -Policy On
+} | Out-Null
+
+Get-VMHost $vsan_witness_host_vcname | Get-VMHostService | where {$_.key -eq "TSM-SSH"} | 
+    select VMHost,Key,Label,Policy,Running | ft -AutoSize
+
+task_message "Witness-3-07" "Suppress SSH Warning TSM-SSH: $vsan_witness_host_vcname"
+Get-VMHost $vsan_witness_host_vcname | Get-AdvancedSetting -Name  "UserVars.SuppressShellWarning" |
+    Set-AdvancedSetting -Value 1 -Confirm:$false | select Entity,Name,Value
