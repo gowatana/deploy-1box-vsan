@@ -13,9 +13,6 @@ $loc = Get-Datacenter $witness_dc | Get-Folder -Type HostAndCluster -Name $witne
 Add-VMHost -Location $loc -Name $vsan_witness_host_vcname -User $hv_user -Password $hv_pass -Force
 if((Get-VMHost $vsan_witness_host_vcname) -eq $false){"Add Witness Host Error"; exit 1}
 
-task_message "Witness-3-03" "Remove Local Datastore"
-#Get-VMHost $vsan_witness_host | Remove-Datastore -Datastore "datastore*" -Confirm:$false -ErrorAction:Ignore
-
 $vsan_wts = $true
 if($vsan_wts -eq $true){
     task_message "Witness-3-04" "WTS - Enable vSAN Traffic(vmk0): $vsan_witness_host_vcname"
