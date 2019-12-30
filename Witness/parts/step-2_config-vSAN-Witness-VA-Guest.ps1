@@ -56,3 +56,7 @@ ForEach-Object {
 #    nested_esxcli -ESXiVM:$vm_name -ESXiUser:$hv_user -ESXiPass:$hv_pass -ESXCLICmd $_
 #    sleep 1
 #}
+
+task_message "Witness-2-02" ("Connect All vNICs: " + $vm_name)
+Get-VM -Name $vm_name | Get-NetworkAdapter | Set-NetworkAdapter -StartConnected:$true -Connected:$true -Confirm:$false |
+    select Parent,Name,NetworkName,@{N="StartConnected";E={$_.ConnectionState.StartConnected}} | ft -AutoSize
