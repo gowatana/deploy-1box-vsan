@@ -35,6 +35,8 @@ $domain = $vsan_witness_host_domain
 $hv_ip_vmk0 = $vsan_witness_host_ip
 $hv_subnetmask = $vsan_witness_host_subnetmask
 $hv_gw = $vsan_witness_host_gw
+$dns_1 = $vsan_witness_dns_1
+$dns_2 = $vsan_witness_dns_2
 
 task_message "Witness-2_01" ("Configure Nested ESXi: " + $vm_name)
 # esxcli ...
