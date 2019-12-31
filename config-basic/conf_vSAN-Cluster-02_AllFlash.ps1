@@ -43,3 +43,6 @@ $vsan_cache_dev = "mpx.vmhba0:C0:T1:L0"
 $vsan_capacity_disk_size_gb = 50
 $vsan_capacity_disk_count = 2
 $vsan_capacity_dev = "mpx.vmhba0:C0:T2:L0", "mpx.vmhba0:C0:T3:L0"
+
+# vSAN Datastore Name
+$vsan_ds_name = "vsanDatastore-02"
