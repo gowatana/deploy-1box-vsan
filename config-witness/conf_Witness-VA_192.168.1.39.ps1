@@ -1,4 +1,5 @@
 # vSAN Witness Config
+$create_witness_vm = $true
 
 $hv_user = "root"
 $hv_pass = "VMware1!"

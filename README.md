@@ -89,7 +89,7 @@ PowerCLI> ./destroy_vSAN-Cluster.ps1 ./config-basic/env_home-lab-01.ps1 ./config
 
 ```
 PowerCLI> cd ./deploy-1box-vsan/
-PowerCLI> ./Witness/setup_vSAN-Witness-Host.ps1 ./config-basic/env_home-lab-01.ps1 ./Witness/config/conf_Witness-VA_192.168.1.99.ps1
+PowerCLI> ./setup_vSAN-Cluster.ps1 ./config-basic/env_home-lab-01.ps1 ./config-witness/conf_Witness-VA_192.168.1.37.ps1
 ```
 
 ## Witness VA の削除
@@ -99,5 +99,5 @@ PowerCLI> ./Witness/setup_vSAN-Witness-Host.ps1 ./config-basic/env_home-lab-01.p
 
 ```
 PowerCLI> cd ./deploy-1box-vsan/
-PowerCLI> ./Witness/destroy_vSAN-Witness-Host.ps1 ./config-basic/env_home-lab-01.ps1 ./Witness/config/conf_Witness-VA_192.168.1.99.ps1
+PowerCLI> ./destroy_vSAN-Witness-Host.ps1 ./config-basic/env_home-lab-01.ps1 ./config-witness/conf_Witness-VA_192.168.1.37.ps1
 ```
