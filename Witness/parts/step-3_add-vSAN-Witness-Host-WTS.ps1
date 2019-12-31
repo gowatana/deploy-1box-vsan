@@ -15,12 +15,14 @@ if((Get-VMHost $vsan_witness_host_vcname) -eq $false){"Add Witness Host Error"; 
 
 if($vsan_wts -eq $true){
     task_message "Witness-3-04" "WTS - Enable vSAN Traffic(vmk0): $vsan_witness_host_vcname"
-    Get-VMHost $vsan_witness_host_vcname | Get-VMHostNetworkAdapter -Name vmk0 |
+    $vmk = Get-VMHost $vsan_witness_host_vcname | Get-VMHostNetworkAdapter -Name vmk0 |
         Set-VMHostNetworkAdapter -VsanTrafficEnabled:$true -Confirm:$false
-
+    $vmk | select VMHost,DeviceName,Mac,Mtu,VsanTrafficEnabled,PortGroupName,DhcpEnabled,IP,SubnetMask | fl 
+    
     task_message "Witness-3-05" "WTS - Disable vSAN Traffic(vmk1): $vsan_witness_host_vcname"
-    Get-VMHost $vsan_witness_host_vcname | Get-VMHostNetworkAdapter -Name vmk1 |
-        Set-VMHostNetworkAdapter -VsanTrafficEnabled:$false -Confirm:$false    
+    $vmk = Get-VMHost $vsan_witness_host_vcname | Get-VMHostNetworkAdapter -Name vmk1 |
+        Set-VMHostNetworkAdapter -VsanTrafficEnabled:$false -Confirm:$false  
+    $vmk | select VMHost,DeviceName,Mac,Mtu,VsanTrafficEnabled,PortGroupName,DhcpEnabled,IP,SubnetMask | fl  
 }
 
 task_message "Witness-3-06" "Enable TSM-SSH: $vsan_witness_host_vcname"
