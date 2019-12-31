@@ -1,5 +1,6 @@
 # Cluster config file
 
+$create_esxi_vms       = $true # $true or $false
 $create_vsphre_cluster = $true # $true or $false
 $create_vsan_cluster   = $true # $true or $false
 

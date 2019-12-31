@@ -18,20 +18,26 @@ $nest_hv_hostname_list = gen_nest_hv_hostname_list $vm_num $hv_ip_4oct_start $ne
 $hv_ip_vmk0_list = gen_hv_ip_vmk0_list $vm_num $hv_ip_4oct_start $hv_ip_prefix_vmk0
 $vc_hv_name_list = $hv_ip_vmk0_list
 
+# Adjast Setup Flag
+if($create_vsan_cluster -eq $true){$create_vsphre_cluster = $true}
+if($create_vsphre_cluster -eq $true){$create_esxi_vms = $true}
+
 task_message "Main-00" "Disconnect from All vCeners"
 disconnect_all_vc
 
-task_message "Main-01_Start" "Setup Base-vSphere"
-Connect-VIServer -Server $base_vc_address `
-    -User $base_vc_user -Password $base_vc_pass -Force |
-    select Name,Version,Build,IsConnected | Format-List
-./parts/step_1-1_clone-esxi-vms_for-vsan.ps1
-./parts/step_1-2_config-esxi-guest_for-vsan.ps1
+if($create_esxi_vms -eq $true){
+    task_message "Main-01_Start" "Setup Base-vSphere"
+    Connect-VIServer -Server $base_vc_address `
+        -User $base_vc_user -Password $base_vc_pass -Force |
+        select Name,Version,Build,IsConnected | Format-List
+    ./parts/step_1-1_clone-esxi-vms_for-vsan.ps1
+    ./parts/step_1-2_config-esxi-guest_for-vsan.ps1
 
-task_message "Main-01_End" "Setup Base-vSphere"
-disconnect_all_vc
+    task_message "Main-01_End" "Setup Base-vSphere"
+    disconnect_all_vc
+}
 
-if($create_vsphre_cluster){
+if($create_vsphre_cluster -eq $true){
     task_message "Main-02_Start" "Setup Nested-vSphere"
     Connect-VIServer -Server $nest_vc_address `
         -User $nest_vc_user -Password $nest_vc_pass -Force |
@@ -43,7 +49,7 @@ if($create_vsphre_cluster){
     disconnect_all_vc
 }
 
-if($create_vsan_cluster){
+if($create_vsan_cluster -eq $true){
     task_message "Main-04_Start" "Setup vSAN"
     Connect-VIServer -Server $nest_vc_address `
         -User $nest_vc_user -Password $nest_vc_pass -Force |
