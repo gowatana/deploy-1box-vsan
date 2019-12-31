@@ -43,12 +43,13 @@ task_message "Witness-2_01" ("Configure Nested ESXi: " + $vm_name)
 "system hostname set --host $nest_hv_hostname --domain $domain",
 "network ip interface ipv4 set --interface-name=vmk0 --type=static --ipv4=$hv_ip_vmk0 --netmask=$hv_subnetmask --gateway=$hv_gw",
 "network ip route ipv4 add --network=0.0.0.0/0 --gateway=$hv_gw",
+"network diag ping -c 2 -H $hv_gw",
 "network ip dns server add --server=$dns_1",
 "network ip dns server add --server=$dns_2" |
 ForEach-Object {
     nested_esxcli -ESXiVM:$vm_name -ESXiUser:$hv_user -ESXiPass:$hv_pass -ESXCLICmd $_
     sleep 1
-}
+} 
 
 #task_message "Witness-2_02" ("Configure Nested ESXi vmk0: " + $vm_name)
 #"vsan network ip add -i vmk0 -T=witness" |
