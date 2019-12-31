@@ -1,3 +1,8 @@
+# Cluster config file
+
+$create_vsphre_cluster = $true # $true or $false
+$create_vsan_cluster   = $true # $true or $false
+
 # Cluster setting
 $nest_dc_name = "LAB-DC"
 $nest_cluster_name = "vSAN-Cluster-20191213-67u3"
