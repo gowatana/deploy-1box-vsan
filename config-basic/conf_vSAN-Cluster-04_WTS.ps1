@@ -5,6 +5,7 @@ $create_vsphre_cluster = $true # $true or $false
 $create_witness_vm     = $true # $true or $false
 $create_vsan_wts       = $true # $true or $false
 $create_vsan_cluster   = $true # $true or $false
+$create_vsan_2node     = $true # $true or $false
 
 # Cluster setting
 $nest_dc_name = "LAB-DC"
@@ -57,3 +58,25 @@ $vsan_capacity_dev = "mpx.vmhba0:C0:T2:L0", "mpx.vmhba0:C0:T3:L0"
 
 # vSAN Datastore Name
 $vsan_ds_name = "vsanDatastore-2NodeWTS"
+
+# ----------------------------------------
+# vSAN Witness Config
+
+# Witness VA Base Config
+$base_witness_pg_name_1 = ""
+$base_witness_pg_name_2 = ""
+
+# Witness Host Config
+$witness_dc = "LAB-DC"
+$witness_host_folder = "Witness-Hosts" # if "host", it is added to DC
+$vsan_witness_host_name = "esxi-038"
+$vsan_witness_host_domain = "go-lab.jp"
+$vsan_witness_host_ip = "192.168.1.38"
+$vsan_witness_host_subnetmask = "255.255.255.0"
+$vsan_witness_host_gw = "192.168.1.1"
+$vsan_witness_dns_1 = "192.168.1.101"
+$vsan_witness_dns_2 = "192.168.1.102"
+$vsan_witness_host_vcname = $vsan_witness_host_ip
+$vsan_wts = $true # $true or $false
+$vsan_witness_template_name = "VMware-VirtualSAN-Witness-6.7.0.update03-14320388"
+$vsan_witness_va_name = "vm-esxi-witness-" + $vsan_witness_host_ip
