@@ -5,6 +5,7 @@ $create_vsphre_cluster = $true # $true or $false
 $create_witness_vm     = $true # $true or $false
 $create_vsan_wts       = $true # $true or $false
 $create_vsan_cluster   = $true # $true or $false
+$create_vsan_2node     = $true # $true or $false
 
 # Cluster setting
 $nest_dc_name = "LAB-DC"

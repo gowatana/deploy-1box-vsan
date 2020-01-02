@@ -100,3 +100,13 @@ if($create_vsan_cluster -eq $true){
     task_message "Main-04_End" "Setup vSAN"
     disconnect_all_vc
 }
+
+if($create_vsan_2node -eq $true){
+    task_message "Main-05_Start" "Setup 2-Node vSAN"
+    Connect-VIServer -Server $nest_vc_address `
+        -User $nest_vc_user -Password $nest_vc_pass -Force |
+        select Name,Version,Build,IsConnected | Format-List
+    ./parts/Witness/step-4_create-vSAN-Cluster-2Node.ps1
+    task_message "Main-05_End" "Setup 2-Node vSAN"
+    disconnect_all_vc
+}
