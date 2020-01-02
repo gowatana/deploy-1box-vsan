@@ -49,6 +49,17 @@ if($create_vsphre_cluster -eq $true){
     disconnect_all_vc
 }
 
+if($create_vsan_wts -eq $true){
+    task_message "Witness-4_Start" "Setup vSAN Witness Data Host"
+    Connect-VIServer -Server $nest_vc_address `
+        -User $nest_vc_user -Password $nest_vc_pass -Force |
+        select Name,Version,Build,IsConnected | Format-List
+    ./parts/step_3-1a_setup-vsan-witness-nw.ps1
+    
+    task_message "Witness-4_End" "Setup vSAN Witness Data Host"
+    disconnect_all_vc
+}
+
 if($create_vsan_cluster -eq $true){
     task_message "Main-04_Start" "Setup vSAN"
     Connect-VIServer -Server $nest_vc_address `
