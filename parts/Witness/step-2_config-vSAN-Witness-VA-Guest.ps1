@@ -43,7 +43,6 @@ task_message "Witness-2_01" ("Configure Nested ESXi: " + $vm_name)
 "system hostname set --host $nest_hv_hostname --domain $domain",
 "network ip interface ipv4 set --interface-name=vmk0 --type=static --ipv4=$hv_ip_vmk0 --netmask=$hv_subnetmask --gateway=$hv_gw",
 "network ip route ipv4 add --network=0.0.0.0/0 --gateway=$hv_gw",
-"network diag ping -c 2 -H $hv_gw",
 "network ip dns server add --server=$dns_1",
 "network ip dns server add --server=$dns_2" |
 ForEach-Object {
@@ -54,3 +53,11 @@ ForEach-Object {
 task_message "Witness-2-02" ("Connect All vNICs: " + $vm_name)
 Get-VM -Name $vm_name | Get-NetworkAdapter | Set-NetworkAdapter -StartConnected:$true -Connected:$true -Confirm:$false |
     select Parent,Name,NetworkName,@{N="StartConnected";E={$_.ConnectionState.StartConnected}} | ft -AutoSize
+
+task_message "Witness-2_03" ("ESXi VM Network Connectivity workaround: " + $vm_name)
+# esxcli ...
+"network diag ping -c 2 -H $hv_gw" |
+ForEach-Object {
+    nested_esxcli -ESXiVM:$vm_name -ESXiUser:$hv_user -ESXiPass:$hv_pass -ESXCLICmd $_
+    sleep 1
+}
