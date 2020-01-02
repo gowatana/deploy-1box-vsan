@@ -75,6 +75,15 @@ if($create_witness_vm -eq $true){
     ./parts/Witness/step-3_add-vSAN-Witness-Host-WTS.ps1
 
     task_message "Witness-3_End" ("Disconnect from All vCeners")
+
+if($create_vsan_wts -eq $true){
+    task_message "Witness-4_Start" "Setup vSAN Witness Data Host"
+    Connect-VIServer -Server $nest_vc_address `
+        -User $nest_vc_user -Password $nest_vc_pass -Force |
+        select Name,Version,Build,IsConnected | Format-List
+    ./parts/step_3-1a_setup-vsan-witness-nw.ps1
+    
+    task_message "Witness-4_End" "Setup vSAN Witness Data Host"
     disconnect_all_vc
 }
 

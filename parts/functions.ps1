@@ -99,3 +99,22 @@ function set_satp_rule {
         $esxcli.storage.core.claiming.reclaim.Invoke($config)
     }
 }
+
+# ----------------------------------------
+# vSAN Witness Host Tips
+
+function set_vmk_witness_tag {
+    param (
+        $esxi,
+        $vmk_port
+    )
+
+    $vmk_tag_name = "witness"
+    "Add vmk $vmk_tag_name Tag: $esxi.Name to $vmk_port"  
+
+    $esxcli = $esxi | Get-EsxCli -V2
+    $config = $esxcli.vsan.network.ip.add.CreateArgs()
+    $config.interfacename = $vmk_port
+    $config.traffictype = $vmk_tag_name
+    $esxcli.vsan.network.ip.add.Invoke($config)
+}
