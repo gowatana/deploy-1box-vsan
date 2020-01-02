@@ -86,7 +86,7 @@ function set_satp_rule {
     $dev_list | % {
         $dev_name = $_
         "ESXi SATP Setting: " + `
-            $hv.Name + " " + $satp_rule_name + " " + $satp_rule_option
+            $esxi.Name + " " + $satp_rule_name + " " + $satp_rule_option
         $config = $esxcli.storage.nmp.satp.rule.add.CreateArgs()
     
         $config.satp = $satp_rule_name
