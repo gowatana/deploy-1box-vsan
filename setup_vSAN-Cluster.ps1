@@ -75,6 +75,8 @@ if($create_witness_vm -eq $true){
     ./parts/Witness/step-3_add-vSAN-Witness-Host-WTS.ps1
 
     task_message "Witness-3_End" ("Disconnect from All vCeners")
+    disconnect_all_vc
+}
 
 if($create_vsan_wts -eq $true){
     task_message "Witness-4_Start" "Setup vSAN Witness Data Host"
