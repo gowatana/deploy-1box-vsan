@@ -1,7 +1,11 @@
 # Cluster config file
 
+$create_esxi_vms       = $true # $true or $false
 $create_vsphre_cluster = $false # $true or $false
+$create_witness_vm     = $false # $true or $false
+$create_vsan_wts       = $false # $true or $false
 $create_vsan_cluster   = $false # $true or $false
+$create_vsan_2node     = $false # $true or $false
 
 # Cluster setting
 $nest_dc_name = "LAB-DC"
@@ -17,6 +21,7 @@ $nest_hv_hostname_prefix = "esxi-"
 $domain = "go-lab.jp"
 $hv_ip_prefix_vmk0 = "192.168.1." # $hv_ip_prefix_vmk0 + $hv_ip_4oct_start => 192.168.1.31
 $hv_vmk0_subnetmask = "255.255.255.0" # /24
+$nest_hv_vmk0_vlan = 0 # Default VLAN ID: 0
 
 $hv_gw = "192.168.1.1"
 $dns_1 = "192.168.1.101"
@@ -48,3 +53,8 @@ $vsan_cache_dev = "mpx.vmhba0:C0:T1:L0"
 $vsan_capacity_disk_size_gb = 300
 $vsan_capacity_disk_count = 2
 $vsan_capacity_dev = "mpx.vmhba0:C0:T2:L0", "mpx.vmhba0:C0:T3:L0"
+# Change ESXi Template VM
+$template_vm_name = "vm-esxi-template-67u3"
+
+# vSAN Datastore Name
+$vsan_ds_name = "vsanDatastore-20191201"
