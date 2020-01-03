@@ -15,5 +15,9 @@ Get-Cluster $nest_cluster_name | Get-VMHost |
     New-VsanDiskGroup -SsdCanonicalName $vsan_cache_dev -DataDiskCanonicalName $vsan_capacity_dev |
     Sort-Object VMHost | select VMHost,DiskGroupType,DiskFormatVersion | ft -AutoSize
 
-task_message "03-02_04" "List vSAN Datastore Space Usage"
+task_message "03-02_04" "Test vSAN Health"
+Get-Cluster $nest_cluster_name | Test-VsanClusterHealth |
+    select Cluster,TimeOfTest,OverallHealthStatus,OverallHealthDescription | fl
+
+task_message "03-02_05" "List vSAN Datastore Space Usage"
 Get-Cluster $nest_cluster_name | Get-VsanSpaceUsage
