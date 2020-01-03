@@ -17,6 +17,7 @@ $nest_hv_hostname_prefix = "esxi-"
 $domain = "go-lab.jp"
 $hv_ip_prefix_vmk0 = "192.168.1." # $hv_ip_prefix_vmk0 + $hv_ip_4oct_start => 192.168.1.31
 $hv_vmk0_subnetmask = "255.255.255.0" # /24
+$nest_hv_vmk0_vlan = 0 # Default VLAN ID: 0
 
 $hv_gw = "192.168.1.1"
 $dns_1 = "192.168.1.101"
@@ -25,12 +26,12 @@ $hv_user = "root"
 $hv_pass = "VMware1!"
 
 # Multi vmk setting
-$vmotion_vmk_port = "vmk2"
+$vmotion_vmk_port = "vmk1"
 $vmotion_vmk_vss = "vSwitch0"
 $vmotion_vmk_pg = "pg_vmk_vmotion"
 $vmotion_vmk_vlan = 1001
 
-$vsan_vmk_port = "vmk1"
+$vsan_vmk_port = "vmk2"
 $vsan_vmk_vss = "vSwitch0"
 $vsan_vmk_pg = "pg_vmk_vsan"
 $vsan_vmk_vlan = 1002
@@ -51,3 +52,6 @@ $vsan_capacity_dev = "mpx.vmhba0:C0:T2:L0"
 
 # Change ESXi Template VM
 $template_vm_name = "vm-esxi-template-67u3"
+
+# vSAN Datastore Name
+$vsan_ds_name = "vsanDatastore-20191224"
