@@ -1,4 +1,4 @@
-$cluster = Get-Datacenter $nest_dc_name | New-Cluster -Name $nest_cluster_name
+$cluster = Get-Datacenter $nest_dc_name | New-Cluster -Name $nest_cluster_name -ErrorAction:Stop
 
 $vc_hv_name_list | % {
     $hv_name = $_
