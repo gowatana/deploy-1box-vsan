@@ -51,3 +51,6 @@ $vsan_capacity_dev = "mpx.vmhba0:C0:T2:L0"
 
 # Change ESXi Template VM
 $template_vm_name = "vm-esxi-template-67u1"
+
+# vSAN Datastore Name
+$vsan_ds_name = "vsanDatastore-20191215-67u1"

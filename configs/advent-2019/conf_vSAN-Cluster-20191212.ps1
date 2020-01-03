@@ -48,3 +48,9 @@ $vsan_cache_dev = "mpx.vmhba0:C0:T1:L0"
 $vsan_capacity_disk_size_gb = 200
 $vsan_capacity_disk_count = 1
 $vsan_capacity_dev = "mpx.vmhba0:C0:T2:L0"
+
+# Change ESXi Template VM
+$template_vm_name = "vm-esxi-template-67u3"
+
+# vSAN Datastore Name
+$vsan_ds_name = "vsanDatastore-20191212"
