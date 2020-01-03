@@ -54,7 +54,7 @@ ESXi VM の作成
 
 ```
 PowerCLI> ./step_3_create-esxi-vm.ps1 ./config_Base-ESXi.ps1
-PowerCLI> ../
+PowerCLI> cd ..
 ```
 
 ## vSAN Cluster セットアップ
@@ -64,13 +64,13 @@ PowerCLI> ../
 * $args[1]: デプロイする vSAN クラスタのパラメータ ファイル
 
 ```
-PowerCLI> ./setup_vSAN-Cluster.ps1 ./config-basic/env_home-lab-01.ps1 ./config-basic/conf_vSAN-Cluster-01_Hybrid.ps1
+PowerCLI> ./setup_vSAN-Cluster.ps1 ./configs/base-env/env_home-lab-01.ps1 ./configs/cluster/conf_vSAN-Cluster-01_Hybrid.ps1
 ```
 
 or
 
 ```
-PowerCLI> ./setup_vSAN-Cluster.ps1 ./config-basic/env_home-lab-01.ps1 ./config-basic/conf_vSAN-Cluster-02_AllFlash.ps1
+PowerCLI> ./setup_vSAN-Cluster.ps1 ./configs/base-env/env_home-lab-01.ps1 ./configs/cluster/conf_vSAN-Cluster-02_AllFlash.ps1
 ```
 
 ## ラボの初期化
@@ -78,7 +78,7 @@ PowerCLI> ./setup_vSAN-Cluster.ps1 ./config-basic/env_home-lab-01.ps1 ./config-b
 ラボ環境の vSAN クラスタ初期化。（vSAN クラスタ ～ ESXi VM まで削除）
 
 ```
-PowerCLI> ./destroy_vSAN-Cluster.ps1 ./config-basic/env_home-lab-01.ps1 ./config-basic/conf_vSAN-Cluster-01_Hybrid.ps1
+PowerCLI> ./destroy_vSAN-Cluster.ps1 ./configs/base-env/env_home-lab-01.ps1 ./configs/cluster/conf_vSAN-Cluster-01_Hybrid.ps1
 ```
 
 ## Witness VA のデプロイ / セットアップ
@@ -89,15 +89,14 @@ PowerCLI> ./destroy_vSAN-Cluster.ps1 ./config-basic/env_home-lab-01.ps1 ./config
 
 ```
 PowerCLI> cd ./deploy-1box-vsan/
-PowerCLI> ./setup_vSAN-Cluster.ps1 ./config-basic/env_home-lab-01.ps1 ./config-witness/conf_Witness-VA_192.168.1.37.ps1
+PowerCLI> ./setup_vSAN-Cluster.ps1 ./configs/base-env/env_home-lab-01.ps1 ./configs/witness/conf_Witness-VA_192.168.1.37.ps1
 ```
 
 ## Witness VA の削除
 
-* 事前に、監視ホストを利用していた vSAN クラスタは削除しておく。
-* 下記で、VC から Witness Host がインベントリ削除、Witness VA もディスクから削除される。
+* VC から Witness Host がインベントリ削除、Witness VA もディスクから削除される。
 
 ```
 PowerCLI> cd ./deploy-1box-vsan/
-PowerCLI> ./destroy_vSAN-Witness-Host.ps1 ./config-basic/env_home-lab-01.ps1 ./config-witness/conf_Witness-VA_192.168.1.37.ps1
+PowerCLI> ./destroy_vSAN-Cluster.ps1 ./configs/base-env/env_home-lab-01.ps1 ./config-witness/conf_Witness-VA_192.168.1.37.ps1
 ```
