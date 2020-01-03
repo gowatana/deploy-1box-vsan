@@ -21,28 +21,30 @@ function gen_vm_name_list($vm_num, $hv_ip_4oct_start, $hv_ip_prefix_vmk0) {
 
 function gen_nest_hv_hostname_list($vm_num, $hv_ip_4oct_start, $nest_hv_hostname_prefix) {   
     $hv_ip_4oct = $hv_ip_4oct_start
-    for($i=1; $i -le $vm_num; $i++){      
+    for($i=1; $i -le $vm_num; $i++){
         $nest_hv_hostname_prefix + $hv_ip_4oct.toString("000")
         $hv_ip_4oct++
     } 
 }
 
-function gen_hv_ip_vmk0_list($vm_num, $hv_ip_4oct_start, $hv_ip_prefix_vmk0) {   
+function gen_hv_ip_vmk0_list($vm_num, $hv_ip_4oct_start, $hv_ip_prefix_vmk0) {
     $hv_ip_4oct = $hv_ip_4oct_start
     for($i=1; $i -le $vm_num; $i++){
         $hv_ip_prefix_vmk0 + $hv_ip_4oct.ToString()
         $hv_ip_4oct++
-    } 
+    }
 }
 
 # ----------------------------------------
 # ESXi setting
 
 function disconnect_all_vc() {
-    $global:DefaultVIServers | ForEach-Object {
-        $vc = $_
-        "Disconnect from VC: " + $vc.Name
-        $vc | Disconnect-VIServer -Confirm:$false
+    if($Global:DefaultVIServers){
+        $Global:DefaultVIServers | ForEach-Object {
+            $vc = $_
+            "Disconnect from VC: " + $vc.Name
+            $vc | Disconnect-VIServer -Confirm:$false
+        }
     }
 }
 
