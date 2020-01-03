@@ -10,7 +10,7 @@ $vc_hv_name_list | % {
         @{N="MemoryGB";E={[int]$_.MemoryTotalGB}},
         Version,
         Build,
-        State |
+        ConnectionState |
         Format-List
 
     task_message "02-01b_02" "Remove Default Local VMFS Datastore: $hv_name"
