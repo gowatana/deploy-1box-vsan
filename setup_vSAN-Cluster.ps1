@@ -25,6 +25,17 @@ if($create_vsphre_cluster -eq $true){$create_esxi_vms = $true}
 task_message "Main-00" "Disconnect from All vCeners"
 disconnect_all_vc
 
+if($create_vsphre_cluster -eq $true){
+    task_message "Main-00_Start" "Create vSphere Cluster"
+    Connect-VIServer -Server $nest_vc_address `
+        -User $nest_vc_user -Password $nest_vc_pass -Force |
+        select Name,Version,Build,IsConnected | Format-List
+    ./parts/step_2-1a_create-vsphere-cluster.ps1
+
+    task_message "Main-00_End" "Create vSphere Cluster"
+    disconnect_all_vc
+}
+
 if($create_esxi_vms -eq $true){
     task_message "Main-01_Start" "Setup Base-vSphere"
     Connect-VIServer -Server $base_vc_address `
@@ -42,7 +53,6 @@ if($create_vsphre_cluster -eq $true){
     Connect-VIServer -Server $nest_vc_address `
         -User $nest_vc_user -Password $nest_vc_pass -Force |
         select Name,Version,Build,IsConnected | Format-List
-    ./parts/step_2-1a_create-vsphere-cluster.ps1
     ./parts/step_2-1b_setup-vsphere-cluster.ps1
     ./parts/step_2-2_create-vmk-port_on-vss.ps1
 
