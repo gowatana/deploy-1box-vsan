@@ -11,9 +11,12 @@ if(-Not $vsan_ds_name){
 }
 
 task_message "03-02_03" "Create vSAN Disk Group"
-Get-Cluster $nest_cluster_name | Get-VMHost |
-    New-VsanDiskGroup -SsdCanonicalName $vsan_cache_dev -DataDiskCanonicalName $vsan_capacity_dev |
-    Sort-Object VMHost | select VMHost,DiskGroupType,DiskFormatVersion | ft -AutoSize
+Get-Cluster $nest_cluster_name | Get-VMHost | Sort-Object VMHost | ForEach-Object {
+    $hv = $_
+    $vsan_cache_dev = get_candidate_device -esxi $hv -dev_type "Cache"
+    $vsan_capacity_dev = get_candidate_device -esxi $hv -dev_type "Capacity"
+    $hv | New-VsanDiskGroup -SsdCanonicalName $vsan_cache_dev -DataDiskCanonicalName $vsan_capacity_dev       
+} | select VMHost,DiskGroupType,DiskFormatVersion | ft -AutoSize
 
 task_message "03-02_04" "Test vSAN Health"
 Get-Cluster $nest_cluster_name | Test-VsanClusterHealth |

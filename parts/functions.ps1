@@ -74,6 +74,26 @@ function add_vss_vmk_port {
 # ----------------------------------------
 # Nested ESXi/vSAN Tips
 
+function get_candidate_device {
+    param (
+        $esxi,
+        [ValidateSet("Cache" , "Capacity")]$dev_type
+    )
+
+    $esxi_boot_device = "mpx.vmhba0:C0:T0:L0"
+    $esxi_scsi_luns = $esxi | Get-VMHostDisk | select -ExpandProperty ScsiLun |
+        where {$_.ScsiLun.CanonicalName -ne $esxi_boot_device} |
+        where {$_.VsanStatus -eq "Eligible"} |
+        select CapacityGB,CanonicalName |
+        Sort-Object CapacityGB,CanonicalName
+    
+    switch ($dev_type) {
+        "Cache" { $devices = $esxi_scsi_luns[0].CanonicalName }
+        "Capacity" { $devices = $esxi_scsi_luns[1..($esxi_scsi_luns.Count - 1)].CanonicalName }
+    }
+    return $devices
+}
+
 function set_satp_rule {
     param (
         $esxi,
