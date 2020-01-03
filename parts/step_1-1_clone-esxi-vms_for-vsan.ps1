@@ -7,7 +7,7 @@ $vm_name_list | % {
 
     task_message "01-01_01" ("Clone VM: " + $vm_name)
     $vm = New-VM -VM $template_vm_name -Name $vm_name -VMHost (Get-VMHost $base_hv_name) -Datastore $base_ds_name -StorageFormat Thin
-    $vm | select Name,NumCpu,MemoryGB,Folder,VMHost, Version, GuestId | Format-List
+    $vm | select Name,NumCpu,MemoryGB,Folder,VMHost,HardwareVersion,GuestId | Format-List
 
     task_message "01-01_02" ("Set vNIC#1: " + $vm_name)
     $vm | Get-NetworkAdapter -Name "* 1" | Set-NetworkAdapter -Portgroup (Get-VMHost $base_hv_name | Get-VirtualPortGroup -Name $base_pg_name) -Confirm:$false |
