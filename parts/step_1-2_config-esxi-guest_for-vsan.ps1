@@ -28,7 +28,6 @@ function nested_esxcli {
     $pm.ListProcessesInGuest($vm_Id, $cred, $gos_pid) | % {$_.CmdLine}
 }
 
-
 $n = 0
 for($i=1; $i -le $vm_num; $i++){ 
     $vm_name = @($vm_name_list)[$n]
@@ -43,10 +42,17 @@ for($i=1; $i -le $vm_num; $i++){
     "network ip interface ipv4 set --interface-name=vmk0 --type=static --ipv4=$hv_ip_vmk0 --netmask=$hv_vmk0_subnetmask --gateway=$hv_gw",
     "network vswitch standard portgroup set -p 'Management Network' -v $nest_hv_vmk0_vlan",
     "network ip route ipv4 add --network=0.0.0.0/0 --gateway=$hv_gw",
-    "network diag ping -c 2 -H $hv_gw",
     "network ip dns server add --server=$dns_1",
     "network ip dns server add --server=$dns_2" |
-    % {
+    ForEach-Object {
+        nested_esxcli -ESXiVM:$vm_name -ESXiUser:$hv_user -ESXiPass:$hv_pass -ESXCLICmd $_
+        sleep 1
+    }
+
+    task_message "01-02_02" ("ESXi VM Network Connectivity workaround: " + $vm_name)
+    # esxcli ...
+    "network diag ping -c 2 -H $hv_gw" |
+    ForEach-Object {
         nested_esxcli -ESXiVM:$vm_name -ESXiUser:$hv_user -ESXiPass:$hv_pass -ESXCLICmd $_
         sleep 1
     }
