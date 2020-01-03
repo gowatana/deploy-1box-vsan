@@ -46,10 +46,8 @@ $hv_vmk2_subnetmask = "255.255.255.0" # /24
 # vSAN Disk setting
 $vsan_dg_type = "Hybrid" # Hybrid or AllFlash
 $vsan_cache_disk_size_gb = 20
-$vsan_cache_dev = "mpx.vmhba0:C0:T1:L0"
 $vsan_capacity_disk_size_gb = 50
 $vsan_capacity_disk_count = 2
-$vsan_capacity_dev = "mpx.vmhba0:C0:T2:L0", "mpx.vmhba0:C0:T3:L0"
 
 # vSAN Datastore Name
 $vsan_ds_name = "vsanDatastore-01"
