@@ -13,7 +13,6 @@ if($? -eq $false){"config file not found."; exit}
 . ./parts/functions.ps1
 
 # Generate VM / ESXi List
-#. ./parts/generate_obj_lists.ps1
 $vm_name_list = gen_vm_name_list $vm_num $hv_ip_4oct_start $hv_ip_prefix_vmk0
 $nest_hv_hostname_list = gen_nest_hv_hostname_list $vm_num $hv_ip_4oct_start $nest_hv_hostname_prefix
 $hv_ip_vmk0_list = gen_hv_ip_vmk0_list $vm_num $hv_ip_4oct_start $hv_ip_prefix_vmk0
@@ -22,45 +21,56 @@ $vc_hv_name_list = $hv_ip_vmk0_list
 # Disconnect from All vCeners
 disconnect_all_vc
 
-# Remove vSAN Cluster
+task_message "Destroy-01-Start" "Remove vSAN Cluster and ESXi"
 Connect-VIServer -Server $nest_vc_address `
     -User $nest_vc_user -Password $nest_vc_pass -Force
-$cluster = Get-Cluster $nest_cluster_name
-$cluster | Get-VMHost | Set-VMHost -State Disconnected -Confirm:$false
-$cluster | Get-VMHost | Remove-VMHost -Confirm:$false
-$cluster | Remove-Cluster -Confirm:$false
+$cluster = Get-Datacenter $nest_dc_name | Get-Cluster $nest_cluster_name
+if($? -eq $true){
+    $cluster | Get-VMHost | Set-VMHost -State Disconnected -Confirm:$false
+    $cluster | Get-VMHost | Remove-VMHost -Confirm:$false
+    $cluster | Remove-Cluster -Confirm:$false
+}
+
+task_message "Destroy-01-End" "Remove vSAN Cluster and ESXi"
 disconnect_all_vc
 
-task_message "Destroy: Witness-Nest Start" "Setup Witness-Host on vCenter"
+task_message "Destroy-02-Start" "Remove vSAN Witness Host"
 Connect-VIServer -Server $nest_vc_address `
     -User $nest_vc_user -Password $nest_vc_pass -Force |
     select Name,Version,Build,IsConnected | Format-List
 $hv = Get-Datacenter -Name $witness_dc | Get-VMHost -Name $vsan_witness_host_vcname
-$hv | Set-VMHost -State Disconnected -Confirm:$false
-$hv | Remove-VMHost -Confirm:$false
+if($? -eq $true){
+    $hv | Set-VMHost -State Disconnected -Confirm:$false
+    $hv | Remove-VMHost -Confirm:$false
+}
 
-task_message "Destroy: Witness-Nest End" ("Disconnect from All vCeners")
+task_message "Destroy-02-End" "Remove vSAN Witness Host"
 disconnect_all_vc
 
-task_message "Destroy: Witness-Baes Start" "Setup Witness-Host VA"
+task_message "Destroy-03-Start" "Remove Witness Host VA"
 Connect-VIServer -Server $base_vc_address `
     -User $base_vc_user -Password $base_vc_pass -Force |
     select Name,Version,Build,IsConnected | Format-List
-$vm = Get-VM -Name $vsan_witness_va_name
-$vm | Stop-VM -Confirm:$false
-$vm| Remove-VM -DeletePermanently -Confirm:$false
+if($vsan_witness_va_name){
+    $vsan_witness_va = Get-VM $vsan_witness_va_name
+    if($? -eq $true){
+        $vsan_witness_va | Stop-VM -Confirm:$false
+        $vsan_witness_va | Remove-VM -DeletePermanently -Confirm:$false
+    }
+}
 
-task_message "Destroy: Witness-Base End" "Disconnect from All vCeners"
+task_message "Destroy-03-End" "Remove Witness Host VA"
 disconnect_all_vc
 
-# Remove ESXi VMs
+task_message "Destroy-04-Start" "Remove ESXi VMs / vSAN Witness VA"
 Connect-VIServer -Server $base_vc_address `
     -User $base_vc_user -Password $base_vc_pass -Force
-Get-VM $vm_name_list | Stop-VM -Confirm:$false
-Get-VM $vm_name_list | Remove-VM -DeletePermanently -Confirm:$false
-if($vsan_witness_va_name){
-    Get-VM $vsan_witness_va_name | Stop-VM -Confirm:$false
-    Get-VM $vsan_witness_va_name | Remove-VM -DeletePermanently -Confirm:$false    
-}
-disconnect_all_vc
 
+$esxi_vms = Get-VM $vm_name_list
+if($? -eq $true){
+    $esxi_vms | Stop-VM -Confirm:$false
+    $esxi_vms | Remove-VM -DeletePermanently -Confirm:$false
+}
+
+task_message "Destroy-04-End" "Remove ESXi VMs / vSAN Witness VA"
+disconnect_all_vc
