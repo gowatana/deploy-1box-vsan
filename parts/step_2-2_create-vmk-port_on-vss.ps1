@@ -19,13 +19,13 @@ $vc_hv_name_list | ForEach-Object {
     $hv_ip_4oct++
 }
 
-task_message "02-02_05" ("Enable vMotion vmk-traffic")
+task_message "02-02_05" "Enable vMotion vmk-traffic"
 Get-VMHost $vc_hv_name_list | Get-VMHostNetworkAdapter -Name $vmotion_vmk_port |
     Set-VMHostNetworkAdapter -VMotionEnabled:$true -Confirm:$false |
     Sort-Object VMHost |
     select VMHost,DeviceName,PortgroupName,VMotionEnabled | ft -AutoSize
 
-    task_message "02-02_06" ("Enable vSAN vmk-traffic")
+    task_message "02-02_06" "Enable vSAN vmk-traffic"
 Get-VMHost $vc_hv_name_list | Get-VMHostNetworkAdapter -Name $vsan_vmk_port |
     Set-VMHostNetworkAdapter -VsanTrafficEnabled:$true -Confirm:$false |
     Sort-Object VMHost |

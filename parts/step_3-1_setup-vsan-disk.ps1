@@ -1,6 +1,6 @@
 $cluster = Get-Cluster -Name $nest_cluster_name
 
-task_message "03-01_01" ("Add SSD Mark to Cache device")
+task_message "03-01_01" "Add SSD Mark to Cache device"
 $cluster | Get-VMHost | Sort-Object Name | ForEach-Object {
     $hv = $_
     set_satp_rule -esxi $hv -dev_list $vsan_cache_dev -satp_rule_option "enable_ssd"
