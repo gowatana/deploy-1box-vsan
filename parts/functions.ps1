@@ -36,7 +36,7 @@ function gen_hv_ip_vmk0_list($vm_num, $hv_ip_4oct_start, $hv_ip_prefix_vmk0) {
 }
 
 # ----------------------------------------
-# ESXi setting
+# Connect / Disconnect vCenter
 
 function disconnect_all_vc() {
     if($Global:DefaultVIServers){
@@ -47,6 +47,15 @@ function disconnect_all_vc() {
         }
     }
 }
+
+function connect_vc($vc_addr, $vc_user, $vc_pass) {
+    Connect-VIServer -Server $vc_addr `
+        -User $vc_user -Password $vc_pass -Force |
+        select Name,Version,Build,IsConnected | Format-List
+}
+
+# ----------------------------------------
+# ESXi setting
 
 function add_vss {
     param (

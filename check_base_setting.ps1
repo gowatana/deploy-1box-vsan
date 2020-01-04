@@ -34,9 +34,7 @@ task_message "Check-01_04" ("`$vc_hv_name_list:")
 $vc_hv_name_list
 
 task_message "Check-02_Start" ("Login Base-vSphere")
-Connect-VIServer -Server $base_vc_address `
-    -User $base_vc_user -Password $base_vc_pass -Force |
-    select Name,Version,Build,IsConnected | Format-List
+connect_vc -vc_addr $base_vc_address -vc_user $base_vc_user -vc_pass $base_vc_pass
 
 # Base ESXi Setting
 task_message "Check-02_01" ("`$template_vm_name:")
@@ -61,9 +59,7 @@ task_message "Check-02_End" ("Logout Base-vSphere")
 disconnect_all_vc
 
 task_message "Check-03_Start" ("Login Nested-vSphere")
-Connect-VIServer -Server $nest_vc_address `
-    -User $nest_vc_user -Password $nest_vc_pass -Force |
-    select Name,Version,Build,IsConnected | Format-List
+connect_vc -vc_addr $nest_vc_address -vc_user $nest_vc_user -vc_pass $nest_vc_pass
 
 task_message "Check-03_01" ("`$nest_dc_name:")
 Get-Datacenter -Name $nest_dc_name | ft -AutoSize

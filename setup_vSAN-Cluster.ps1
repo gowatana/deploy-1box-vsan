@@ -27,20 +27,16 @@ disconnect_all_vc
 
 if($create_vsphre_cluster -eq $true){
     task_message "Main-00_Start" "Create vSphere Cluster"
-    Connect-VIServer -Server $nest_vc_address `
-        -User $nest_vc_user -Password $nest_vc_pass -Force |
-        select Name,Version,Build,IsConnected | Format-List
+    connect_vc -vc_addr $nest_vc_address -vc_user $nest_vc_user -vc_pass $nest_vc_pass
     ./parts/step_2-1a_create-vsphere-cluster.ps1
-
+    
     task_message "Main-00_End" "Create vSphere Cluster"
     disconnect_all_vc
 }
 
 if($create_esxi_vms -eq $true){
     task_message "Main-01_Start" "Setup Base-vSphere"
-    Connect-VIServer -Server $base_vc_address `
-        -User $base_vc_user -Password $base_vc_pass -Force |
-        select Name,Version,Build,IsConnected | Format-List
+    connect_vc -vc_addr $base_vc_address -vc_user $base_vc_user -vc_pass $base_vc_pass
     ./parts/step_1-1_clone-esxi-vms_for-vsan.ps1
     ./parts/step_1-2_config-esxi-guest_for-vsan.ps1
 
@@ -50,9 +46,7 @@ if($create_esxi_vms -eq $true){
 
 if($create_vsphre_cluster -eq $true){
     task_message "Main-02_Start" "Setup Nested-vSphere"
-    Connect-VIServer -Server $nest_vc_address `
-        -User $nest_vc_user -Password $nest_vc_pass -Force |
-        select Name,Version,Build,IsConnected | Format-List
+    connect_vc -vc_addr $nest_vc_address -vc_user $nest_vc_user -vc_pass $nest_vc_pass
     ./parts/step_2-1b_setup-vsphere-cluster.ps1
     ./parts/step_2-2_create-vmk-port_on-vss.ps1
 
@@ -62,27 +56,21 @@ if($create_vsphre_cluster -eq $true){
 
 if($create_witness_vm -eq $true){
     task_message "Witness-1_Start" "Setup Witness-Host VA"
-    Connect-VIServer -Server $base_vc_address `
-        -User $base_vc_user -Password $base_vc_pass -Force |
-        select Name,Version,Build,IsConnected | Format-List
+    connect_vc -vc_addr $base_vc_address -vc_user $base_vc_user -vc_pass $base_vc_pass
     ./parts/Witness/step-1_clone-vSAN-Witness-VA.ps1
 
     task_message "Witness-1_End" "Disconnect from All vCeners"
     disconnect_all_vc
 
     task_message "Witness-2_Start" "Setup Witness-Host Guest"
-    Connect-VIServer -Server $base_vc_address `
-        -User $base_vc_user -Password $base_vc_pass -Force |
-        select Name,Version,Build,IsConnected | Format-List
+    connect_vc -vc_addr $base_vc_address -vc_user $base_vc_user -vc_pass $base_vc_pass
     ./parts/Witness/step-2_config-vSAN-Witness-VA-Guest.ps1
 
     task_message "Witness-2_End" "Disconnect from All vCeners"
     disconnect_all_vc
 
     task_message "Witness-3_Start" "Setup Witness-Host on vCenter"
-    Connect-VIServer -Server $nest_vc_address `
-        -User $nest_vc_user -Password $nest_vc_pass -Force |
-        select Name,Version,Build,IsConnected | Format-List
+    connect_vc -vc_addr $nest_vc_address -vc_user $nest_vc_user -vc_pass $nest_vc_pass
     ./parts/Witness/step-3_add-vSAN-Witness-Host-WTS.ps1
 
     task_message "Witness-3_End" ("Disconnect from All vCeners")
@@ -91,9 +79,7 @@ if($create_witness_vm -eq $true){
 
 if($create_vsan_wts -eq $true){
     task_message "Witness-4_Start" "Setup vSAN Witness Data Host"
-    Connect-VIServer -Server $nest_vc_address `
-        -User $nest_vc_user -Password $nest_vc_pass -Force |
-        select Name,Version,Build,IsConnected | Format-List
+    connect_vc -vc_addr $nest_vc_address -vc_user $nest_vc_user -vc_pass $nest_vc_pass
     ./parts/step_3-1a_setup-vsan-witness-nw.ps1
     
     task_message "Witness-4_End" "Setup vSAN Witness Data Host"
@@ -102,9 +88,7 @@ if($create_vsan_wts -eq $true){
 
 if($create_vsan_cluster -eq $true){
     task_message "Main-04_Start" "Setup vSAN"
-    Connect-VIServer -Server $nest_vc_address `
-        -User $nest_vc_user -Password $nest_vc_pass -Force |
-        select Name,Version,Build,IsConnected | Format-List
+    connect_vc -vc_addr $nest_vc_address -vc_user $nest_vc_user -vc_pass $nest_vc_pass
     ./parts/step_3-1_setup-vsan-disk.ps1
     ./parts/step_3-2_setup-vsan-cluster.ps1
 
@@ -114,9 +98,7 @@ if($create_vsan_cluster -eq $true){
 
 if($create_vsan_2node -eq $true){
     task_message "Main-05_Start" "Setup 2-Node vSAN"
-    Connect-VIServer -Server $nest_vc_address `
-        -User $nest_vc_user -Password $nest_vc_pass -Force |
-        select Name,Version,Build,IsConnected | Format-List
+    connect_vc -vc_addr $nest_vc_address -vc_user $nest_vc_user -vc_pass $nest_vc_pass
     ./parts/Witness/step-4_create-vSAN-Cluster-2Node.ps1
     task_message "Main-05_End" "Setup 2-Node vSAN"
     disconnect_all_vc
