@@ -26,6 +26,17 @@ $vm_name_list | ForEach-Object {
             select Parent,Name,CapacityGB | ft -AutoSize
     }
 
+    task_message "01-01_04a" ("Set Memory size: " + $vm_name)
+    $esxi_memory_gb_for_multi_dg = 10
+    if($esxi_memory_gb){
+        if($vsan_dg_count){
+            if($esxi_memory_gb -lt $esxi_memory_gb_for_multi_dg){
+                $esxi_memory_gb = $esxi_memory_gb_for_multi_dg
+            }
+        }
+        $vm | Set-VM -MemoryGB $esxi_memory_gb -Confirm:$false
+    }
+
     task_message "01-01_05" ("Start VM: " + $vm_name)
     $vm | Start-VM | ft -AutoSize Name,VMHost,PowerState
 }
