@@ -60,10 +60,14 @@ disconnect_all_vc
 task_message "Destroy-04-Start" "Remove ESXi VMs / vSAN Witness VA"
 connect_vc -vc_addr $base_vc_address -vc_user $base_vc_user -vc_pass $base_vc_pass
 
-$esxi_vms = Get-VM $vm_name_list
-if($? -eq $true){
-    $esxi_vms | Stop-VM -Confirm:$false
-    $esxi_vms | Remove-VM -DeletePermanently -Confirm:$false
+"Remove VMs:"
+$vm_name_list
+
+$vm_name_list | ForEach-Object {
+    $esxi_vm_name = $_
+    $esxi_vm = Get-Datacenter $base_dc_name | Get-VM | where {$_.Name -eq $esxi_vm_name} 
+    $esxi_vm | Stop-VM -Confirm:$false
+    $esxi_vm | Remove-VM -DeletePermanently -Confirm:$false
 }
 
 task_message "Destroy-04-End" "Remove ESXi VMs / vSAN Witness VA"
