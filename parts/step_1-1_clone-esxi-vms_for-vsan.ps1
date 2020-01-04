@@ -1,12 +1,18 @@
 task_message "01-01_00" ("VM Name List")
 $vm_name_list
 
+task_message "01-01_00" "Check ESXi VMs"
+$vm_check_table = $vm_name_list | select `
+    @{N="ESXi_VM";E={$_}},
+    @{N="VM_already_exists";E={Get-VM $_ | Out-Null; $?}}
+$vm_check_table | ft -AutoSize
+
 # Clone Nested ESXi VMs
 $vm_name_list | % {
     $vm_name = $_
 
     task_message "01-01_01" ("Clone VM: " + $vm_name)
-    $vm = New-VM -VM $template_vm_name -Name $vm_name -VMHost (Get-VMHost $base_hv_name) -Datastore $base_ds_name -StorageFormat Thin
+    $vm = New-VM -VM $template_vm_name -Name $vm_name -VMHost (Get-VMHost $base_hv_name) -Datastore $base_ds_name -StorageFormat Thin -ErrorAction:Stop
     $vm | select Name,NumCpu,MemoryGB,Folder,VMHost,HardwareVersion,GuestId | Format-List
 
     task_message "01-01_02" ("Set vNIC#1: " + $vm_name)
