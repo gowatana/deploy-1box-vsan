@@ -1,7 +1,11 @@
 # Cluster config file
 
+$create_esxi_vms       = $true # $true or $false
 $create_vsphre_cluster = $true # $true or $false
-$create_vsan_cluster   = $true # $true or $false
+$create_witness_vm     = $true # $true or $false
+$create_vsan_wts       = $true # $true or $false
+$create_vsan_cluster   = $false # $true or $false
+$create_vsan_2node     = $false # $true or $false
 
 # Cluster setting
 $nest_dc_name = "LAB-DC"
@@ -36,11 +40,16 @@ $vsan_vmk_vss = "vSwitch0"
 $vsan_vmk_pg = "pg_vmk_vsan"
 $vsan_vmk_vlan = 1002
 
+$witness_vmk_port = "vmk0" # vSAN WTS only
+
 $hv_ip_prefix_vmk1 = "10.0.1." # $hv_ip_prefix_vmk1 + $hv_ip_4oct_start => 10.0.1.31
 $hv_vmk1_subnetmask = "255.255.255.0" # /24
 
 $hv_ip_prefix_vmk2 = "10.0.2." # $hv_ip_prefix_vmk2 + $hv_ip_4oct_start => 10.0.2.31
 $hv_vmk2_subnetmask = "255.255.255.0" # /24
+
+# ESXi Data host Spec
+$esxi_memory_gb = 12 # 9 nodes or more, 12GB requirement
 
 # vSAN Disk setting
 $vsan_dg_type = "Hybrid" # Hybrid or AllFlash
@@ -55,3 +64,25 @@ $template_vm_name = "vm-esxi-template-67u3"
 
 # vSAN Datastore Name
 $vsan_ds_name = "vsanDatastore-20191224"
+
+# ----------------------------------------
+# vSAN Witness Config
+
+# Witness VA Base Config
+$base_witness_pg_name_1 = ""
+$base_witness_pg_name_2 = ""
+
+# Witness Host Config
+$witness_dc = "LAB-DC-Witness"
+$witness_host_folder = "host" # if "host", it is added to DC
+$vsan_witness_host_name = "esxi-039"
+$vsan_witness_host_domain = "go-lab.jp"
+$vsan_witness_host_ip = "192.168.1.39"
+$vsan_witness_host_subnetmask = "255.255.255.0"
+$vsan_witness_host_gw = "192.168.1.1"
+$vsan_witness_dns_1 = "192.168.1.101"
+$vsan_witness_dns_2 = "192.168.1.102"
+$vsan_witness_host_vcname = $vsan_witness_host_ip
+$vsan_wts = $true # $true or $false
+$vsan_witness_template_name = "VMware-VirtualSAN-Witness-6.7.0.update03-14320388"
+$vsan_witness_va_name = "vm-esxi-witness-" + $vsan_witness_host_ip
