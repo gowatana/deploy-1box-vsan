@@ -43,6 +43,9 @@ $hv_vmk1_subnetmask = "255.255.255.0" # /24
 $hv_ip_prefix_vmk2 = "10.0.2." # $hv_ip_prefix_vmk2 + $hv_ip_4oct_start => 10.0.2.31
 $hv_vmk2_subnetmask = "255.255.255.0" # /24
 
+# ESXi Data host Spec
+$esxi_memory_gb = 6
+
 # vSAN Disk setting
 $vsan_dg_type = "Hybrid" # Hybrid or AllFlash
 $vsan_cache_disk_size_gb = 20
@@ -54,3 +57,6 @@ $template_vm_name = "vm-esxi-template-67u3"
 
 # vSAN Datastore Name
 $vsan_ds_name = "vsanDatastore-01"
+
+# Multi-Diskgroup setup
+$vsan_dg_count = 2
