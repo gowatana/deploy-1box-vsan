@@ -52,6 +52,9 @@ $vsan_cache_disk_size_gb = 20
 $vsan_capacity_disk_size_gb = 50
 $vsan_capacity_disk_count = 2
 
+# Change ESXi Template VM
+$template_vm_name = "vm-esxi-template-67u3"
+
 # vSAN Datastore Name
 $vsan_ds_name = "vsanDatastore-01"
 
