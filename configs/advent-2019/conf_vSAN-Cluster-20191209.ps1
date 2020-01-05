@@ -1,7 +1,7 @@
 # Cluster config file
 
 $create_vsphre_cluster = $true # $true or $false
-$create_vsan_cluster   = $false # $true or $false
+$create_vsan_cluster   = $true # $true or $false
 
 # Cluster setting
 $nest_dc_name = "LAB-DC"
@@ -41,16 +41,20 @@ $hv_vmk1_subnetmask = "255.255.255.0" # /24
 $hv_ip_prefix_vmk2 = "10.0.2." # $hv_ip_prefix_vmk2 + $hv_ip_4oct_start => 10.0.2.31
 $hv_vmk2_subnetmask = "255.255.255.0" # /24
 
+# ESXi Data host Spec
+$esxi_memory_gb = 10
+
 # vSAN Disk setting
 $vsan_dg_type = "Hybrid" # Hybrid or AllFlash
 $vsan_cache_disk_size_gb = 20
-$vsan_cache_dev = "mpx.vmhba0:C0:T1:L0"
 $vsan_capacity_disk_size_gb = 200
 $vsan_capacity_disk_count = 2
-$vsan_capacity_dev = "mpx.vmhba0:C0:T2:L0","mpx.vmhba0:C0:T3:L0"
 
 # Change ESXi Template VM
 $template_vm_name = "vm-esxi-template-67u3"
 
 # vSAN Datastore Name
 $vsan_ds_name = "vsanDatastore-20191209"
+
+# Multi-Diskgroup setup
+$vsan_dg_count = 2
