@@ -54,3 +54,6 @@ $template_vm_name = "vm-esxi-template-67u3"
 
 # vSAN Datastore Name
 $vsan_ds_name = "vsanDatastore-02"
+
+# Multi-Diskgroup setup
+$vsan_dg_count = 1
