@@ -16,6 +16,10 @@ $vm_name_list | ForEach-Object {
     $vm | Get-NetworkAdapter -Name "* 1" | Set-NetworkAdapter -Portgroup (Get-VMHost $base_hv_name | Get-VirtualPortGroup -Name $base_pg_name) -Confirm:$false |
         select Parent,Name,NetworkName | ft -AutoSize
 
+    task_message "01-01_02a" ("Disconnect All vNICs: " + $vm_name)
+    $vm | Get-NetworkAdapter | Set-NetworkAdapter -StartConnected:$false -Confirm:$false |
+        Sort-Object Name | select Parent,Name,NetworkName,@{N="StartConnected";E={$_.ConnectionState.StartConnected}} | ft -AutoSize
+
     task_message "01-01_03" ("Add VMDK (Cache device): " + $vm_name)
     $vm | New-HardDisk -SizeGB $vsan_cache_disk_size_gb -StorageFormat Thin |
         select Parent,Name,CapacityGB | ft -AutoSize

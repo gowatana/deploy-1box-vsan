@@ -48,6 +48,10 @@ for($i=1; $i -le $vm_num; $i++){
         nested_esxcli -ESXiVM:$vm_name -ESXiUser:$hv_user -ESXiPass:$hv_pass -ESXCLICmd $_
         sleep 1
     }
+    
+    task_message "01-02_01" ("Connect All vNICs: " + $vm_name)
+    Get-VM -Name $vm_name | Get-NetworkAdapter | Set-NetworkAdapter -StartConnected:$true -Connected:$true -Confirm:$false |
+    select Parent,Name,NetworkName,@{N="StartConnected";E={$_.ConnectionState.StartConnected}} | ft -AutoSize
 
     task_message "01-02_02" ("ESXi VM Network Connectivity workaround: " + $vm_name)
     # esxcli ...
