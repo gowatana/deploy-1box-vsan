@@ -49,10 +49,10 @@ Get-Cluster -Name $base_cluster_name | ft -AutoSize
 task_message "Check-02_04" ("`$base_hv_name:")
 Get-VMHost -Name $base_hv_name | ft -AutoSize
 
-task_message "Check-02_05" ("`base_ds_name:")
+task_message "Check-02_05" ("`$base_ds_name:")
 Get-Datastore -Name $base_ds_name | ft -AutoSize
 
-task_message "Check-02_06" ("`base_pg_name:")
+task_message "Check-02_06" ("`$base_pg_name:")
 Get-VirtualPortGroup -Name $base_pg_name | ft -AutoSize # vDS NOT Support
 
 task_message "Check-02_End" ("Logout Base-vSphere")
