@@ -70,3 +70,35 @@ Get-Cluster | where {$_.Name -eq $nest_cluster_name}
 
 task_message "Check-03_End" ("Logout Nested-vSphere")
 disconnect_all_vc
+
+if($create_witness_vm -eq $true){
+    task_message "Check-04_Start" "Login Base-vSphere"
+    connect_vc -vc_addr $base_vc_address -vc_user $base_vc_user -vc_pass $base_vc_pass
+
+    task_message "Check-04_01" ("`$base_witness_pg_name_1: " + $base_witness_pg_name_1)
+    Get-VirtualPortGroup -Name $base_witness_pg_name_1 -ErrorAction:Ignore | select Name,VLanId
+    if($? -eq $true){
+        "OK"
+    }
+
+    task_message "Check-04_02" ("`$base_witness_pg_name_2: " + $base_witness_pg_name_2)
+    Get-VirtualPortGroup -Name $base_witness_pg_name_2 -ErrorAction:Ignore | select Name,VLanId
+    if($? -eq $true){
+        "OK"
+    }
+    
+    task_message "Check-04_03" ("`$vsan_witness_template_name: " + $vsan_witness_template_name)
+    Get-VM $vsan_witness_template_name -ErrorAction:Ignore | Out-Null
+    if($? -eq $true){
+        "OK"
+    }
+
+    task_message "Check-04_04" ("`$vsan_witness_va_name: " + $vsan_witness_va_name)
+    Get-VM $vsan_witness_va_name -ErrorAction:Ignore | Out-Null
+    if($? -eq $false){
+        "OK"
+    }
+
+    task_message "Check-04_End" "Logout Base-vSphere"
+    disconnect_all_vc
+}
