@@ -1,5 +1,9 @@
-# vSAN Witness Config
+# vSAN-Lab Config file
+
 $create_witness_vm = $true
+
+# Base-vSphere environment config
+. ./configs/base-env/env_home-lab-01.ps1
 
 $hv_user = "root"
 $hv_pass = "VMware1!"
