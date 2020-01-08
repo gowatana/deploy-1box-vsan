@@ -1,13 +1,8 @@
-# Load Config file.
-$env_file_name = $args[0]
-ls $env_file_name | Out-Null
-if($? -eq $false){"env file not found."; exit}
-. $env_file_name
-
-$config_file_name = $args[1]
-ls $config_file_name | Out-Null
-if($? -eq $false){"config file not found."; exit}
-. $config_file_name
+# Load vSAN-Lab Config file.
+$lab_config_file_name = $args[0]
+ls $lab_config_file_name | Out-Null
+if($? -eq $false){"vSAN-Lab config file not found."; exit}
+. $lab_config_file_name
 
 # Load Functions
 . ./parts/functions.ps1
