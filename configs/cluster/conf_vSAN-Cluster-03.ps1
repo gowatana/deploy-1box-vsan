@@ -1,8 +1,11 @@
-# Cluster config file
+# vSAN-Lab Config file
 
 $create_esxi_vms       = $true # $true or $false
 $create_vsphre_cluster = $true # $true or $false
 $create_vsan_cluster   = $true # $true or $false
+
+# Base-vSphere environment config
+. ./configs/base-env/env_home-lab-01.ps1
 
 # Cluster setting
 $nest_dc_name = "LAB-DC"
