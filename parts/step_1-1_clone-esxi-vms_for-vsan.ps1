@@ -76,3 +76,12 @@ Get-VM $vm_name_list | select `
     PowerState,
     @{N="ToolsStatus";E={$_.Guest.ExtensionData.ToolsStatus}} |
     Sort-Object Name | ft -AutoSize
+
+task_message "01-01_09a" "Create VM Folder"
+if(-Not $esxi_vm_folder_name){$esxi_vm_folder_name = ("vms_" + $nest_cluster_name)}
+Get-Datacenter $base_dc_name | Get-Folder -Type VM -Name "vm" |
+    New-Folder -Name $esxi_vm_folder_name -ErrorAction:Ignore | select Name
+
+task_message "01-01_09b" ("Move VM to Folder: " + $esxi_vm_folder_name)
+Get-VM $vm_name_list | Move-VM -InventoryLocation (Get-Folder -Type VM -Name $esxi_vm_folder_name) | Out-Null
+Get-VM $vm_name_list | Sort-object Name | select Name,Folder
