@@ -64,8 +64,8 @@ $vsan_ds_name = "vsanDatastore-2NodeWTS"
 # vSAN Witness Config
 
 # Witness VA Base Config
-$base_witness_pg_name_1 = ""
-$base_witness_pg_name_2 = ""
+$base_witness_pg_name_1 = "Nested-Trunk-Network"
+$base_witness_pg_name_2 = "Nested-Trunk-Network"
 
 # Witness Host Config
 $witness_dc = "LAB-DC"
