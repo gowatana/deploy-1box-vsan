@@ -1,21 +1,27 @@
 $hv_ip_4oct = $hv_ip_4oct_start
 $vc_hv_name_list | ForEach-Object {
     $hv_name = $_
-    $hv_vmk1_ip = $hv_ip_prefix_vmk1 + $hv_ip_4oct
-    $hv_vmk2_ip = $hv_ip_prefix_vmk2 + $hv_ip_4oct
-    
-    task_message "02-02_01" ("Add vSS-Portgroup for vmk1: " + $hv_name)
-    add_vss_pg $hv_name $vmotion_vmk_vss $vmotion_vmk_pg $vmotion_vmk_vlan
-    
-    task_message "02-02_02" ("Add vmk1 port to vSS-Portgroup: " + $hv_name)
-    add_vss_vmk_port $hv_name $vmotion_vmk_vss $vmotion_vmk_pg $hv_vmk1_ip $hv_vmk1_subnetmask
 
-    task_message "02-02_03" ("Add vSS-Portgroup for vmk2: " + $hv_name)
-    add_vss_pg $hv_name $vsan_vmk_vss $vsan_vmk_pg $vsan_vmk_vlan
+    if($add_vmk1){
+        $vmk1_ip = $vmk1_ip_prefix + $hv_ip_4oct
+        
+        task_message "02-02_01" ("Add vSS-Portgroup for vmk1: " + $hv_name)
+        add_vss_pg $hv_name $vmk1_vss $vmk1_pg $vmk1_vlan
+        
+        task_message "02-02_02" ("Add vmk1 port to vSS-Portgroup: " + $hv_name)
+        add_vss_vmk_port $hv_name $vmk1_vss $vmk1_pg $vmk1_ip $vmk1_subnetmask
+    }
     
-    task_message "02-02_04" ("Add vmk2 port to vSS-Portgroup: " + $hv_name)
-    add_vss_vmk_port $hv_name $vsan_vmk_vss $vsan_vmk_pg $hv_vmk2_ip $hv_vmk2_subnetmask
+    if($add_vmk2){
+        $vmk2_ip = $vmk2_ip_prefix + $hv_ip_4oct
 
+        task_message "02-02_03" ("Add vSS-Portgroup for vmk2: " + $hv_name)
+        add_vss_pg $hv_name $vmk2_vss $vmk2_pg $vmk2_vlan
+        
+        task_message "02-02_04" ("Add vmk2 port to vSS-Portgroup: " + $hv_name)
+        add_vss_vmk_port $hv_name $vmk2_vss $vmk2_pg $vmk2_ip $vmk2_subnetmask
+    }
+    
     $hv_ip_4oct++
 }
 
