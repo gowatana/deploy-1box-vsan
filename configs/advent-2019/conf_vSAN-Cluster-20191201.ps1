@@ -33,21 +33,23 @@ $hv_user = "root"
 $hv_pass = "VMware1!"
 
 # Multi vmk setting
+$add_vmk1 = $true # $true or $false
+$add_vmk2 = $true # $true or $false
+
 $vmotion_vmk_port = "vmk1"
-$vmotion_vmk_vss = "vSwitch0"
-$vmotion_vmk_pg = "pg_vmk_vmotion"
-$vmotion_vmk_vlan = 1001
-
 $vsan_vmk_port = "vmk2"
-$vsan_vmk_vss = "vSwitch0"
-$vsan_vmk_pg = "pg_vmk_vsan"
-$vsan_vmk_vlan = 1002
 
-$hv_ip_prefix_vmk1 = "10.0.1." # $hv_ip_prefix_vmk1 + $hv_ip_4oct_start => 10.0.1.31
-$hv_vmk1_subnetmask = "255.255.255.0" # /24
+$vmk1_vss = "vSwitch0"
+$vmk1_pg = "pg_vmk_vmotion"
+$vmk1_vlan = 1001
+$vmk1_ip_prefix = "10.0.1." # $hv_ip_prefix_vmk1 + $hv_ip_4oct_start => 10.0.1.31
+$vmk1_subnetmask = "255.255.255.0" # /24
 
-$hv_ip_prefix_vmk2 = "10.0.2." # $hv_ip_prefix_vmk2 + $hv_ip_4oct_start => 10.0.2.31
-$hv_vmk2_subnetmask = "255.255.255.0" # /24
+$vmk2_vss = "vSwitch0"
+$vmk2_pg = "pg_vmk_vsan"
+$vmk2_vlan = 1002
+$vmk2_ip_prefix = "10.0.2." # $hv_ip_prefix_vmk2 + $hv_ip_4oct_start => 10.0.2.31
+$vmk2_subnetmask = "255.255.255.0" # /24
 
 # vSAN Disk setting
 $vsan_dg_type = "Hybrid" # Hybrid or AllFlash
