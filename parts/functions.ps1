@@ -57,7 +57,7 @@ function connect_vc($vc_addr, $vc_user, $vc_pass) {
 # ----------------------------------------
 # ESXi setting
 
-function add_vss {
+function add_vss_pg {
     param (
         $hv_name,
         $vss_name,
