@@ -4,10 +4,11 @@ task_message "08-02-01" "Enable vSAN"
 $cluster | Set-Cluster -VsanEnabled:$true -Confirm:$false |
     select Name,VsanEnabled
 
-
 task_message "08-02-02" "Change vSAN Datastore Name"
-if(-Not $vsan_ds_name){
+if($vsan_ds_name){
     $cluster | Get-Datastore | where {$_.Type -eq "vsan"} | Set-Datastore -Name $vsan_ds_name
+}else{
+    "Skip"
 }
 
 task_message "08-02-03" "Create vSAN Disk Group"
