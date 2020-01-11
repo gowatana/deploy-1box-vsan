@@ -1,6 +1,6 @@
 $cluster = Get-Cluster -Name $nest_cluster_name
 
-task_message "05-03_01" "Create vSAN Disk Group"
+task_message "10-02-01" "Create vSAN Disk Group"
 Get-Cluster $nest_cluster_name | Get-VMHost | Sort-Object VMHost | ForEach-Object {
     $hv = $_
     $vsan_cache_dev = get_candidate_device -esxi $hv -dev_type "Cache"

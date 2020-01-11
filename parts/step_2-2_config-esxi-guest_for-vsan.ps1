@@ -35,7 +35,7 @@ for($i=1; $i -le $vm_num; $i++){
     $hv_ip_vmk0 = @($hv_ip_vmk0_list)[$n]
     $n += 1
     
-    task_message "01-02_01" ("Configure Nested ESXi: " + $vm_name)
+    task_message "02-02-01" ("Configure Nested ESXi: " + $vm_name)
     if(-Not $nest_hv_vmk0_vlan){$nest_hv_vmk0_vlan = 0}
     # esxcli ...
     "system hostname set --host $nest_hv_hostname --domain $domain",
@@ -49,11 +49,11 @@ for($i=1; $i -le $vm_num; $i++){
         sleep 1
     }
     
-    task_message "01-02_01" ("Connect All vNICs: " + $vm_name)
+    task_message "02-02-02" ("Connect All vNICs: " + $vm_name)
     Get-VM -Name $vm_name | Get-NetworkAdapter | Set-NetworkAdapter -StartConnected:$true -Connected:$true -Confirm:$false |
     select Parent,Name,NetworkName,@{N="StartConnected";E={$_.ConnectionState.StartConnected}} | ft -AutoSize
 
-    task_message "01-02_02" ("ESXi VM Network Connectivity workaround: " + $vm_name)
+    task_message "02-02-03" ("ESXi VM Network Connectivity workaround: " + $vm_name)
     # esxcli ...
     "network diag ping -c 2 -H $hv_gw" |
     ForEach-Object {
