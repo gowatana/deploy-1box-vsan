@@ -49,6 +49,15 @@ if($create_vsphre_cluster -eq $true){
     disconnect_all_vc
 }
 
+if($create_vds -eq $true){
+    task_message "Main-03_Start" "Setup vDS"
+    connect_vc -vc_addr $nest_vc_address -vc_user $nest_vc_user -vc_pass $nest_vc_pass
+    ./parts/step_4-1_create-vds.ps1
+
+    task_message "Main-03_End" "Setup vDS"
+    disconnect_all_vc
+}
+
 if($create_witness_vm -eq $true){
     task_message "Witness-1_Start" "Setup Witness-Host VA"
     connect_vc -vc_addr $base_vc_address -vc_user $base_vc_user -vc_pass $base_vc_pass
