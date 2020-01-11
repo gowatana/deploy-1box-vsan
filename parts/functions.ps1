@@ -42,6 +42,7 @@ function disconnect_all_vc() {
     if($Global:DefaultVIServers){
         $Global:DefaultVIServers | ForEach-Object {
             $vc = $_
+            ""
             "Disconnect from VC: " + $vc.Name
             $vc | Disconnect-VIServer -Confirm:$false
         }
@@ -49,9 +50,10 @@ function disconnect_all_vc() {
 }
 
 function connect_vc($vc_addr, $vc_user, $vc_pass) {
-    Connect-VIServer -Server $vc_addr `
-        -User $vc_user -Password $vc_pass -Force |
-        select Name,Version,Build,IsConnected | Format-List
+    $vc = Connect-VIServer -Server $vc_addr `
+        -User $vc_user -Password $vc_pass -Force
+    ""
+    ($vc | select Name,Version,Build,IsConnected | Format-List | Out-String).Trim()
 }
 
 # ----------------------------------------

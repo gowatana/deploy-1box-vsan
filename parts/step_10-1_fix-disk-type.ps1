@@ -1,12 +1,12 @@
 $cluster = Get-Cluster -Name $nest_cluster_name
 
-task_message "05-02_01" "SCSI Rescan"
+task_message "10-01-01" "SCSI Rescan"
 $cluster | Get-VMHost | Sort-Object Name | ForEach-Object {
     $hv = $_
     Get-VMHost $hv | Get-VMHostStorage -RescanAllHba
 }
 
-task_message "05-02_02" "Add SSD Mark to Cache device"
+task_message "10-01-02" "Add SSD Mark to Cache device"
 $cluster | Get-VMHost | Sort-Object Name | ForEach-Object {
     $hv = $_
     $vsan_cache_dev = get_candidate_device -esxi $hv -dev_type "Cache"
@@ -14,7 +14,7 @@ $cluster | Get-VMHost | Sort-Object Name | ForEach-Object {
     set_satp_rule -esxi $hv -dev_list $vsan_cache_dev -satp_rule_option "enable_ssd"
 }
 
-task_message "05-02_03" ("Add SSD Mark to Capacity device: " + $vsan_dg_type)
+task_message "10-01-03" ("Add SSD Mark to Capacity device: " + $vsan_dg_type)
 $satp_ssd_rule = "enable_ssd"
 if($vsan_dg_type -eq "Hybrid"){$satp_ssd_rule = "disable_ssd"}
 $cluster | Get-VMHost | Sort-Object Name | ForEach-Object {

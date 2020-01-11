@@ -13,22 +13,22 @@ $nest_hv_hostname_list = gen_nest_hv_hostname_list $vm_num $hv_ip_4oct_start $ne
 $hv_ip_vmk0_list = gen_hv_ip_vmk0_list $vm_num $hv_ip_4oct_start $hv_ip_prefix_vmk0
 $vc_hv_name_list = $hv_ip_vmk0_list
 
-task_message "Main-01_00" ("Disconnect from All vCeners")
+task_message "Step-01" "Disconnect from All vCeners"
 disconnect_all_vc
 
-task_message "Check-01_01" ("`$vm_name_list:")
+task_message "Check-01_01" "`$vm_name_list:"
 $vm_name_list
 
-task_message "Check-01_02" ("`$nest_hv_hostname_list:")
+task_message "Check-01_02" "`$nest_hv_hostname_list:"
 $nest_hv_hostname_list
 
-task_message "Check-01_03" ("`$hv_ip_vmk0_list:")
+task_message "Check-01_03" "`$hv_ip_vmk0_list:"
 $hv_ip_vmk0_list
 
-task_message "Check-01_04" ("`$vc_hv_name_list:")
+task_message "Check-01_04" "`$vc_hv_name_list:"
 $vc_hv_name_list
 
-task_message "Check-02_Start" ("Login Base-vSphere")
+task_message "Step-02-Start" "Login Base-vSphere"
 connect_vc -vc_addr $base_vc_address -vc_user $base_vc_user -vc_pass $base_vc_pass
 
 # Base ESXi Setting
@@ -56,25 +56,25 @@ task_message "Check-02_06" ("`$base_pg_name: " + $base_pg_name)
 Get-VirtualPortGroup -Name $base_pg_name -ErrorAction:Ignore | select Name,VLanId
 if($? -eq $true){"OK"}else{"NG"}
 
-task_message "Check-02_End" ("Logout Base-vSphere")
+task_message "Step-02-End" "Logout Base-vSphere"
 disconnect_all_vc
 
-task_message "Check-03_Start" ("Login Nested-vSphere")
+task_message "Step-03-Start" "Login Nested-vSphere"
 connect_vc -vc_addr $nest_vc_address -vc_user $nest_vc_user -vc_pass $nest_vc_pass
 
 task_message "Check-03_01" ("`$nest_dc_name: " + $nest_dc_name)
 Get-Datacenter -Name $nest_dc_name -ErrorAction:Ignore
 if($? -eq $true){"OK"}else{"NG"}
 
-task_message "Check-03_01" ("`$nest_cluster_name: " + $nest_cluster_name)
+task_message "Check-03_02" ("`$nest_cluster_name: " + $nest_cluster_name)
 Get-Datacenter -Name $nest_dc_name | Get-Cluster $nest_cluster_name -ErrorAction:Ignore
 if($? -eq $false){"OK"}else{"NG"}
 
-task_message "Check-03_End" ("Logout Nested-vSphere")
+task_message "Step-03-End" "Logout Nested-vSphere"
 disconnect_all_vc
 
 if($create_witness_vm -eq $true){
-    task_message "Check-04_Start" "Login Base-vSphere"
+    task_message "Step-04-Start" "Login Base-vSphere"
     connect_vc -vc_addr $base_vc_address -vc_user $base_vc_user -vc_pass $base_vc_pass
 
     task_message "Check-04_01" ("`$base_witness_pg_name_1: " + $base_witness_pg_name_1)
@@ -93,6 +93,6 @@ if($create_witness_vm -eq $true){
     Get-VM $vsan_witness_va_name -ErrorAction:Ignore | Out-Null
     if($? -eq $false){"OK"}else{"NG"}
 
-    task_message "Check-04_End" "Logout Base-vSphere"
+    task_message "Step-04-End" "Logout Base-vSphere"
     disconnect_all_vc
 }

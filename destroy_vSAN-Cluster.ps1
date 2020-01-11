@@ -16,7 +16,7 @@ $vc_hv_name_list = $hv_ip_vmk0_list
 # Disconnect from All vCeners
 disconnect_all_vc
 
-task_message "Destroy-01-Start" "Remove vSAN Cluster and ESXi"
+task_message "Step-01" "Remove vSAN Cluster and ESXi"
 connect_vc -vc_addr $nest_vc_address -vc_user $nest_vc_user -vc_pass $nest_vc_pass
 $cluster = Get-Datacenter $nest_dc_name | Get-Cluster $nest_cluster_name
 if($? -eq $true){
@@ -24,11 +24,9 @@ if($? -eq $true){
     $cluster | Get-VMHost | Remove-VMHost -Confirm:$false
     $cluster | Remove-Cluster -Confirm:$false
 }
-
-task_message "Destroy-01-End" "Remove vSAN Cluster and ESXi"
 disconnect_all_vc
 
-task_message "Destroy-02-Start" "Remove vSAN Witness Host"
+task_message "Step-02" "Remove vSAN Witness Host"
 if($vsan_witness_host_vcname){
     connect_vc -vc_addr $nest_vc_address -vc_user $nest_vc_user -vc_pass $nest_vc_pass
     $hv = Get-Datacenter -Name $witness_dc | Get-VMHost -Name $vsan_witness_host_vcname
@@ -36,14 +34,12 @@ if($vsan_witness_host_vcname){
         $hv | Set-VMHost -State Disconnected -Confirm:$false
         $hv | Remove-VMHost -Confirm:$false
     }
-
-    task_message "Destroy-02-End" "Remove vSAN Witness Host"
     disconnect_all_vc
 }else{
     "Skip"
 }
 
-task_message "Destroy-03-Start" "Remove Witness Host VA"
+task_message "Step-03" "Remove Witness Host VA"
 if($vsan_witness_va_name){
     connect_vc -vc_addr $base_vc_address -vc_user $base_vc_user -vc_pass $base_vc_pass
     $vsan_witness_va = Get-VM $vsan_witness_va_name
@@ -51,14 +47,12 @@ if($vsan_witness_va_name){
         $vsan_witness_va | Stop-VM -Confirm:$false
         $vsan_witness_va | Remove-VM -DeletePermanently -Confirm:$false
     }
-
-    task_message "Destroy-03-End" "Remove Witness Host VA"
     disconnect_all_vc
 }else{
     "Skip"
 }
 
-task_message "Destroy-04-Start" "Remove ESXi VMs / vSAN Witness VA"
+task_message "Step-04" "Remove ESXi VMs"
 connect_vc -vc_addr $base_vc_address -vc_user $base_vc_user -vc_pass $base_vc_pass
 
 "Remove VMs:"
@@ -70,11 +64,9 @@ $vm_name_list | ForEach-Object {
     $esxi_vm | Stop-VM -Confirm:$false
     $esxi_vm | Remove-VM -DeletePermanently -Confirm:$false
 }
-
-task_message "Destroy-04-End" "Remove ESXi VMs / vSAN Witness VA"
 disconnect_all_vc
 
-task_message "Destroy-05" "Remove vDS"
+task_message "Step-05" "Remove vDS"
 if($create_vds -eq $true){
     connect_vc -vc_addr $nest_vc_address -vc_user $nest_vc_user -vc_pass $nest_vc_pass
     if($? -eq $true){
