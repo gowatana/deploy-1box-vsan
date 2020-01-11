@@ -120,7 +120,7 @@ if($vsan_dg_count){
 task_message "Step-11" "Setup 2-Node vSAN"
 if($create_vsan_2node -eq $true){
     connect_vc -vc_addr $nest_vc_address -vc_user $nest_vc_user -vc_pass $nest_vc_pass
-    ./parts/Witness/step_11-1_create-vSAN-Cluster-2Node.ps1
+    ./parts/step_11-1_create-vSAN-Cluster-2Node.ps1
     disconnect_all_vc
 }else{
     "Skip"
