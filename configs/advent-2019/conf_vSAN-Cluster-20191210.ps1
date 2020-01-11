@@ -59,3 +59,16 @@ $template_vm_name = "vm-esxi-template-67u3"
 
 # vSAN Datastore Name
 $vsan_ds_name = "vsanDatastore-20191210"
+
+# ----------------------------------------
+# vDS Setting
+$create_vds = $true
+$vds_name = "vds-20191210"
+$vds_mgmt_pg_name = "dvpg_" + $vds_name + "_mgmt"
+$vds_mgmt_pg_vlan = 0
+$vds_vmotion_pg_name = "dvpg_" + $vds_name + "_vmotion"
+$vds_vmotion_pg_vlan = 1001
+$vds_vsan_pg_name = "dvpg_" + $vds_name + "_vsan"
+$vds_vsan_pg_vlan = 1002
+$vds_guest_pg_name = "dvpg_" + $vds_name + "_guest"
+$vds_guest_pg_vlan = 0
