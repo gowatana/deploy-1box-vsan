@@ -1,5 +1,6 @@
 # vSAN-Lab Config file
 
+$create_esxi_vms       = $true # $true or $false
 $create_vsphre_cluster = $true # $true or $false
 $create_vsan_cluster   = $true # $true or $false
 
@@ -8,9 +9,9 @@ $create_vsan_cluster   = $true # $true or $false
 
 # Cluster setting
 $nest_dc_name = "LAB-DC"
-$nest_cluster_name = "vSAN-Cluster-20191210"
+$nest_cluster_name = "vSAN-Cluster-05"
 $vm_num = 3
-$hv_ip_4oct_start = 31 #ESXi-vmk0-IP 4 Octet
+$hv_ip_4oct_start = 34 #ESXi-vmk0-IP 4 Octet
 
 # VM / ESXi Prefix
 $vm_name_prefix = "vm-esxi-"
@@ -20,6 +21,7 @@ $nest_hv_hostname_prefix = "esxi-"
 $domain = "go-lab.jp"
 $hv_ip_prefix_vmk0 = "192.168.1." # $hv_ip_prefix_vmk0 + $hv_ip_4oct_start => 192.168.1.31
 $hv_vmk0_subnetmask = "255.255.255.0" # /24
+$nest_hv_vmk0_vlan = 0 # Default VLAN ID: 0
 
 $hv_gw = "192.168.1.1"
 $dns_1 = "192.168.1.101"
@@ -47,23 +49,24 @@ $vmk2_ip_prefix = "10.0.2." # $hv_ip_prefix_vmk2 + $hv_ip_4oct_start => 10.0.2.3
 $vmk2_subnetmask = "255.255.255.0" # /24
 
 # vSAN Disk setting
-$vsan_dg_type = "Hybrid" # Hybrid or AllFlash
-$vsan_cache_disk_size_gb = 40
-$vsan_cache_dev = "mpx.vmhba0:C0:T1:L0"
-$vsan_capacity_disk_size_gb = 300
-$vsan_capacity_disk_count = 1
-$vsan_capacity_dev = "mpx.vmhba0:C0:T2:L0"
+$vsan_dg_type = "AllFlash" # Hybrid or AllFlash
+$vsan_cache_disk_size_gb = 20
+$vsan_capacity_disk_size_gb = 50
+$vsan_capacity_disk_count = 2
 
 # Change ESXi Template VM
 $template_vm_name = "vm-esxi-template-67u3"
 
 # vSAN Datastore Name
-$vsan_ds_name = "vsanDatastore-20191210"
+$vsan_ds_name = "vsanDatastore-05"
+
+# Multi-Diskgroup setup
+$vsan_dg_count = 1
 
 # ----------------------------------------
 # vDS Setting
 $create_vds = $true
-$vds_name = "vds-20191210"
+$vds_name = "vds-05"
 $vds_mgmt_pg_name = "dvpg_" + $vds_name + "_mgmt"
 $vds_mgmt_pg_vlan = 0
 $vds_vmotion_pg_name = "dvpg_" + $vds_name + "_vmotion"

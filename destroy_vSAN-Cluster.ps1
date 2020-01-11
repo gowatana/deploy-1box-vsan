@@ -73,3 +73,14 @@ $vm_name_list | ForEach-Object {
 
 task_message "Destroy-04-End" "Remove ESXi VMs / vSAN Witness VA"
 disconnect_all_vc
+
+task_message "Destroy-05" "Remove vDS"
+if($create_vds -eq $true){
+    connect_vc -vc_addr $nest_vc_address -vc_user $nest_vc_user -vc_pass $nest_vc_pass
+    if($? -eq $true){
+        Get-VDSwitch $vds_name | Remove-VDSwitch -Confirm:$false
+    }
+    disconnect_all_vc
+}else{
+    "Skip"
+}
