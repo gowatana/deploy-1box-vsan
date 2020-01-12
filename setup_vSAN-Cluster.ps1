@@ -98,7 +98,7 @@ task_message "Step-09" "Add VMDK for vSAN Disk Group"
 if($vsan_dg_count){
     connect_vc -vc_addr $base_vc_address -vc_user $base_vc_user -vc_pass $base_vc_pass
     for($i=2; $i -le $vsan_dg_count; $i++){
-        ./parts/step_5-1_add-vsan-vmdk.ps1
+        ./parts/step_9-1_add-vsan-vmdk.ps1
     }
     disconnect_all_vc
 }else{
