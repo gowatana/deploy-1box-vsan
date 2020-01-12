@@ -19,7 +19,7 @@ $create_vsan_2node     = $false # $true or $false
 $nest_dc_name = "LAB-DC"
 $nest_cluster_name = "vSAN-Cluster-01"
 $vm_num = 3
-$hv_ip_4oct_start = 31 #ESXi-vmk0-IP 4 Octet
+$hv_ip_4oct_start = 31 # 4th Octet for ESXi-vmk0-IP
 
 # ----------------------------------------
 # Nested ESXi settings
