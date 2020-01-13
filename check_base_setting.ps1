@@ -99,7 +99,7 @@ if($create_witness_vm -eq $true){
     
     task_message "Check-04_03" "if exists `$vsan_witness_template_name: $vsan_witness_template_name"
     Get-VM $vsan_witness_template_name -ErrorAction:Ignore | Out-Null
-    $check_table += check_format "Check-04_03" "if exists `$vsan_witness_template_name: $vsan_witness_template_name" ($? -eq $ture)
+    $check_table += check_format "Check-04_03" "if exists `$vsan_witness_template_name: $vsan_witness_template_name" ($? -eq $true)
     
     task_message "Check-04_04" "if does NOT exist `$vsan_witness_va_name: $vsan_witness_va_name"
     Get-VM $vsan_witness_va_name -ErrorAction:Ignore | Out-Null
