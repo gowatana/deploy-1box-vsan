@@ -111,5 +111,18 @@ if($create_witness_vm -eq $true){
     "Skip"
 }
 
+task_message "Step-05" "vDS Check"
+if($create_vds -eq $true){
+    task_message "Step-05-Start" "Login to Nested-vSphere"
+    connect_vc -vc_addr $base_vc_address -vc_user $base_vc_user -vc_pass $base_vc_pass
+
+    task_message "Check-05-01" "if does NOT exist `$vds_name: $vds_name"
+    Get-VDSwitch -Name $vds_name -ErrorAction:Ignore | Out-Null
+    $check_table += check_format "Check-05-01" "if does NOT exist `$vds_name: $vds_name" ($? -eq $false)
+    
+    task_message "Step-05-End" "Logout from Nested-vSphere"
+    disconnect_all_vc
+}
+
 task_message "END" "Show Check table"
 $check_table | ft -AutoSize
