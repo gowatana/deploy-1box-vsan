@@ -38,6 +38,7 @@ $add_vmk2 = $true # $true or $false
 
 $vmotion_vmk_port = "vmk1"
 $vsan_vmk_port = "vmk2"
+$witness_vmk_port = "vmk0" # vSAN WTS only
 
 $vmk1_vss = "vSwitch0"
 $vmk1_pg = "pg_vmk_vmotion"
