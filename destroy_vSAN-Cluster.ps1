@@ -76,3 +76,6 @@ if($create_vds -eq $true){
 }else{
     "Skip"
 }
+
+task_message "Step-06" "Run check script"
+./check_base_setting.ps1 $lab_config_file_name
