@@ -99,7 +99,7 @@ if($create_witness_vm -eq $true){
     
     task_message "Check-04_03" "if exists `$vsan_witness_template_name: $vsan_witness_template_name"
     Get-VM $vsan_witness_template_name -ErrorAction:Ignore | Out-Null
-    $check_table += check_format "Check-04_03" "if exists `$vsan_witness_template_name: $vsan_witness_template_name" ($? -eq $ture)
+    $check_table += check_format "Check-04_03" "if exists `$vsan_witness_template_name: $vsan_witness_template_name" ($? -eq $true)
     
     task_message "Check-04_04" "if does NOT exist `$vsan_witness_va_name: $vsan_witness_va_name"
     Get-VM $vsan_witness_va_name -ErrorAction:Ignore | Out-Null
@@ -109,6 +109,19 @@ if($create_witness_vm -eq $true){
     disconnect_all_vc
 }else{
     "Skip"
+}
+
+task_message "Step-05" "vDS Check"
+if($create_vds -eq $true){
+    task_message "Step-05-Start" "Login to Nested-vSphere"
+    connect_vc -vc_addr $base_vc_address -vc_user $base_vc_user -vc_pass $base_vc_pass
+
+    task_message "Check-05-01" "if does NOT exist `$vds_name: $vds_name"
+    Get-VDSwitch -Name $vds_name -ErrorAction:Ignore | Out-Null
+    $check_table += check_format "Check-05-01" "if does NOT exist `$vds_name: $vds_name" ($? -eq $false)
+    
+    task_message "Step-05-End" "Logout from Nested-vSphere"
+    disconnect_all_vc
 }
 
 task_message "END" "Show Check table"
