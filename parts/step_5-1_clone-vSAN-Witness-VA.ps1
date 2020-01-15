@@ -52,3 +52,8 @@ Get-VM $vm_name | select `
     PowerState,
     @{N="ToolsStatus";E={$_.Guest.ExtensionData.ToolsStatus}} |
     Sort-Object Name | ft -AutoSize
+
+task_message "05-01-09" "Move Witness VA to Folder"
+if(-Not $esxi_vm_folder_name){$esxi_vm_folder_name = ("vms_" + $nest_cluster_name)}
+Get-VM $vm_name | Move-VM -InventoryLocation (Get-Folder -Type VM -Name $esxi_vm_folder_name) | Out-Null
+Get-VM $vm_name | Sort-object Name | select Name,Folder

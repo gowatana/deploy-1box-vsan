@@ -37,3 +37,7 @@ Get-VMHost $vsan_witness_host_vcname | Get-VMHostService | where {$_.key -eq "TS
 task_message "06-01-07" "Suppress SSH Warning TSM-SSH: $vsan_witness_host_vcname"
 Get-VMHost $vsan_witness_host_vcname | Get-AdvancedSetting -Name  "UserVars.SuppressShellWarning" |
     Set-AdvancedSetting -Value 1 -Confirm:$false | select Entity,Name,Value
+
+task_message "06-01-08" "Remove VM Folder: Discovered virtual machine"
+Get-Folder -Type VM -Name "Discovered virtual machine" |
+    where {($_ | Get-VM).Count -eq 0} | Remove-Folder -Confirm:$false
