@@ -1,5 +1,5 @@
 task_message "04-01-01" "Create vDS"
-$vds = New-VDSwitch -Name $vds_name -Location (Get-Datacenter $base_dc_name) -NumUplinkPorts 1
+$vds = New-VDSwitch -Name $vds_name -Location (Get-Datacenter $nest_dc_name) -NumUplinkPorts 1
 $vds
 
 task_message "04-01-02" "Create vDS Portgroup: Management"
@@ -22,7 +22,7 @@ task_message "04-01-06" "List vDS Portgroup"
 Get-VDSwitch $vds_name | Get-VDPortgroup |
     select VDSwitch,Name,VlanConfiguration | ft -AutoSize
 
-$hvs = Get-Datacenter $base_dc_name | Get-Cluster $nest_cluster_name | Get-VMHost
+$hvs = Get-Datacenter $nest_dc_name | Get-Cluster $nest_cluster_name | Get-VMHost
 $hvs | Sort-Object Name | ForEach-Object {
     $hv = $_
     task_message "04-01-07" ("Add ESXi to vDS: " + $hv.Name)
