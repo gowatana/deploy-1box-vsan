@@ -14,7 +14,12 @@ $vc_hv_name_list | % {
         Format-List
 
     task_message "03-01-02" "Remove Default Local VMFS Datastore: $hv_name"
-    Get-VMHost $hv_name | Remove-Datastore -Datastore "datastore*" -Confirm:$false -ErrorAction:Ignore
+    $local_ds_name = "datastore*"
+    if($cluster | Get-VMHost $hv_name | Get-Datastore -Name $local_ds_name){
+        $cluster | Get-VMHost $hv_name | Remove-Datastore -Datastore $local_ds_name -Confirm:$false -ErrorAction:Ignore
+    }else{
+        "Skip"
+    }
 }
 
 task_message "03-01-03" "Set UserVars.SuppressShellWarning = 1"
