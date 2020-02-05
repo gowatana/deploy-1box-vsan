@@ -17,7 +17,7 @@ $create_vsan_2node     = $true  # $true or $false
 # vSAN Cluster settings
 
 $nest_dc_name = "LAB-DC"
-$nest_cluster_name = "vSAN-Cluster-2NodeWTS"
+$nest_cluster_name = "vSAN-Cluster-04-2NodeWTS"
 $vm_num = 2
 $hv_ip_4oct_start = 34 # 4th Octet for ESXi-vmk0-IP
 
@@ -92,13 +92,12 @@ $create_vds = $false
 # Storage Settings
 
 # vSAN Datastore Name
-$vsan_ds_name = "vsanDatastore-2NodeWTS"
+$vsan_ds_name = "vsanDatastore-04-2NodeWTS"
 
 # vSAN Disk Group type
 $vsan_dg_type = "Hybrid" # Hybrid or AllFlash
 
 # vSAN Disk setting
-$vsan_dg_type = "AllFlash" # Hybrid or AllFlash
 $vsan_cache_disk_size_gb = 20
 $vsan_capacity_disk_size_gb = 50
 $vsan_capacity_disk_count = 2
