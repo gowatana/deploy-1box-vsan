@@ -11,7 +11,9 @@ $create_vsan_2node     = $false # $true or $false
 
 # ----------------------------------------
 # Base-vSphere environment config
-. ./configs/base-env/env_home-lab-01.ps1
+$env_config = "./configs/base-env/env_home-lab-01.ps1"
+Get-Item $env_config -ErrorAction:Stop | fl FullName,LastWriteTime
+. $env_config
 
 # ----------------------------------------
 # vSAN Cluster settings
