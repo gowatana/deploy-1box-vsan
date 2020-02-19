@@ -18,10 +18,3 @@ Get-Cluster $nest_cluster_name | Get-VMHost | Sort-Object VMHost | ForEach-Objec
     $vsan_capacity_dev = get_candidate_device -esxi $hv -dev_type "Capacity"
     $hv | New-VsanDiskGroup -SsdCanonicalName $vsan_cache_dev -DataDiskCanonicalName $vsan_capacity_dev       
 } | select VMHost,DiskGroupType,DiskFormatVersion | ft -AutoSize
-
-task_message "08-02-04" "Test vSAN Health"
-Get-Cluster $nest_cluster_name | Test-VsanClusterHealth |
-    select Cluster,TimeOfTest,OverallHealthStatus,OverallHealthDescription | fl
-
-task_message "08-02-05" "List vSAN Datastore Space Usage"
-Get-Cluster $nest_cluster_name | Get-VsanSpaceUsage

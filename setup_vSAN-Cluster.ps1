@@ -125,3 +125,12 @@ if($create_vsan_2node -eq $true){
 }else{
     "Skip"
 }
+
+task_message "Step-20" "vSAN Cluster Health Check"
+if($create_vsan_cluster -eq $true){
+    connect_vc -vc_addr $nest_vc_address -vc_user $nest_vc_user -vc_pass $nest_vc_pass
+    ./parts/step_20-1_test-vsan-cluster.ps1
+    disconnect_all_vc
+}else{
+    "Skip"
+}
