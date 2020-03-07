@@ -66,7 +66,14 @@ $vm_name_list | ForEach-Object {
 }
 disconnect_all_vc
 
-task_message "Step-05" "Remove vDS"
+task_message "Step-05" "Remove VM Folder"
+connect_vc -vc_addr $base_vc_address -vc_user $base_vc_user -vc_pass $base_vc_pass
+if(-Not $esxi_vm_folder_name){$esxi_vm_folder_name = ("vms_" + $nest_cluster_name)}
+Get-Datacenter $base_dc_name | Get-Folder -Type VM -Name $esxi_vm_folder_name |
+    Remove-Folder -Confirm:$false -ErrorAction:Ignore
+disconnect_all_vc
+
+task_message "Step-06" "Remove vDS"
 if($create_vds -eq $true){
     connect_vc -vc_addr $nest_vc_address -vc_user $nest_vc_user -vc_pass $nest_vc_pass
     if($? -eq $true){
@@ -77,5 +84,5 @@ if($create_vds -eq $true){
     "Skip"
 }
 
-task_message "Step-06" "Run check script"
+task_message "Step-07" "Run check script"
 ./check_base_setting.ps1 $lab_config_file_name
