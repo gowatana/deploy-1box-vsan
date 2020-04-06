@@ -81,6 +81,10 @@ task_message "Check-03-02" "if does NOT exist `$nest_cluster_name: $nest_cluster
 Get-Datacenter -Name $nest_dc_name | Get-Cluster $nest_cluster_name -ErrorAction:Ignore
 $check_table += check_format "Check-03-02" "if does NOT exist `$nest_cluster_name: $nest_cluster_name" ($? -eq $false)
 
+task_message "Check-03-03" "if exists `$base_ds_name: $vsan_ds_name"
+Get-VMHost -Name $nest_dc_name | Get-Datastore -Name $vsan_ds_name -ErrorAction:Ignore | Out-Null
+$check_table += check_format "Check-03-03" "if does NOT exist `$vsan_ds_name: $vsan_ds_name" ($? -eq $false)
+
 task_message "Step-03-End" "Logout from Nested-vSphere"
 disconnect_all_vc
 
