@@ -39,7 +39,7 @@ $vm_name_list | ForEach-Object {
 
     task_message "02-01-07" ("Set Memory size for Multi-DG: " + $vm_name)
     $esxi_memory_gb_for_multi_dg = 10
-    if($vsan_dg_count -And ($esxi_memory_gb -ge 2)){
+    if($vsan_dg_count -And ($vsan_dg_count -ge 2)){
         if($esxi_memory_gb){
             if($esxi_memory_gb -lt $esxi_memory_gb_for_multi_dg){
                 $esxi_memory_gb = $esxi_memory_gb_for_multi_dg
