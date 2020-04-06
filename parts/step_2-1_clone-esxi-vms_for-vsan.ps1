@@ -85,7 +85,7 @@ Get-VM $vm_name_list | select `
     Sort-Object Name | ft -AutoSize
 
 task_message "02-01-12" "Create VM Folder"
-if(-Not $esxi_vm_folder_name){$esxi_vm_folder_name = ("vms_" + $nest_cluster_name)}
+if(-Not $esxi_vm_folder_name){$esxi_vm_folder_name = ("VM_VC-" + $nest_vc_address + "_" + $nest_cluster_name)}
 Get-Datacenter $base_dc_name | Get-Folder -Type VM -Name "vm" |
     New-Folder -Name $esxi_vm_folder_name -ErrorAction:Ignore | select Name
 
