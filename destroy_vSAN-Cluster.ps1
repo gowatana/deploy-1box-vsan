@@ -68,7 +68,7 @@ disconnect_all_vc
 
 task_message "Step-05" "Remove VM Folder"
 connect_vc -vc_addr $base_vc_address -vc_user $base_vc_user -vc_pass $base_vc_pass
-if(-Not $esxi_vm_folder_name){$esxi_vm_folder_name = ("vms_" + $nest_cluster_name)}
+if(-Not $esxi_vm_folder_name){$esxi_vm_folder_name = ("VM_VC-" + $nest_vc_address + "_" + $nest_cluster_name)}
 Get-Datacenter $base_dc_name | Get-Folder -Type VM -Name $esxi_vm_folder_name |
     Remove-Folder -Confirm:$false -ErrorAction:Ignore
 disconnect_all_vc
