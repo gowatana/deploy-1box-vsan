@@ -52,17 +52,24 @@ $vm_name_list | ForEach-Object {
         "Skip"
     }
 
-    task_message "02-01-08" ("Start VM: " + $vm_name)
+    task_message "02-01-08" ("Add vNIC: " + $vm_name)
+    if($multi_vmnic -And ($multi_vmnic -ge 2)){
+        2..$multi_vmnic | ForEach-Object {
+            $vm | New-NetworkAdapter -Portgroup (Get-VMHost $base_hv_name | Get-VirtualPortGroup -Name $base_pg_name) -StartConnected:$true -Confirm:$false
+        }  | select Parent,Name,NetworkName | ft -AutoSize
+    }
+
+    task_message "02-01-09" ("Start VM: " + $vm_name)
     $vm | Start-VM | ft -AutoSize Name,VMHost,PowerState
 }
 
-task_message "02-01-09" "waiting for VM startup."
+task_message "02-01-10" "waiting for VM startup."
 $vm_poweron_check_wait_sec = 30
 $vm_poweron_check_interval_sec = 5
 ("startup Wait: " + $vm_poweron_check_wait_sec + "seconds")
 Start-Sleep $vm_poweron_check_wait_sec
 
-task_message "02-01-10" "VM PowerOn Check"
+task_message "02-01-11" "VM PowerOn Check"
 (Get-VM $vm_name_list | Sort-object Name) | ForEach-Object {
     $vm = $_
     $vm_name = $vm.Name
@@ -77,18 +84,18 @@ task_message "02-01-10" "VM PowerOn Check"
     }
 }
 
-task_message "02-01-11" "List ToolsStatus"
+task_message "02-01-12" "List ToolsStatus"
 Get-VM $vm_name_list | select `
     Name,
     PowerState,
     @{N="ToolsStatus";E={$_.Guest.ExtensionData.ToolsStatus}} |
     Sort-Object Name | ft -AutoSize
 
-task_message "02-01-12" "Create VM Folder"
+task_message "02-01-13" "Create VM Folder"
 if(-Not $esxi_vm_folder_name){$esxi_vm_folder_name = ("VM_VC-" + $nest_vc_address + "_" + $nest_cluster_name)}
 Get-Datacenter $base_dc_name | Get-Folder -Type VM -Name "vm" |
     New-Folder -Name $esxi_vm_folder_name -ErrorAction:Ignore | select Name
 
-task_message "02-01-13" ("Move VM to Folder: " + $esxi_vm_folder_name)
+task_message "02-01-14" ("Move VM to Folder: " + $esxi_vm_folder_name)
 Get-VM $vm_name_list | Move-VM -InventoryLocation (Get-Folder -Type VM -Name $esxi_vm_folder_name) | Out-Null
 Get-VM $vm_name_list | Sort-object Name | select Name,Folder
