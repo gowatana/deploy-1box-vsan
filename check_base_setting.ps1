@@ -67,6 +67,15 @@ task_message "Check-02-06" "if exists `$base_pg_name: $base_pg_name"
 Get-VirtualPortGroup -Name $base_pg_name -ErrorAction:Ignore | select Name,VLanId
 $check_table += check_format "Check-02-06" "if exists `$base_pg_name: $base_pg_name" ($? -eq $true)
 
+$vm_count = 0
+$vm_name_list | ForEach-Object {
+    $vm_name = $_
+    $vm_count += 1
+    task_message ("Check-02-07-" + $vm_count.ToString("00")) "if does NOT exist VM: $vm_name"
+    Get-VM -Name $vm_name -ErrorAction:Ignore | select  Name,PowerState,Folder,ResourcePool
+    $check_table += check_format ("Check-02-07-" + $vm_count.ToString("00")) "if does NOT exist VM: $vm_name" ($? -eq $false)
+}
+
 task_message "Step-02-End" "Logout from Base-vSphere"
 disconnect_all_vc
 
