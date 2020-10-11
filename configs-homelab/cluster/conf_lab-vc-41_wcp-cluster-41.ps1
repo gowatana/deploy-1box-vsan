@@ -28,7 +28,7 @@ $hv_ip_4oct_start = 21 # 4th Octet for ESXi-vmk0-IP
 # Nested ESXi settings
 
 # ESXi Template VM
-$template_vm_name = "esxi70-template-02"
+$template_vm_name = "esxi70-template-03"
 
 # VM Name / ESXi Hostname Prefix
 $vm_name_prefix = "vm-wcp-esxi-"
