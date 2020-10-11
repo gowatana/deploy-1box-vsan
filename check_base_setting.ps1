@@ -76,6 +76,15 @@ $vm_name_list | ForEach-Object {
     $check_table += check_format ("Check-02-07-" + $vm_count.ToString("00")) "if does NOT exist VM: $vm_name" ($? -eq $false)
 }
 
+$vm_count = 0
+$hv_ip_vmk0_list | ForEach-Object {
+    $hv_ip_vmk0 = $_
+    $vm_count += 1
+    task_message ("Check-02-08-" + $vm_count.ToString("00")) "if does NOT reach vmk0-IP: $hv_ip_vmk0"
+    $check_result = Test-Connection -Count 2 -Quiet $hv_ip_vmk0 -ErrorAction:Ignore
+    $check_table += check_format ("Check-02-08-" + $vm_count.ToString("00")) "if does NOT reach vmk0-IP: $hv_ip_vmk0" ($check_result -eq $false)
+}
+
 task_message "Step-02-End" "Logout from Base-vSphere"
 disconnect_all_vc
 
