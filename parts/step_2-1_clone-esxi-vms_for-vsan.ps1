@@ -4,12 +4,18 @@ $vm_check_table = $vm_name_list | select `
     @{N="VM_already_exists";E={Get-VM $_ | Out-Null; $?}}
 $vm_check_table | ft -AutoSize
 
+task_message "02-01-00a" "Create VM Folder"
+if(-Not $esxi_vm_folder_name){$esxi_vm_folder_name = ("VM_VC-" + $nest_vc_address + "_" + $nest_cluster_name)}
+$esxi_vm_folder = Get-Datacenter $base_dc_name | Get-Folder -Type VM -Name "vm" |
+    New-Folder -Name $esxi_vm_folder_name -ErrorAction:Ignore
+$esxi_vm_folder | select Name
+
 # Clone Nested ESXi VMs
 $vm_name_list | ForEach-Object {
     $vm_name = $_
 
     task_message "02-01-01" ("Clone VM: " + $vm_name)
-    $vm = New-VM -VM $template_vm_name -Name $vm_name -VMHost (Get-VMHost $base_hv_name) -Datastore $base_ds_name -StorageFormat Thin -ErrorAction:Stop
+    $vm = New-VM -VM $template_vm_name -Name $vm_name -VMHost (Get-VMHost $base_hv_name) -Location $esxi_vm_folder -Datastore $base_ds_name -StorageFormat Thin -ErrorAction:Stop
     $vm | select Name,NumCpu,MemoryGB,Folder,VMHost,HardwareVersion,GuestId | Format-List
 
     task_message "02-01-02" ("Set vNIC#1: " + $vm_name)
@@ -90,12 +96,3 @@ Get-VM $vm_name_list | select `
     PowerState,
     @{N="ToolsStatus";E={$_.Guest.ExtensionData.ToolsStatus}} |
     Sort-Object Name | ft -AutoSize
-
-task_message "02-01-13" "Create VM Folder"
-if(-Not $esxi_vm_folder_name){$esxi_vm_folder_name = ("VM_VC-" + $nest_vc_address + "_" + $nest_cluster_name)}
-Get-Datacenter $base_dc_name | Get-Folder -Type VM -Name "vm" |
-    New-Folder -Name $esxi_vm_folder_name -ErrorAction:Ignore | select Name
-
-task_message "02-01-14" ("Move VM to Folder: " + $esxi_vm_folder_name)
-Get-VM $vm_name_list | Move-VM -InventoryLocation (Get-Folder -Type VM -Name $esxi_vm_folder_name) | Out-Null
-Get-VM $vm_name_list | Sort-object Name | select Name,Folder
