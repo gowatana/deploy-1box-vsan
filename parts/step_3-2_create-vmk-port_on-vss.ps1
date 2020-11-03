@@ -32,7 +32,11 @@ Get-VMHost $vc_hv_name_list | Get-VMHostNetworkAdapter -Name $vmotion_vmk_port |
     select VMHost,DeviceName,PortgroupName,VMotionEnabled | ft -AutoSize
 
 task_message "03-02-06" ("Enable vSAN vmk-traffic: " + $vsan_vmk_port)
-Get-VMHost $vc_hv_name_list | Get-VMHostNetworkAdapter -Name $vsan_vmk_port |
-    Set-VMHostNetworkAdapter -VsanTrafficEnabled:$true -Confirm:$false |
-    Sort-Object VMHost |
-    select VMHost,DeviceName,PortgroupName,VsanTrafficEnabled | ft -AutoSize
+if(($create_vsan_cluster -eq $true) -or ($create_vsan_2node -eq $true)){
+    Get-VMHost $vc_hv_name_list | Get-VMHostNetworkAdapter -Name $vsan_vmk_port |
+        Set-VMHostNetworkAdapter -VsanTrafficEnabled:$true -Confirm:$false |
+        Sort-Object VMHost |
+        select VMHost,DeviceName,PortgroupName,VsanTrafficEnabled | ft -AutoSize
+} else {
+    "Skip"
+}
