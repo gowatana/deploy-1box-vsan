@@ -31,12 +31,29 @@ if($base_rp_name){
 $vm_name_list | ForEach-Object {
     $vm_name = $_
 
-    task_message "02-01-01" ("Clone VM: " + $vm_name)
-    if($base_rp){
-        $vm = New-VM -VM $template_vm_name -Name $vm_name -ResourcePool $base_rp -Location $esxi_vm_folder -Datastore $base_ds_name -StorageFormat Thin -ErrorAction:Stop
-    }else{
-        $vm = New-VM -VM $template_vm_name -Name $vm_name -VMHost (Get-VMHost $base_hv_name) -Location $esxi_vm_folder -Datastore $base_ds_name -StorageFormat Thin -ErrorAction:Stop
+    task_message "02-01-01a" ("Clone VM: " + $vm_name)
+    if($linked_clone -ne $true){
+        if($base_rp){
+            $vm = New-VM -VM $template_vm_name -Name $vm_name -ResourcePool $base_rp -Location $esxi_vm_folder -Datastore $base_ds_name -StorageFormat Thin -ErrorAction:Stop
+        }else{
+            $vm = New-VM -VM $template_vm_name -Name $vm_name -VMHost (Get-VMHost $base_hv_name) -Location $esxi_vm_folder -Datastore $base_ds_name -StorageFormat Thin -ErrorAction:Stop
+        }
+    }else {
+        "Skip"
     }
+
+    task_message "02-01-01b" ("Clone VM LinkedClone: " + $vm_name)
+    if($linked_clone){
+        $snapshot = Get-VM -Name $template_vm_name | Get-Snapshot | Sort-Object Created -Descending | select -First 1
+        if($base_rp){
+            $vm = New-VM -VM $template_vm_name -LinkedClone -ReferenceSnapshot $snapshot -Name $vm_name -ResourcePool $base_rp -Location $esxi_vm_folder -Datastore $base_ds_name -StorageFormat Thin -ErrorAction:Stop
+        }else{
+            $vm = New-VM -VM $template_vm_name -LinkedClone -ReferenceSnapshot $snapshot -Name $vm_name -VMHost (Get-VMHost $base_hv_name) -Location $esxi_vm_folder -Datastore $base_ds_name -StorageFormat Thin -ErrorAction:Stop
+        }
+    }else{
+        "Skip"
+    }
+    
     
     $vm | select Name,NumCpu,MemoryGB,Folder,VMHost,HardwareVersion,GuestId | Format-List
 
