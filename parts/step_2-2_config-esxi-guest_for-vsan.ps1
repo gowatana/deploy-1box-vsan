@@ -41,9 +41,7 @@ for($i=1; $i -le $vm_num; $i++){
     "system hostname set --host $nest_hv_hostname --domain $domain",
     "network ip interface ipv4 set --interface-name=vmk0 --type=static --ipv4=$hv_ip_vmk0 --netmask=$hv_vmk0_subnetmask --gateway=$hv_gw",
     "network vswitch standard portgroup set -p 'Management Network' -v $nest_hv_vmk0_vlan",
-    "network ip route ipv4 add --network=0.0.0.0/0 --gateway=$hv_gw",
-    "network ip dns server add --server=$dns_1",
-    "network ip dns server add --server=$dns_2" |
+    "network ip route ipv4 add --network=0.0.0.0/0 --gateway=$hv_gw" |
     ForEach-Object {
         nested_esxcli -ESXiVM:$vm_name -ESXiUser:$hv_user -ESXiPass:$hv_pass -ESXCLICmd $_
         sleep 1
