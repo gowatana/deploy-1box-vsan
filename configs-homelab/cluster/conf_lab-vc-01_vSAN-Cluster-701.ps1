@@ -50,8 +50,8 @@ $hv_vmk0_subnetmask = "255.255.255.0" # /24
 $nest_hv_vmk0_vlan = 10 # Default VLAN ID: 0
 
 $hv_gw = "192.168.10.1"
-$dns_1 = "192.168.1.101"
-$dns_2 = "192.168.1.102"
+$dns_servers = "192.168.1.101","192.168.1.102"
+$ntp_servers = "192.168.1.101","192.168.1.102"
 
 # ----------------------------------------
 # Network additional settings
