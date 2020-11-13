@@ -31,6 +31,7 @@ $hv_ip_4oct_start = 134 # 4th Octet for ESXi-vmk0-IP
 
 # ESXi Template VM
 $template_vm_name = "esxi70u1-template-01"
+$linked_clone = $true
 
 # VM Name / ESXi Hostname Prefix
 $vm_name_prefix = "vm-vsan70u1-esxi-"
