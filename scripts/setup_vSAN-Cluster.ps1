@@ -4,8 +4,12 @@ ls $lab_config_file_name | Out-Null
 if($? -eq $false){"vSAN-Lab config file not found."; exit}
 . $lab_config_file_name
 
+
+# set parts script directory.
+$parts_path = "./parts"
+
 # Load Functions
-. ./parts/functions.ps1
+. "$parts_path/functions.ps1"
 
 # Generate VM / ESXi List
 $vm_name_list = gen_vm_name_list $vm_num $hv_ip_4oct_start $hv_ip_prefix_vmk0
