@@ -9,6 +9,6 @@ if($operation_type -eq "pretest"){
     ./scripts/destroy_vSAN-Cluster.ps1 $config_file
     ./scripts/check_base_setting.ps1 $config_file
 }else{
-    Write-Host ("arg1: " + $operation_type_list)
+    Write-Host ("arg1: pretest, create, delete")
     exit
 }
