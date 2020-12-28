@@ -73,14 +73,14 @@ if($create_witness_vm -eq $true){
 task_message "Step-06" "Setup Witness-Host on vCenter"
 if($create_witness_vm -eq $true){
     connect_vc -vc_addr $nest_vc_address -vc_user $nest_vc_user -vc_pass $nest_vc_pass
-    ./parts/step_06-1_add-vSAN-Witness-Host-WTS.ps1
+    ./parts/step_06-1_add-vSAN-Witness-Host.ps1
     disconnect_all_vc
 }else{
     "Skip"
 }
 
 task_message "Step-07" "Setup Data-Host for vSAN WTS"
-if($create_vsan_wts -eq $true){
+if($setup_vsan_wts -eq $true){
     connect_vc -vc_addr $nest_vc_address -vc_user $nest_vc_user -vc_pass $nest_vc_pass
     ./parts/step_07-1_setup-vsan-witness-nw.ps1
     disconnect_all_vc

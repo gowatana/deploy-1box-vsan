@@ -13,7 +13,7 @@ $loc = Get-Datacenter $witness_dc | Get-Folder -Type HostAndCluster -Name $witne
 Add-VMHost -Location $loc -Name $vsan_witness_host_vcname -User $hv_user -Password $hv_pass -Force
 if((Get-VMHost $vsan_witness_host_vcname) -eq $false){"Add Witness Host Error"; exit 1}
 
-if($vsan_wts -eq $true){
+if($setup_vsan_wts -eq $true){
     task_message "06-01-04" "WTS - Enable vSAN Traffic(vmk0): $vsan_witness_host_vcname"
     $vmk = Get-VMHost $vsan_witness_host_vcname | Get-VMHostNetworkAdapter -Name vmk0 |
         Set-VMHostNetworkAdapter -VsanTrafficEnabled:$true -Confirm:$false
@@ -41,3 +41,11 @@ Get-VMHost $vsan_witness_host_vcname | Get-AdvancedSetting -Name  "UserVars.Supp
 task_message "06-01-08" "Remove VM Folder: Discovered virtual machine"
 Get-Folder -Type VM -Name "Discovered virtual machine" |
     where {($_ | Get-VM).Count -eq 0} | Remove-Folder -Confirm:$false
+
+task_message "06-01-09" "Set ESXi DNS Servers"
+Get-VMHost $vsan_witness_host_vcname | Get-VMHostNetwork | Set-VMHostNetwork -DnsAddress $vsan_witness_host_dns_servers |
+    select HostName,DnsAddress | Sort-Object HostName | ft -AutoSize
+
+task_message "06-01-10" "Add ESXi NTP Servers"
+Get-VMHost $vsan_witness_host_vcname | Add-VMHostNtpServer -NtpServer $vsan_witness_host_ntp_servers
+Get-VMHost $vsan_witness_host_vcname | select Name,@{N="NtpServers";E={$_|Get-VMHostNtpServer}}

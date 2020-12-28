@@ -4,11 +4,13 @@
 # Setup flags
 $create_esxi_vms       = $true  # $true or $false
 $create_vsphre_cluster = $true  # $true or $false
-$create_vds            = $true  # $true or $false
-$create_witness_vm     = $false # $true or $false
-$create_vsan_wts       = $false # $true or $false
+$create_vds            = $false # $true or $false
+$create_witness_vm     = $true  # $true or $false
+$setup_vsan_wts        = $true  # $true or $false (WTS: Witness Traffic Separation)
 $create_vsan_cluster   = $true  # $true or $false
-$create_vsan_2node     = $false # $true or $false
+$create_vsan_2node     = $true  # $true or $false
+
+#$vsan_wts = $false # : $true or $false
 
 # ----------------------------------------
 # Base-vSphere environment config
@@ -24,7 +26,7 @@ $base_rp_name = "rp-05-nested-lab"
 
 $nest_dc_name = "lab-dc-01"
 $nest_cluster_name = "vsan-cluster-test"
-$vm_num = 3
+$vm_num = 2
 $hv_ip_4oct_start = 135 # 4th Octet for ESXi-vmk0-IP
 
 # ----------------------------------------
@@ -59,12 +61,12 @@ $ntp_servers = "192.168.1.101","192.168.1.102"
 # Network additional settings
 
 # Multi vmk setting
-$add_vmk1 = $false # $true or $false
-$add_vmk2 = $false # $true or $false
+$add_vmk1 = $true # $true or $false
+$add_vmk2 = $True # $true or $false
 
-$vmotion_vmk_port = "vmk0"
-$vsan_vmk_port = "vmk0"
-$witness_vmk_port = "" # vSAN WTS only
+$vmotion_vmk_port = "vmk1"
+$vsan_vmk_port = "vmk2"
+$witness_vmk_port = "vmk0" # vSAN WTS only
 
 $vmk1_vss = "vSwitch0"
 $vmk1_pg = "pg_vmk_vmotion"

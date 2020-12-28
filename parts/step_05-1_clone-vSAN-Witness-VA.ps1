@@ -8,13 +8,19 @@ $vm = New-VM -VM $template_vm_name -Name $vm_name -VMHost (Get-VMHost $base_hv_n
 $vm | select Name,NumCpu,MemoryGB,Folder,VMHost,HardwareVersion,GuestId | Format-List
 
 task_message "05-01-02" ("Set Portgroup to vNIC#1: " + $vm_name)
-if(-not $base_witness_pg_name_1){$base_witness_pg_name_1 = $base_pg_name;echo 'DEBUG: $base_witness_pg_name_1 = $base_pg_name'}
+if(-not $base_witness_pg_name_1){
+    $base_witness_pg_name_1 = $base_pg_name
+    Write-Host 'DEBUG: $base_witness_pg_name_1 = $base_pg_name'
+}
 $base_witness_pg_1 = Get-VMHost $base_hv_name | Get-VirtualPortGroup -Name $base_witness_pg_name_1
 $vm | Get-NetworkAdapter -Name "* 1" | Set-NetworkAdapter -Portgroup $base_witness_pg_1 -Confirm:$false |
     select Parent,Name,NetworkName | ft -AutoSize
 
 task_message "05-01-03" ("Set Portgroup to vNIC#2: " + $vm_name)
-if(-not $base_witness_pg_name_2){$base_witness_pg_name_2 = $base_pg_name;echo 'DEBUG: $base_witness_pg_name_2 = $base_pg_name'}
+if(-not $base_witness_pg_name_2){
+    $base_witness_pg_name_2 = $base_pg_name
+    Write-Host 'DEBUG: $base_witness_pg_name_2 = $base_pg_name'
+}
 $base_witness_pg_2 = Get-VMHost $base_hv_name | Get-VirtualPortGroup -Name $base_witness_pg_name_2
 $vm | Get-NetworkAdapter -Name "* 2" | Set-NetworkAdapter -Portgroup $base_witness_pg_2 -Confirm:$false |
     select Parent,Name,NetworkName | ft -AutoSize
@@ -54,6 +60,7 @@ Get-VM $vm_name | select `
     Sort-Object Name | ft -AutoSize
 
 task_message "05-01-09" "Move Witness VA to Folder"
-if(-Not $esxi_vm_folder_name){$esxi_vm_folder_name = ("vms_" + $nest_cluster_name)}
+#if(-Not $esxi_vm_folder_name){$esxi_vm_folder_name = ("vms_" + $nest_cluster_name)}
+if(-Not $esxi_vm_folder_name){$esxi_vm_folder_name = ("VM_VC-" + $nest_vc_address + "_" + $nest_cluster_name)}
 Get-VM $vm_name | Move-VM -InventoryLocation (Get-Folder -Type VM -Name $esxi_vm_folder_name) | Out-Null
 Get-VM $vm_name | Sort-object Name | select Name,Folder

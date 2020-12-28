@@ -6,25 +6,25 @@ $env_config = "$config_base/base-env/env_lab-vc-01.ps1"
 Get-Item $env_config -ErrorAction:Stop | fl FullName,LastWriteTime
 . $env_config
 
-$hv_user = "root"
-$hv_pass = "VMware1!"
-
-# Witness VA Base Config
-$base_witness_pg_name_1 = "Nested-Trunk-Network"
-$base_witness_pg_name_2 = "Nested-Trunk-Network"
+$vsan_witness_host_user = $hv_user
+$vsan_witness_host_pass = $hv_pass
 
 # Witness Host Config
-$witness_dc = "LAB-DC"
+$witness_dc = "lab-witness-dc-01"
 $witness_host_folder = "Witness-Hosts" # if "host", it is added to DC
-$vsan_witness_host_name = "esxi-038"
+$vsan_witness_host_name = "esxi-179"
 $vsan_witness_host_domain = "go-lab.jp"
 $vsan_witness_host_ip = "192.168.10.179"
+$vsan_witness_host_vlan = $nest_hv_vmk0_vlan
 $vsan_witness_host_subnetmask = "255.255.255.0"
 $vsan_witness_host_gw = "192.168.10.1"
-$vsan_witness_dns_1 = "192.168.1.101"
-$vsan_witness_dns_2 = "192.168.1.102"
 $vsan_witness_host_vcname = $vsan_witness_host_ip
+$vsan_witness_host_dns_servers = $dns_servers
+$vsan_witness_host_ntp_servers = $ntp_servers
 
-$vsan_wts = $false # Witness Traffic Separation (WTS): $true or $false
-$vsan_witness_template_name = "VMware-VirtualSAN-Witness-6.7.0.update03-14320388"
+# Witness VA Base Config
+$vsan_witness_template_name = "VMware-VirtualSAN-Witness-7.0U1-16850804"
 $vsan_witness_va_name = "vm-esxi-witness-" + $vsan_witness_host_ip
+
+$base_witness_pg_name_1 = $base_pg_name
+$base_witness_pg_name_2 = $base_pg_name
