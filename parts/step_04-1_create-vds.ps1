@@ -1,5 +1,6 @@
 task_message "04-01-01" "Create vDS"
-$vds = New-VDSwitch -Name $vds_name -Location (Get-Datacenter $nest_dc_name) -NumUplinkPorts 1
+$vds = New-VDSwitch -Name $vds_name -Location (Get-Datacenter $nest_dc_name) -NumUplinkPorts 2 -ErrorAction:SilentlyContinue
+$vds = Get-Datacenter -Name $nest_dc_name | Get-VDSwitch -Name $vds_name
 $vds
 
 task_message "04-01-02" "Create vDS Portgroup: Management"

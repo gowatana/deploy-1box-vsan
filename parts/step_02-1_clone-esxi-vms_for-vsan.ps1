@@ -17,7 +17,6 @@ $esxi_vm_folder | select Name
 
 task_message "02-01-00b" "Create ResourcePool"
 if($base_rp_name){
-    #$base_rp = "RP-" + $nest_vc_address + "_" + $nest_cluster_name
     Get-Datacenter $base_dc_name | Get-Cluster -Name $base_cluster_name | Get-ResourcePool -Name "Resources" |
         New-ResourcePool -Name $base_rp_name -ErrorAction:Ignore | Out-Null
     $base_rp = Get-Datacenter $base_dc_name | Get-Cluster -Name $base_cluster_name | Get-ResourcePool -Name "Resources" |

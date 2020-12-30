@@ -83,12 +83,12 @@ task_message "Step-06" "Remove vDS"
 if($create_vds -eq $true){
     connect_vc -vc_addr $nest_vc_address -vc_user $nest_vc_user -vc_pass $nest_vc_pass
     if($? -eq $true){
-        Get-VDSwitch $vds_name | Remove-VDSwitch -Confirm:$false
+        $vds = Get-Datacenter -Name $nest_dc_name | Get-VDSwitch -Name $vds_name
+        if(($vds | Get-VMHost).Count -eq 0){
+            $vds | Remove-VDSwitch -Confirm:$false -ErrorAction:Ignore
+        }   
     }
     disconnect_all_vc
 }else{
     "Skip"
 }
-
-task_message "Step-07" "Run check script"
-./check_base_setting.ps1 $lab_config_file_name

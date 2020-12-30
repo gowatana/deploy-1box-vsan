@@ -3,7 +3,7 @@ $cluster = Get-Datacenter $nest_dc_name | Get-Cluster -Name $nest_cluster_name
 $vc_hv_name_list | % {
     $hv_name = $_
     
-    task_message "03-01-01" "Add ESXi to Cluster: $hv_name"
+    task_message "03-01-01a" "Add ESXi to Cluster: $hv_name"
     Add-VMHost -Name $hv_name -Location $cluster -User $hv_user -Password $hv_pass -Force | select `
         Name,
         NumCpu,
@@ -12,6 +12,10 @@ $vc_hv_name_list | % {
         Build,
         ConnectionState |
         Format-List
+
+    task_message "03-01-01b" "Enter Maintenance Mode: $hv_name"
+    $cluster | Get-VMHost $hv_name | Set-VMHost -State Maintenance -Confirm:$false |
+    select Name,ConnectionState | Format-List
 
     task_message "03-01-02" "Remove Default Local VMFS Datastore: $hv_name"
     $local_ds_name = "datastore*"

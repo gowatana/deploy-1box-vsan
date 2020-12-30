@@ -1,20 +1,30 @@
 # Clone vSAN Witness Virtual Appliance.
 
-$template_vm_name = $vsan_witness_template_name
 $vm_name = $vsan_witness_va_name
 
+if(-Not $esxi_vm_folder_name){$esxi_vm_folder_name = ("VM_VC-" + $nest_vc_address + "_" + $nest_cluster_name)}
+$esxi_vm_folder = Get-Folder -Type VM -Name $esxi_vm_folder_name
+
+$base_rp = Get-Datacenter $base_dc_name | Get-Cluster -Name $base_cluster_name | Get-ResourcePool -Name "Resources" | Get-ResourcePool -Name $base_rp_name
+
 task_message "05-01-01" ("Clone Witness VM: " + $vm_name)
-$vm = New-VM -VM $template_vm_name -Name $vm_name -VMHost (Get-VMHost $base_hv_name) -Datastore $base_ds_name -StorageFormat Thin
+$vm = New-VM -VM $vsan_witness_template_name -Name $vm_name -ResourcePool $base_rp -Location $esxi_vm_folder -Datastore $base_ds_name -StorageFormat Thin
 $vm | select Name,NumCpu,MemoryGB,Folder,VMHost,HardwareVersion,GuestId | Format-List
 
 task_message "05-01-02" ("Set Portgroup to vNIC#1: " + $vm_name)
-if(-not $base_witness_pg_name_1){$base_witness_pg_name_1 = $base_pg_name;echo 'DEBUG: $base_witness_pg_name_1 = $base_pg_name'}
+if(-not $base_witness_pg_name_1){
+    $base_witness_pg_name_1 = $base_pg_name
+    Write-Host 'DEBUG: $base_witness_pg_name_1 = $base_pg_name'
+}
 $base_witness_pg_1 = Get-VMHost $base_hv_name | Get-VirtualPortGroup -Name $base_witness_pg_name_1
 $vm | Get-NetworkAdapter -Name "* 1" | Set-NetworkAdapter -Portgroup $base_witness_pg_1 -Confirm:$false |
     select Parent,Name,NetworkName | ft -AutoSize
 
 task_message "05-01-03" ("Set Portgroup to vNIC#2: " + $vm_name)
-if(-not $base_witness_pg_name_2){$base_witness_pg_name_2 = $base_pg_name;echo 'DEBUG: $base_witness_pg_name_2 = $base_pg_name'}
+if(-not $base_witness_pg_name_2){
+    $base_witness_pg_name_2 = $base_pg_name
+    Write-Host 'DEBUG: $base_witness_pg_name_2 = $base_pg_name'
+}
 $base_witness_pg_2 = Get-VMHost $base_hv_name | Get-VirtualPortGroup -Name $base_witness_pg_name_2
 $vm | Get-NetworkAdapter -Name "* 2" | Set-NetworkAdapter -Portgroup $base_witness_pg_2 -Confirm:$false |
     select Parent,Name,NetworkName | ft -AutoSize
@@ -52,8 +62,3 @@ Get-VM $vm_name | select `
     PowerState,
     @{N="ToolsStatus";E={$_.Guest.ExtensionData.ToolsStatus}} |
     Sort-Object Name | ft -AutoSize
-
-task_message "05-01-09" "Move Witness VA to Folder"
-if(-Not $esxi_vm_folder_name){$esxi_vm_folder_name = ("vms_" + $nest_cluster_name)}
-Get-VM $vm_name | Move-VM -InventoryLocation (Get-Folder -Type VM -Name $esxi_vm_folder_name) | Out-Null
-Get-VM $vm_name | Sort-object Name | select Name,Folder
