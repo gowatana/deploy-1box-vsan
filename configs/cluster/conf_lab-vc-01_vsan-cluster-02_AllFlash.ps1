@@ -13,7 +13,7 @@ $create_vsan_2node     = $false # $true or $false
 # ----------------------------------------
 # Base-vSphere environment config
 $config_base = Split-Path -Path $PSScriptRoot -Parent
-$env_config = "$config_base/base-env/env_home-lab-01.ps1"
+$env_config = "$config_base/base-env/env_lab-vc-01.ps1"
 Get-Item $env_config -ErrorAction:Stop | fl FullName,LastWriteTime
 . $env_config
 
@@ -22,10 +22,10 @@ $base_rp_name = "rp-05-nested-lab"
 # ----------------------------------------
 # vSAN Cluster settings
 
-$nest_dc_name = "LAB-DC"
-$nest_cluster_name = "vSAN-Cluster-02"
+$nest_dc_name = "lab-dc-01"
+$nest_cluster_name = "vsan-cluster-02"
 $vm_num = 3
-$hv_ip_4oct_start = 34 # 4th Octet for ESXi-vmk0-IP
+$hv_ip_4oct_start = 134 # 4th Octet for ESXi-vmk0-IP
 
 # ----------------------------------------
 # Nested ESXi settings
@@ -47,11 +47,11 @@ $hv_pass = "VMware1!"
 
 # Nested ESXi setting
 $domain = "go-lab.jp"
-$hv_ip_prefix_vmk0 = "192.168.1." # $hv_ip_prefix_vmk0 + $hv_ip_4oct_start => 192.168.1.31
+$hv_ip_prefix_vmk0 = "192.168.10." # $hv_ip_prefix_vmk0 + $hv_ip_4oct_start => 192.168.1.31
 $hv_vmk0_subnetmask = "255.255.255.0" # /24
-$nest_hv_vmk0_vlan = 0 # Default VLAN ID: 0
+$nest_hv_vmk0_vlan = 10 # Default VLAN ID: 0
 
-$hv_gw = "192.168.1.1"
+$hv_gw = "192.168.10.1"
 $dns_servers = "192.168.1.101","192.168.1.102"
 $ntp_servers = "192.168.1.101","192.168.1.102"
 
@@ -78,14 +78,14 @@ $vmk2_vlan = 1002
 $vmk2_ip_prefix = "10.0.2." # $hv_ip_prefix_vmk2 + $hv_ip_4oct_start => 10.0.2.31
 $vmk2_subnetmask = "255.255.255.0" # /24
 
-$multi_vmnic = 2 # add vmnic1 .. vmnic1
+$multi_vmnic = 4 # add vmnic1 .. vmnic3
 
 # ----------------------------------------
 # vDS Settings
 
 if($create_vds -eq $true){
     $config_base = Split-Path -Path $PSScriptRoot -Parent
-    $vds_config = "$config_base/vds/conf_vds-01.ps1"
+    $vds_config = "$config_base/vds/conf_lab-vds-01.ps1"
     Get-Item $vds_config -ErrorAction:Stop | fl FullName,LastWriteTime
     . $vds_config
 }
@@ -97,12 +97,12 @@ if($create_vds -eq $true){
 $vsan_ds_name = "vsanDatastore-02"
 
 # vSAN Disk Group type
-$vsan_dg_type = "AllFlash" # Hybrid or AllFlash
+$vsan_dg_type = "Hybrid" # Hybrid or AllFlash
 
 # vSAN Disk setting
-$vsan_cache_disk_size_gb = 20
-$vsan_capacity_disk_size_gb = 50
-$vsan_capacity_disk_count = 2
+$vsan_cache_disk_size_gb = 50
+$vsan_capacity_disk_size_gb = 100
+$vsan_capacity_disk_count = 1
 $vsan_dg_count = 1 # Multi-Diskgroup setup
 
 # ----------------------------------------

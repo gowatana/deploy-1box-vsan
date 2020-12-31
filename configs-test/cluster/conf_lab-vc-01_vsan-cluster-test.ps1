@@ -10,8 +10,6 @@ $setup_vsan_wts        = $true  # $true or $false (WTS: Witness Traffic Separati
 $create_vsan_cluster   = $true  # $true or $false
 $create_vsan_2node     = $true  # $true or $false
 
-#$vsan_wts = $false # : $true or $false
-
 # ----------------------------------------
 # Base-vSphere environment config
 $config_base = Split-Path -Path $PSScriptRoot -Parent
