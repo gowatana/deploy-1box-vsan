@@ -1,11 +1,4 @@
-# vSAN-Lab Config file
-
-# Base-vSphere environment config
-$config_base = Split-Path -Path $PSScriptRoot -Parent
-$env_config = "$config_base/base-env/env_lab-vc-01.ps1"
-Get-Item $env_config -ErrorAction:Stop | fl FullName,LastWriteTime
-. $env_config
-
+# Witness Host ESXi Login
 $vsan_witness_host_user = $hv_user
 $vsan_witness_host_pass = $hv_pass
 
