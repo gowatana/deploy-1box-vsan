@@ -1,9 +1,3 @@
-# Load vSAN-Lab Config file.
-$lab_config_file_name = $args[0]
-ls $lab_config_file_name | Out-Null
-if($? -eq $false){"vSAN-Lab config file not found."; exit}
-. $lab_config_file_name
-
 # Load Functions
 . ./parts/functions.ps1
 
