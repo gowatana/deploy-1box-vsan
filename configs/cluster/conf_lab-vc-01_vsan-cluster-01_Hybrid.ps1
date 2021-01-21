@@ -82,13 +82,7 @@ $multi_vmnic = 4 # add vmnic1 .. vmnic3
 
 # ----------------------------------------
 # vDS Settings
-
-if($create_vds -eq $true){
-    $config_base = Split-Path -Path $PSScriptRoot -Parent
-    $vds_config = "$config_base/vds/conf_lab-vds-01.ps1"
-    Get-Item $vds_config -ErrorAction:Stop | fl FullName,LastWriteTime
-    . $vds_config
-}
+$vds_config = (Split-Path -Path $PSScriptRoot -Parent) + "/vds/conf_lab-vds-01.ps1"
 
 # ----------------------------------------
 # Storage Settings
@@ -107,10 +101,4 @@ $vsan_dg_count = 2 # Multi-Diskgroup setup
 
 # ----------------------------------------
 # vSAN Witness Config
-
-if($create_witness_vm -eq $true){
-    $config_base = Split-Path -Path $PSScriptRoot -Parent
-    $witness_config = "$config_base/witness/conf_Witness-VA_192.168.10.179.ps1"
-    Get-Item $witness_config -ErrorAction:Stop | fl FullName,LastWriteTime
-    . $witness_config
-}
+$witness_config = (Split-Path -Path $PSScriptRoot -Parent) + "/witness/conf_Witness-VA_X.ps1"
