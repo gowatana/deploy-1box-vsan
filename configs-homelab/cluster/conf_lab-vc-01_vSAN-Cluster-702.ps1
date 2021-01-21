@@ -6,22 +6,25 @@ $create_esxi_vms       = $true  # $true or $false
 $create_vsphre_cluster = $true  # $true or $false
 $create_witness_vm     = $false # $true or $false
 $create_vsan_wts       = $false # $true or $false
-$create_vsan_cluster   = $false # $true or $false
+$create_vsan_cluster   = $true  # $true or $false
 $create_vsan_2node     = $false # $true or $false
 
 # ----------------------------------------
 # Base-vSphere environment config
-$env_config = "./configs/base-env/env_lab-vc-02.ps1"
+$config_base = Split-Path -Path $PSScriptRoot -Parent
+$env_config = "$config_base/base-env/env_lab-vc-01.ps1"
 Get-Item $env_config -ErrorAction:Stop | fl FullName,LastWriteTime
 . $env_config
+
+$base_rp_name = "rp-05-nested-lab"
 
 # ----------------------------------------
 # vSAN Cluster settings
 
-$nest_dc_name = "lab-dc-02"
-$nest_cluster_name = "NSX-Cluster-701"
+$nest_dc_name = "lab-dc-01"
+$nest_cluster_name = "vSAN-Cluster-702"
 $vm_num = 3
-$hv_ip_4oct_start = 31 # 4th Octet for ESXi-vmk0-IP
+$hv_ip_4oct_start = 34 # 4th Octet for ESXi-vmk0-IP
 
 # ----------------------------------------
 # Nested ESXi settings
@@ -30,11 +33,11 @@ $hv_ip_4oct_start = 31 # 4th Octet for ESXi-vmk0-IP
 $template_vm_name = "esxi70-template-02"
 
 # VM Name / ESXi Hostname Prefix
-$vm_name_prefix = "vm-esxi-"
-$nest_hv_hostname_prefix = "esxi-"
+$vm_name_prefix = "vm-esxi-b-"
+$nest_hv_hostname_prefix = "esxi-b-"
 
 # ESXi Data host Spec
-$esxi_memory_gb = 8
+$esxi_memory_gb = 10
 
 # Nested ESXi User / Password
 $hv_user = "root"
@@ -44,7 +47,7 @@ $hv_pass = "VMware1!"
 $domain = "go-lab.jp"
 $hv_ip_prefix_vmk0 = "192.168.10." # $hv_ip_prefix_vmk0 + $hv_ip_4oct_start => 192.168.1.31
 $hv_vmk0_subnetmask = "255.255.255.0" # /24
-$nest_hv_vmk0_vlan = 0 # Default VLAN ID: 0
+$nest_hv_vmk0_vlan = 10 # Default VLAN ID: 0
 
 $hv_gw = "192.168.10.1"
 $dns_servers = "192.168.1.101","192.168.1.102"
@@ -57,8 +60,8 @@ $ntp_servers = "192.168.1.101","192.168.1.102"
 $add_vmk1 = $true # $true or $false
 $add_vmk2 = $true # $true or $false
 
-$vmotion_vmk_port = "vmk1"
-$vsan_vmk_port = "vmk2"
+$vmotion_vmk_port = "vmk0"
+$vsan_vmk_port = "vmk0"
 $witness_vmk_port = "" # vSAN WTS only
 
 $vmk1_vss = "vSwitch0"
@@ -73,37 +76,34 @@ $vmk2_vlan = 1002
 $vmk2_ip_prefix = "10.0.2." # $hv_ip_prefix_vmk2 + $hv_ip_4oct_start => 10.0.2.31
 $vmk2_subnetmask = "255.255.255.0" # /24
 
-$multi_vmnic = 6 # add vmnic1 .. vmnic5
-
 # ----------------------------------------
 # vDS Settings
 
 $create_vds = $false
-<#
-    $vds_name = "vds-01"
 
-    $vds_mgmt_pg_name = "dvpg_" + $vds_name + "_mgmt"
-    $vds_mgmt_pg_vlan = 0
-    $vds_vmotion_pg_name = "dvpg_" + $vds_name + "_vmotion"
-    $vds_vmotion_pg_vlan = 1001
-    $vds_vsan_pg_name = "dvpg_" + $vds_name + "_vsan"
-    $vds_vsan_pg_vlan = 1002
-    $vds_guest_pg_name = "dvpg_" + $vds_name + "_guest"
-    $vds_guest_pg_vlan = 0
-#>
+$vds_name = "vds-702"
+
+$vds_mgmt_pg_name = "dvpg_" + $vds_name + "_mgmt"
+$vds_mgmt_pg_vlan = 0
+$vds_vmotion_pg_name = "dvpg_" + $vds_name + "_vmotion"
+$vds_vmotion_pg_vlan = 1001
+$vds_vsan_pg_name = "dvpg_" + $vds_name + "_vsan"
+$vds_vsan_pg_vlan = 1002
+$vds_guest_pg_name = "dvpg_" + $vds_name + "_guest"
+$vds_guest_pg_vlan = 0
 
 # ----------------------------------------
 # Storage Settings
 
 # vSAN Datastore Name
-$vsan_ds_name = "vsanDatastore-701"
+$vsan_ds_name = "vsanDatastore-702"
 
 # vSAN Disk Group type
 $vsan_dg_type = "Hybrid" # Hybrid or AllFlash
 
 # vSAN Disk setting
-$vsan_cache_disk_size_gb = 100
-$vsan_capacity_disk_size_gb = 5
+$vsan_cache_disk_size_gb = 30
+$vsan_capacity_disk_size_gb = 300
 $vsan_capacity_disk_count = 1
 $vsan_dg_count = 1 # Multi-Diskgroup setup
 
