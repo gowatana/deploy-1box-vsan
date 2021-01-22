@@ -6,7 +6,7 @@ $base_vc_user = "automation@go-lab.jp"
 $base_vc_pass = "VMware1!"
 
 # Nested vCenter Login info
-$nest_vc_address = "lab-vc-01.go-lab.jp"
+$nest_vc_address = "lab-vc-03.go-lab.jp"
 $nest_vc_user = "administrator@vsphere.local"
 $nest_vc_pass = "VMware1!"
 

@@ -1,20 +1,13 @@
-# vSAN-Lab Config file
-
-# Base-vSphere environment config
-$config_base = Split-Path -Path $PSScriptRoot -Parent
-$env_config = "$config_base/base-env/env_home-lab-01.ps1"
-Get-Item $env_config -ErrorAction:Stop | fl FullName,LastWriteTime
-. $env_config
-
+# Witness Host ESXi Login
 $vsan_witness_host_user = $hv_user
 $vsan_witness_host_pass = $hv_pass
 
 # Witness Host Config
-$witness_dc = "LAB-DC-Witness"
-$witness_host_folder = "host" # if "host", it is added to DC
-$vsan_witness_host_name = "esxi-099"
+$witness_dc = "lab-witness-dc-01"
+$witness_host_folder = "Witness-Hosts" # if "host", it is added to DC
+$vsan_witness_host_name = "esxi-179"
 $vsan_witness_host_domain = "go-lab.jp"
-$vsan_witness_host_ip = "192.168.10.99"
+$vsan_witness_host_ip = "192.168.10.179"
 $vsan_witness_host_vlan = $nest_hv_vmk0_vlan
 $vsan_witness_host_subnetmask = "255.255.255.0"
 $vsan_witness_host_gw = "192.168.10.1"

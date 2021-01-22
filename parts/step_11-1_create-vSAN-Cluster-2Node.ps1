@@ -2,8 +2,8 @@
 
 $fd_preferred = "Preferred"
 $fd_secondary = "Secondary"
-$cache_device_name = "mpx.vmhba0:C0:T1:L0"
-$capacity_device_name = "mpx.vmhba0:C0:T2:L0"
+$cache_device_name = "mpx.vmhba0:C0:T2:L0"
+$capacity_device_name = "mpx.vmhba0:C0:T1:L0"
 
 task_message "11-01-01" "Create Fault Domain (Preferred)"
 New-VsanFaultDomain -Name $fd_preferred -VMHost $vc_hv_name_list[0] |
