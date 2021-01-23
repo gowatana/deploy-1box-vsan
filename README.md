@@ -4,5 +4,6 @@
 
 設定ファイル集
 
+* https://github.com/gowatana/vsan-advent-2020
 * https://github.com/gowatana/vsan-advent-2019
 * WIP https://github.com/gowatana/vsan-advent-2018
