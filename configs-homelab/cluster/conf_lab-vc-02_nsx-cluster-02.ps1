@@ -4,7 +4,7 @@
 # Setup flags
 $create_esxi_vms       = $true  # $true or $false
 $create_vsphre_cluster = $true  # $true or $false
-$create_vds            = $false # $true or $false
+$create_vds            = $true  # $true or $false
 $create_witness_vm     = $false # $true or $false
 $setup_vsan_wts        = $false # $true or $false (WTS: Witness Traffic Separation)
 $create_vsan_cluster   = $false # $true or $false
@@ -23,9 +23,9 @@ $base_rp_name = "rp-05-nested-lab"
 # vSAN Cluster settings
 
 $nest_dc_name = "lab-dc-02"
-$nest_cluster_name = "nsx-cluster-01"
-$vm_num = 2
-$hv_ip_4oct_start = 121 # 4th Octet for ESXi-vmk0-IP
+$nest_cluster_name = "nsx-cluster-02"
+$vm_num = 3
+$hv_ip_4oct_start = 123 # 4th Octet for ESXi-vmk0-IP
 
 # ----------------------------------------
 # Nested ESXi settings
@@ -88,7 +88,7 @@ $vds_config = (Split-Path -Path $PSScriptRoot -Parent) + "/vds/conf_lab-vds-02.p
 # Storage Settings
 
 # vSAN Datastore Name
-$vsan_ds_name = "vsanDatastore-21"
+$vsan_ds_name = "vsanDatastore-22"
 
 # vSAN Disk Group type
 $vsan_dg_type = "AllFlash" # Hybrid or AllFlash
