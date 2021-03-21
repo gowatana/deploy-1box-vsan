@@ -2,7 +2,7 @@
 
 # Base vCenter Login info
 $base_vc_address = "infra-vc-01.go-lab.jp"
-$base_vc_user = "automation@go-lab.jp"
+$base_vc_user = "administrator@vsphere.local"
 $base_vc_pass = "VMware1!"
 
 # Nested vCenter Login info

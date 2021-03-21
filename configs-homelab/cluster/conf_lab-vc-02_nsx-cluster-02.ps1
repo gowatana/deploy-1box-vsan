@@ -4,7 +4,7 @@
 # Setup flags
 $create_esxi_vms       = $true  # $true or $false
 $create_vsphre_cluster = $true  # $true or $false
-$create_vds            = $true  # $true or $false
+$create_vds            = $false # $true or $false
 $create_witness_vm     = $false # $true or $false
 $setup_vsan_wts        = $false # $true or $false (WTS: Witness Traffic Separation)
 $create_vsan_cluster   = $false # $true or $false
