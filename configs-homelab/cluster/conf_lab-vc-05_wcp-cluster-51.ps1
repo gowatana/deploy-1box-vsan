@@ -4,8 +4,9 @@
 # Setup flags
 $create_esxi_vms       = $true  # $true or $false
 $create_vsphre_cluster = $true  # $true or $false
+$create_vds            = $false # $true or $false
 $create_witness_vm     = $false # $true or $false
-$create_vsan_wts       = $false # $true or $false
+$setup_vsan_wts        = $false # $true or $false (WTS: Witness Traffic Separation)
 $create_vsan_cluster   = $false # $true or $false
 $create_vsan_2node     = $false # $true or $false
 
@@ -28,7 +29,7 @@ $hv_ip_4oct_start = 151 # 4th Octet for ESXi-vmk0-IP
 # Nested ESXi settings
 
 # ESXi Template VM
-$template_vm_name = "esxi70u1c-template-01"
+$template_vm_name = "esxi70u2-template-01"
 $linked_clone = $true
 
 # VM Name / ESXi Hostname Prefix
