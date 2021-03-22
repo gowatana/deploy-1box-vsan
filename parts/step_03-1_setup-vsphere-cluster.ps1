@@ -46,5 +46,5 @@ $cluster | Get-VMHost | Sort-Object Name | select Name,@{N="NtpServers";E={$_|Ge
 task_message "03-01-07" "Start ESXi NTP Service"
 $cluster | Get-VMHost | Get-VMHostService | where {$_.key -eq "ntpd"} | Set-VMHostService -Policy on
 $cluster | Get-VMHost | Get-VMHostService | where {$_.key -eq "ntpd"} | Start-VMHostService
-$cluster | Get-VMHost | Get-VMHost | Get-VMHostService | where {$_.key -eq "ntpd"} | 
+$cluster | Get-VMHost | Get-VMHostService | where {$_.key -eq "ntpd"} | 
     select VMHost,Key,Policy,Running | Sort-Object VMHost | ft -AutoSize
