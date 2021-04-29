@@ -3,17 +3,17 @@ $cluster = Get-Cluster -Name $nest_cluster_name
 task_message "08-01-01" "Add SSD Mark to Cache device"
 $cluster | Get-VMHost | Sort-Object Name | ForEach-Object {
     $hv = $_
-    $vsan_cache_dev = get_candidate_device -esxi $hv -dev_type "Cache"
-    ("Cache Device: " + $vsan_cache_dev)
-    set_satp_rule -esxi $hv -dev_list $vsan_cache_dev -satp_rule_option "enable_ssd"
+    $vsan_dev = get_candidate_device -esxi $hv -dev_type "Cache"
+    ("Cache Device: " + $vsan_dev)
+    mark_as_ssd -esxi $hv -dev_list $vsan_dev -mark_device_ssd $true
 }
 
 task_message "08-01-02" ("Add SSD Mark to Capacity device: " + $vsan_dg_type)
-$satp_ssd_rule = "enable_ssd"
-if($vsan_dg_type -eq "Hybrid"){$satp_ssd_rule = "disable_ssd"}
+$is_ssd = $false
+if($vsan_dg_type -eq "AllFlash"){$is_ssd = $true}
 $cluster | Get-VMHost | Sort-Object Name | ForEach-Object {
     $hv = $_
-    $vsan_capacity_dev = get_candidate_device -esxi $hv -dev_type "Capacity"
-    ("Capacity Device: " + $vsan_capacity_dev)
-    set_satp_rule -esxi $hv -dev_list $vsan_capacity_dev -satp_rule_option $satp_ssd_rule
+    $vsan_dev = get_candidate_device -esxi $hv -dev_type "Capacity"
+    ("Capacity Device: " + $vsan_dev)
+    mark_as_ssd -esxi $hv -dev_list $vsan_dev -mark_device_ssd $is_ssd
 }
