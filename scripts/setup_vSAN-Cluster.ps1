@@ -51,6 +51,8 @@ if($create_vds -eq $true){
     connect_vc -vc_addr $nest_vc_address -vc_user $nest_vc_user -vc_pass $nest_vc_pass
     ./parts/step_04-1_create-vds.ps1
     disconnect_all_vc
+}else{
+    "Skip"
 }
 
 task_message "Step-05" "Setup Witness-Host VA"
