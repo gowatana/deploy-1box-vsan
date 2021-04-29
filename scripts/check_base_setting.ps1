@@ -64,7 +64,7 @@ Get-Datacenter -Name $base_dc_name | Get-Cluster -Name $base_cluster_name | Get-
     $hv_count += 1
     task_message ("Check-02-06-" + $hv_count.ToString("00")) "if exists `$base_pg_name:$base_pg_name ESXi:$hv_name"
     $hv | Get-VirtualPortGroup -Name $base_pg_name -ErrorAction:Ignore | select Name,VLanId | Format-List
-    $check_table += check_format ("Check-02-06-" + $hv_count.ToString("00")) "if exists `$base_pg_name: $base_pg_name ESXi: $hv_name" ($? -eq $true)
+    $check_table += check_format ("Check-02-06-" + $hv_count.ToString("00")) "if exists `$base_pg_name:$base_pg_name ESXi:$hv_name" ($? -eq $true)
 }
 
 $vm_count = 0
