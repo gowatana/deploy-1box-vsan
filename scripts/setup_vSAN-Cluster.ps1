@@ -92,7 +92,7 @@ if($create_vsan_cluster -eq $true){
 }
 
 task_message "Step-09" "Add VMDK for vSAN Disk Group"
-if($vsan_dg_count){
+if($vsan_dg_count -ge 2){
     connect_vc -vc_addr $base_vc_address -vc_user $base_vc_user -vc_pass $base_vc_pass
     for($i=2; $i -le $vsan_dg_count; $i++){
         ./parts/step_09-1_add-vsan-vmdk.ps1
@@ -103,7 +103,7 @@ if($vsan_dg_count){
 }
 
 task_message "Step-10" "Add vSAN Disk Group"
-if($vsan_dg_count){
+if($vsan_dg_count -ge 2){
     connect_vc -vc_addr $nest_vc_address -vc_user $nest_vc_user -vc_pass $nest_vc_pass
     for($i=2; $i -le $vsan_dg_count; $i++){
         ./parts/step_10-1_fix-disk-type.ps1

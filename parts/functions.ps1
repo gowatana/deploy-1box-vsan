@@ -133,6 +133,28 @@ function set_satp_rule {
     }
 }
 
+function mark_as_ssd {
+    param (
+        $esxi,
+        $dev_list,
+        $mark_device_ssd = $false
+    )
+
+    $dev_list | % {
+        $dev_name = $_
+        "SSD Setting: " + $esxi.Name + " " + $mark_device_ssd
+
+        $host_storage_system = Get-View $esxi.ExtensionData.ConfigManager.StorageSystem
+        $scsi_disk_uuid = $host_storage_system.StorageDeviceInfo.ScsiLun | where {$_.CanonicalName -eq $dev_name} | %{$_.Uuid}
+        "SCSI Disk UUID: $scsi_disk_uuid"
+        if($mark_device_ssd -eq $true){
+            $host_storage_system.MarkAsSsd($scsi_disk_uuid) 
+        }else{
+            $host_storage_system.MarkAsNonSsd($scsi_disk_uuid) 
+        }
+    }
+}
+
 # ----------------------------------------
 # vSAN Witness Host Tips
 
