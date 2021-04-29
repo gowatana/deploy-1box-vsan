@@ -5,7 +5,8 @@ $vm_name = $vsan_witness_va_name
 if(-Not $esxi_vm_folder_name){$esxi_vm_folder_name = ("VM_VC-" + $nest_vc_address + "_" + $nest_cluster_name)}
 $esxi_vm_folder = Get-Folder -Type VM -Name $esxi_vm_folder_name
 
-$base_rp = Get-Datacenter $base_dc_name | Get-Cluster -Name $base_cluster_name | Get-ResourcePool -Name "Resources" | Get-ResourcePool -Name $base_rp_name
+$base_rp = Get-Datacenter $base_dc_name | Get-Cluster -Name $base_cluster_name | Get-ResourcePool -Name "Resources" | 
+    Get-ResourcePool -Name $base_rp_name | select -First 1
 
 task_message "05-01-01" ("Clone Witness VM: " + $vm_name)
 $vm = New-VM -VM $vsan_witness_template_name -Name $vm_name -ResourcePool $base_rp -Location $esxi_vm_folder -Datastore $base_ds_name -StorageFormat Thin
