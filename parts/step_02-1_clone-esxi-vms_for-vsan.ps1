@@ -20,7 +20,7 @@ if($base_rp_name){
     Get-Datacenter $base_dc_name | Get-Cluster -Name $base_cluster_name | Get-ResourcePool -Name "Resources" |
         New-ResourcePool -Name $base_rp_name -ErrorAction:Ignore | Out-Null
     $base_rp = Get-Datacenter $base_dc_name | Get-Cluster -Name $base_cluster_name | Get-ResourcePool -Name "Resources" |
-        Get-ResourcePool -Name $base_rp_name
+        Get-ResourcePool -Name $base_rp_name | select -First 1
     $base_rp | select Name
 }else{
     "Skip"
