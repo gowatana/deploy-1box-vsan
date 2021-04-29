@@ -57,8 +57,13 @@ $vm_name_list | ForEach-Object {
     $vm | select Name,NumCpu,MemoryGB,Folder,VMHost,HardwareVersion,GuestId | Format-List
 
     task_message "02-01-02" ("Set vNIC#1: " + $vm_name)
-    $vm | Get-NetworkAdapter -Name "* 1" | Set-NetworkAdapter -Portgroup (Get-VMHost $base_hv_name | Get-VirtualPortGroup -Name $base_pg_name) -Confirm:$false |
-        select Parent,Name,NetworkName | ft -AutoSize
+    $base_pg = Get-VMHost $base_hv_name | Get-VirtualPortGroup -Name $base_pg_name
+    $vnic_1 = if(Get-VirtualNetwork -Name $base_pg_name | where {$_.NetworkType -ne "Network"}){
+        $vm | Get-NetworkAdapter -Name "* 1" | Set-NetworkAdapter -Portgroup $base_pg -Confirm:$false
+    } else {
+        $vm | Get-NetworkAdapter -Name "* 1" | Set-NetworkAdapter -NetworkName $base_pg_name -Confirm:$false
+    }
+    $vnic_1 | select Parent,Name,NetworkName | ft -AutoSize
 
     task_message "02-01-03" ("Disconnect All vNICs: " + $vm_name)
     $vm | Get-NetworkAdapter | Set-NetworkAdapter -StartConnected:$false -Confirm:$false |
@@ -98,11 +103,17 @@ $vm_name_list | ForEach-Object {
 
     task_message "02-01-08" ("Add vNIC: " + $vm_name)
     if($multi_vmnic -And ($multi_vmnic -ge 2)){
-        2..$multi_vmnic | ForEach-Object {
-            $vm | New-NetworkAdapter -Portgroup (Get-VMHost $base_hv_name | Get-VirtualPortGroup -Name $base_pg_name) -StartConnected:$true -Confirm:$false
-        }  | select Parent,Name,NetworkName | ft -AutoSize
+        $base_pg = Get-VMHost $base_hv_name | Get-VirtualPortGroup -Name $base_pg_name
+        $vnics = 2..$multi_vmnic | ForEach-Object {
+            if(Get-VirtualNetwork -Name $base_pg_name | where {$_.NetworkType -ne "Network"}){
+                $vm | New-NetworkAdapter -Portgroup $base_pg -StartConnected:$true -Confirm:$false
+            } else {
+                $vm | New-NetworkAdapter -NetworkName $base_pg_name -StartConnected:$true -Confirm:$false
+            }
+        }
+        $vnics | select Parent,Name,NetworkName | ft -AutoSize
     }
-
+    
     task_message "02-01-09" ("Start VM: " + $vm_name)
     $vm | Start-VM | ft -AutoSize Name,VMHost,PowerState
 }
