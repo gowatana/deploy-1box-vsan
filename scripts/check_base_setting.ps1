@@ -57,9 +57,15 @@ task_message "Check-02-05" "if exists `$base_ds_name: $base_ds_name"
 Get-VMHost -Name $base_hv_name | Get-Datastore -Name $base_ds_name -ErrorAction:Ignore | Out-Null
 $check_table += check_format "Check-02-05" "if exists `$base_ds_name: $base_ds_name" ($? -eq $true)
 
-task_message "Check-02-06" "if exists `$base_pg_name: $base_pg_name"
-Get-VirtualPortGroup -Name $base_pg_name -ErrorAction:Ignore | select Name,VLanId
-$check_table += check_format "Check-02-06" "if exists `$base_pg_name: $base_pg_name" ($? -eq $true)
+$hv_count = 0
+Get-Datacenter -Name $base_dc_name | Get-Cluster -Name $base_cluster_name | Get-VMHost | Sort-Object Name | ForEach-Object {
+    $hv = $_
+    $hv_name = $hv.Name
+    $hv_count += 1
+    task_message ("Check-02-06-" + $hv_count.ToString("00")) "if exists `$base_pg_name:$base_pg_name ESXi:$hv_name"
+    $hv | Get-VirtualPortGroup -Name $base_pg_name -ErrorAction:Ignore | select Name,VLanId | Format-List
+    $check_table += check_format ("Check-02-06-" + $hv_count.ToString("00")) "if exists `$base_pg_name: $base_pg_name ESXi: $hv_name" ($? -eq $true)
+}
 
 $vm_count = 0
 $vm_name_list | ForEach-Object {
