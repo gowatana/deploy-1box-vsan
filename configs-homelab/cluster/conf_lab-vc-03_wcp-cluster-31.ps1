@@ -16,15 +16,15 @@ $env_config = "$config_base/base-env/env_lab-vc-03.ps1"
 Get-Item $env_config -ErrorAction:Stop | fl FullName,LastWriteTime
 . $env_config
 
-$base_rp_name = "rp-05-nested-lab"
+$base_rp_name = "rp-04-nested-lab"
 
 # ----------------------------------------
 # vSAN Cluster settings
 
-$nest_dc_name = "lab-dc-03"
+$nest_dc_name = "lab-dc-31"
 $nest_cluster_name = "wcp-cluster-31"
 $vm_num = 4
-$hv_ip_4oct_start = 31 # 4th Octet for ESXi-vmk0-IP
+$hv_ip_4oct_start = 131 # 4th Octet for ESXi-vmk0-IP
 
 # ----------------------------------------
 # Nested ESXi settings

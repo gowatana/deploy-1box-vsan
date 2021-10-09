@@ -17,7 +17,7 @@ $env_config = "$config_base/base-env/env_lab-vc-01.ps1"
 Get-Item $env_config -ErrorAction:Stop | fl FullName,LastWriteTime
 . $env_config
 
-$base_rp_name = "rp-05-nested-lab"
+$base_rp_name = "rp-04-nested-lab"
 
 # ----------------------------------------
 # vSAN Cluster settings
@@ -31,8 +31,8 @@ $hv_ip_4oct_start = 31 # 4th Octet for ESXi-vmk0-IP
 # Nested ESXi settings
 
 # ESXi Template VM
-$template_vm_name = "esxi70u1c-template-01"
-$linked_clone = $true
+$template_vm_name = "esxi70u3-template-01"
+$linked_clone = $false
 
 # VM Name / ESXi Hostname Prefix
 $vm_name_prefix = "vm-lab-esxi-"
