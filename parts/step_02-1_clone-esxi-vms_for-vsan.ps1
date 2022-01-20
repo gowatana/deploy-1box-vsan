@@ -128,12 +128,20 @@ task_message "02-01-11" "VM PowerOn Check"
 (Get-VM $vm_name_list | Sort-object Name) | ForEach-Object {
     $vm = $_
     $vm_name = $vm.Name
+    $vm_reset_check_limit = 18
+    $vm_reset_check_counter = 0
     for (){
         $vm = Get-VM $vm_name
         (Get-Date).DateTime + " " + $vm_name
         if($vm.Guest.ExtensionData.ToolsStatus -eq "toolsOk"){
             Write-Host "toolsOk"
             break
+        }
+        $vm_reset_check_counter += 1
+        if($vm_reset_check_counter -ge $vm_reset_check_limit){
+            Write-Host "VM Reset: $vm_name"
+            $vm.ExtensionData.ResetVM()
+            $vm_reset_check_counter = 0
         }
         Start-Sleep $vm_poweron_check_interval_sec
     }
