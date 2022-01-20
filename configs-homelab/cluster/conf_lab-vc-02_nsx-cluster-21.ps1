@@ -22,8 +22,8 @@ $base_rp_name = "rp-04-nested-lab"
 # ----------------------------------------
 # vSAN Cluster settings
 
-$nest_dc_name = "lab-dc-02"
-$nest_cluster_name = "nsx-cluster-01"
+$nest_dc_name = "lab-dc-21"
+$nest_cluster_name = "nsx-cluster-21"
 $vm_num = 2
 $hv_ip_4oct_start = 121 # 4th Octet for ESXi-vmk0-IP
 
@@ -31,8 +31,8 @@ $hv_ip_4oct_start = 121 # 4th Octet for ESXi-vmk0-IP
 # Nested ESXi settings
 
 # ESXi Template VM
-$template_vm_name = "esxi70u1c-template-01"
-$linked_clone = $true
+$template_vm_name = "esxi70u3-template-01"
+$linked_clone = $false
 
 # VM Name / ESXi Hostname Prefix
 $vm_name_prefix = "vm-lab-esxi-"
