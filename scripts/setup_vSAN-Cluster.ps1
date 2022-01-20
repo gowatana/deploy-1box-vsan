@@ -17,6 +17,14 @@ if($create_vsphre_cluster -eq $true){$create_esxi_vms = $true}
 task_message "Pre-Setup-01" "Disconnect from All vCeners"
 disconnect_all_vc
 
+task_message "Pre-Setup-02" "Connect Base vCener"
+connect_vc -vc_addr $base_vc_address -vc_user $base_vc_user -vc_pass $base_vc_pass
+disconnect_all_vc
+
+task_message "Pre-Setup-03" "Connect Nest vCener"
+connect_vc -vc_addr $nest_vc_address -vc_user $nest_vc_user -vc_pass $nest_vc_pass
+disconnect_all_vc
+
 task_message "Step-01" "Create vSphere Cluster"
 if($create_vsphre_cluster -eq $true){
     connect_vc -vc_addr $nest_vc_address -vc_user $nest_vc_user -vc_pass $nest_vc_pass
