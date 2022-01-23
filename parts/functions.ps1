@@ -54,6 +54,10 @@ function connect_vc($vc_addr, $vc_user, $vc_pass) {
         -User $vc_user -Password $vc_pass -Force
     ""
     ($vc | select Name,Version,Build,IsConnected | Format-List | Out-String).Trim()
+    if($vc.IsConnected -ne $True){
+        "vCenter IsConnected: NOT True"
+        exit 1
+    }
 }
 
 # ----------------------------------------
