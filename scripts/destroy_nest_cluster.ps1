@@ -13,7 +13,7 @@ if(-Not $esxi_vm_folder_name){$esxi_vm_folder_name = ("VM_VC-" + $nest_vc_addres
 # Disconnect from All vCeners
 disconnect_all_vc
 
-task_message "Step-01" "Remove vSAN Cluster and ESXi"
+task_message "Step-101" "Remove vSAN Cluster and ESXi"
 connect_vc -vc_addr $nest_vc_address -vc_user $nest_vc_user -vc_pass $nest_vc_pass
 $cluster = Get-Datacenter $nest_dc_name | Get-Cluster $nest_cluster_name
 if($? -eq $true){
@@ -23,7 +23,7 @@ if($? -eq $true){
 }
 disconnect_all_vc
 
-task_message "Step-02" "Remove vSAN Witness Host"
+task_message "Step-102" "Remove vSAN Witness Host"
 if($vsan_witness_host_vcname){
     connect_vc -vc_addr $nest_vc_address -vc_user $nest_vc_user -vc_pass $nest_vc_pass
     $hv = Get-Datacenter -Name $witness_dc | Get-VMHost -Name $vsan_witness_host_vcname
@@ -36,7 +36,7 @@ if($vsan_witness_host_vcname){
     "Skip"
 }
 
-task_message "Step-06" "Remove vDS"
+task_message "Step-103" "Remove vDS"
 if($create_vds -eq $true){
     connect_vc -vc_addr $nest_vc_address -vc_user $nest_vc_user -vc_pass $nest_vc_pass
     if($? -eq $true){

@@ -13,7 +13,7 @@ if(-Not $esxi_vm_folder_name){$esxi_vm_folder_name = ("VM_VC-" + $nest_vc_addres
 # Disconnect from All vCeners
 disconnect_all_vc
 
-task_message "Step-03" "Remove Witness Host VA"
+task_message "Step-201" "Remove Witness Host VA"
 if($vsan_witness_va_name){
     connect_vc -vc_addr $base_vc_address -vc_user $base_vc_user -vc_pass $base_vc_pass
     $vsan_witness_va = Get-VM $vsan_witness_va_name
@@ -26,7 +26,7 @@ if($vsan_witness_va_name){
     "Skip"
 }
 
-task_message "Step-04" "Remove ESXi VMs"
+task_message "Step-202" "Remove ESXi VMs"
 connect_vc -vc_addr $base_vc_address -vc_user $base_vc_user -vc_pass $base_vc_pass
 
 "Remove VMs:"
@@ -40,7 +40,7 @@ $vm_name_list | ForEach-Object {
 }
 disconnect_all_vc
 
-task_message "Step-05" "Remove VM Folder"
+task_message "Step-203" "Remove VM Folder"
 connect_vc -vc_addr $base_vc_address -vc_user $base_vc_user -vc_pass $base_vc_pass
 if(-Not $esxi_vm_folder_name){$esxi_vm_folder_name = ("VM_VC-" + $nest_vc_address + "_" + $nest_cluster_name)}
 $esxi_vm_folder = Get-Datacenter $base_dc_name | Get-Folder -Type VM -Name $esxi_vm_folder_name
