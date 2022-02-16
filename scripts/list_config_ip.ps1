@@ -7,8 +7,6 @@ $config_dir_name = (Get-Item $config_dir -ErrorAction:Stop).Name
 $output_dir = "./csv"
 $output_csv = (Join-Path $output_dir $config_dir_name) + ".csv"
 
-#$output_table = @()
-
 ls $config_dir | % {
     $config_file = Join-Path $config_dir $_.Name
 
