@@ -4,7 +4,7 @@
 # Setup flags
 $create_esxi_vms       = $true  # $true or $false
 $create_vsphre_cluster = $true  # $true or $false
-$create_vds            = $true  # $true or $false
+$create_vds            = $false # $true or $false
 $create_witness_vm     = $false # $true or $false
 $setup_vsan_wts        = $false # $true or $false (WTS: Witness Traffic Separation)
 $create_vsan_cluster   = $true  # $true or $false
@@ -22,16 +22,16 @@ $base_rp_name = "rp-04-nested-lab"
 # ----------------------------------------
 # vSAN Cluster settings
 
-$nest_dc_name = "lab-dc-01"
-$nest_cluster_name = "lab-cluster-01"
+$nest_dc_name = "lab-dc-11"
+$nest_cluster_name = "lab-cluster-11"
 $vm_num = 3
-$hv_ip_4oct_start = 31 # 4th Octet for ESXi-vmk0-IP
+$hv_ip_4oct_start = 111 # 4th Octet for ESXi-vmk0-IP
 
 # ----------------------------------------
 # Nested ESXi settings
 
 # ESXi Template VM
-$template_vm_name = "esxi70u3-template-01"
+$template_vm_name = "esxi70u3c-template-01"
 $linked_clone = $false
 
 # VM Name / ESXi Hostname Prefix
@@ -68,13 +68,13 @@ $witness_vmk_port = "vmk0" # vSAN WTS only
 
 $vmk1_vss = "vSwitch0"
 $vmk1_pg = "pg_vmk_vmotion"
-$vmk1_vlan = 1001
+$vmk1_vlan = 1111
 $vmk1_ip_prefix = "10.0.1." # $hv_ip_prefix_vmk1 + $hv_ip_4oct_start => 10.0.1.31
 $vmk1_subnetmask = "255.255.255.0" # /24
 
 $vmk2_vss = "vSwitch0"
 $vmk2_pg = "pg_vmk_vsan"
-$vmk2_vlan = 1002
+$vmk2_vlan = 1112
 $vmk2_ip_prefix = "10.0.2." # $hv_ip_prefix_vmk2 + $hv_ip_4oct_start => 10.0.2.31
 $vmk2_subnetmask = "255.255.255.0" # /24
 
@@ -82,13 +82,13 @@ $multi_vmnic = 4 # add vmnic1 .. vmnic3
 
 # ----------------------------------------
 # vDS Settings
-$vds_config = (Split-Path -Path $PSScriptRoot -Parent) + "/vds/conf_lab-vds-01.ps1"
+$vds_config = (Split-Path -Path $PSScriptRoot -Parent) + "/vds/conf_lab-vds-11.ps1"
 
 # ----------------------------------------
 # Storage Settings
 
 # vSAN Datastore Name
-$vsan_ds_name = "vsanDatastore-01"
+$vsan_ds_name = "vsanDatastore-11"
 
 # vSAN Disk Group type
 $vsan_dg_type = "Hybrid" # Hybrid or AllFlash
