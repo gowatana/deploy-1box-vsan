@@ -121,6 +121,7 @@ $vm_name_list | ForEach-Object {
 task_message "02-01-10" "waiting for VM startup."
 $vm_poweron_check_wait_sec = 30
 $vm_poweron_check_interval_sec = 5
+$vm_poweron_check_reset_wait_sec = 10
 ("startup Wait: " + $vm_poweron_check_wait_sec + "seconds")
 Start-Sleep $vm_poweron_check_wait_sec
 
@@ -134,7 +135,7 @@ task_message "02-01-11" "VM PowerOn Check"
         $vm = Get-VM $vm_name
         (Get-Date).DateTime + " " + $vm_name
         if($vm.Guest.ExtensionData.ToolsStatus -eq "toolsOk"){
-            Write-Host "toolsOk"
+            Write-Host ($vm_name + ":toolsOk")
             break
         }
         $vm_reset_check_counter += 1
@@ -142,6 +143,7 @@ task_message "02-01-11" "VM PowerOn Check"
             Write-Host "VM Reset: $vm_name"
             $vm.ExtensionData.ResetVM()
             $vm_reset_check_counter = 0
+            Start-Sleep  $vm_poweron_check_reset_wait_sec
         }
         Start-Sleep $vm_poweron_check_interval_sec
     }
