@@ -140,7 +140,7 @@ task_message "02-01-11" "VM PowerOn Check"
         }
         $vm_reset_check_counter += 1
         if($vm_reset_check_counter -ge $vm_reset_check_limit){
-            Write-Host "VM Reset: $vm_name"
+            Write-Host ($vm_name + ":ResetVM")
             $vm.ExtensionData.ResetVM()
             $vm_reset_check_counter = 0
             Start-Sleep  $vm_poweron_check_reset_wait_sec
