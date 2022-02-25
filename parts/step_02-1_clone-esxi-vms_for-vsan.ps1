@@ -76,14 +76,21 @@ $vm_name_list | ForEach-Object {
             select Parent,Name,CapacityGB | ft -AutoSize
     }
 
-    task_message "02-01-06" ("Set ESXi Memory size: " + $vm_name)
+    task_message "02-01-06" ("Set ESXi vCPU: " + $vm_name)
+    if($esxi_vcpu){
+        $vm | Set-VM -NumCpu $esxi_vcpu -CoresPerSocket $esxi_vcpu -Confirm:$false
+    }else{
+        "Skip"
+    }
+
+    task_message "02-01-07a" ("Set ESXi Memory size: " + $vm_name)
     if($esxi_memory_gb){
         $vm | Set-VM -MemoryGB $esxi_memory_gb -Confirm:$false
     }else{
         "Skip"
     }
 
-    task_message "02-01-07" ("Set Memory size for Multi-DG: " + $vm_name)
+    task_message "02-01-07b" ("Set Memory size for Multi-DG: " + $vm_name)
     $esxi_memory_gb_for_multi_dg = 10
     if($vsan_dg_count -And ($vsan_dg_count -ge 2)){
         if($esxi_memory_gb){
