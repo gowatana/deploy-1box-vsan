@@ -40,11 +40,11 @@ $cluster | Get-VMHost | Get-VMHostNetwork | Set-VMHostNetwork -DnsAddress $dns_s
     select HostName,DnsAddress | Sort-Object HostName | ft -AutoSize
 
 task_message "03-01-06" "Add ESXi NTP Servers"
-$cluster | Get-VMHost | Add-VMHostNtpServer -NtpServer $ntp_servers
+$cluster | Get-VMHost | Add-VMHostNtpServer -NtpServer $ntp_servers | Out-Null
 $cluster | Get-VMHost | Sort-Object Name | select Name,@{N="NtpServers";E={$_|Get-VMHostNtpServer}}
 
 task_message "03-01-07" "Start ESXi NTP Service"
-$cluster | Get-VMHost | Get-VMHostService | where {$_.key -eq "ntpd"} | Set-VMHostService -Policy on
-$cluster | Get-VMHost | Get-VMHostService | where {$_.key -eq "ntpd"} | Start-VMHostService
+$cluster | Get-VMHost | Get-VMHostService | where {$_.key -eq "ntpd"} | Set-VMHostService -Policy on | Out-Null
+$cluster | Get-VMHost | Get-VMHostService | where {$_.key -eq "ntpd"} | Start-VMHostService | Out-Null
 $cluster | Get-VMHost | Get-VMHostService | where {$_.key -eq "ntpd"} | 
     select VMHost,Key,Policy,Running | Sort-Object VMHost | ft -AutoSize
