@@ -53,9 +53,6 @@ $vm_name_list | ForEach-Object {
         "Skip"
     }
     
-    
-    $vm | select Name,NumCpu,MemoryGB,Folder,VMHost,HardwareVersion,GuestId | Format-List
-
     task_message "02-01-02" ("Set vNIC#1: " + $vm_name)
     $base_pg = Get-VMHost $base_hv_name | Get-VirtualPortGroup -Name $base_pg_name
     $vnic_1 = if(Get-VirtualNetwork -Name $base_pg_name | where {$_.NetworkType -ne "Network"}){
@@ -155,3 +152,14 @@ Get-VM $vm_name_list | select `
     PowerState,
     @{N="ToolsStatus";E={$_.Guest.ExtensionData.ToolsStatus}} |
     Sort-Object Name | ft -AutoSize
+
+task_message "02-01-13" "List VM Config"
+Get-VM $vm_name_list | select `
+     Name,
+     NumCpu,
+     MemoryGB,
+     Folder,
+     VMHost,
+     HardwareVersion,
+     GuestId | 
+     Sort-Object Name | Format-List
