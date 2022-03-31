@@ -17,7 +17,7 @@ $env_config = "$config_base/base-env/env_lab-vc-01.ps1"
 Get-Item $env_config -ErrorAction:Stop | fl FullName,LastWriteTime
 . $env_config
 
-$base_rp_name = "rp-04-nested-lab"
+$base_rp_name = "rp-04-lab-nested"
 
 # ----------------------------------------
 # vSAN Cluster settings
