@@ -67,4 +67,4 @@ ls $config_dir | % {
         $tab.vc_hv_name = $vc_hv_name_list[$vm_count]
         $tab
     }
-} | Export-Csv -Path $output_csv
+} | Export-Csv -Path $output_csv -NoTypeInformation
