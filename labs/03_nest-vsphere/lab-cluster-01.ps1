@@ -10,7 +10,7 @@ $hv_ip_4oct_start = 111 # 4th Octet for ESXi-vmk0-IP
 # Nested ESXi VM settings
 
 # Nested ESXi VM Template
-$template_vm_name = "esxi70u3c-template-01"
+$template_vm_name = "esxi80u1-template-01"
 $linked_clone = $false
 
 # Nested ESXi VM Name
@@ -18,7 +18,7 @@ $vm_name_prefix = "vm-lab-esxi-"
 
 # Nested ESXi VM Spec
 $esxi_vcpu = 2
-$esxi_memory_gb = 14
+$esxi_memory_gb = 16
 
 # ----------------------------------------
 # Nested ESXi Hypervisor settings
@@ -78,7 +78,7 @@ $vsan_ds_name = "vsanDatastore-01"
 $vsan_dg_type = "Hybrid" # Hybrid or AllFlash
 
 # vSAN Disk settings
-$vsan_cache_disk_size_gb = 50
-$vsan_capacity_disk_size_gb = 100
-$vsan_capacity_disk_count = 2
-$vsan_dg_count = 2 # Multi-Diskgroup setup
+$vsan_cache_disk_size_gb = 100
+$vsan_capacity_disk_size_gb = 300
+$vsan_capacity_disk_count = 1
+$vsan_dg_count = 1 # Multi-Diskgroup setup
