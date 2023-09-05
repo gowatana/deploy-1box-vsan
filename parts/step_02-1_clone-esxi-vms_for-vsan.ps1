@@ -133,7 +133,7 @@ task_message "02-01-11" "VM PowerOn Check"
 (Get-VM $vm_name_list | Sort-object Name) | ForEach-Object {
     $vm = $_
     $vm_name = $vm.Name
-    $vm_reset_check_limit = 18
+    $vm_reset_check_limit = 30
     $vm_reset_check_counter = 0
     for (){
         $vm = Get-VM $vm_name
