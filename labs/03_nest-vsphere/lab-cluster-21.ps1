@@ -1,10 +1,10 @@
 # ----------------------------------------
 # Common Cluster settings
 
-$nest_dc_name = "lab-dc-01"
-$nest_cluster_name = "lab-cluster-01"
-$vm_num = 3
-$hv_ip_4oct_start = 111 # 4th Octet for ESXi-vmk0-IP
+$nest_dc_name = "lab-dc-21"
+$nest_cluster_name = "lab-cluster-21"
+$vm_num = 2
+$hv_ip_4oct_start = 121 # 4th Octet for ESXi-vmk0-IP
 
 # ----------------------------------------
 # Nested ESXi VM settings
@@ -44,8 +44,8 @@ $ntp_servers = "192.168.1.101","192.168.1.102"
 # ----------------------------------------
 # Network additional settings (Multi-vmk)
 
-$add_vmk1 = $true # $true or $false
-$add_vmk2 = $true # $true or $false
+$add_vmk1 = $false # $true or $false
+$add_vmk2 = $false # $true or $false
 
 $vmotion_vmk_port = "vmk1"
 $vsan_vmk_port = "vmk2"
@@ -75,7 +75,7 @@ $multi_vmnic = 4 # add vmnic1 .. vmnic3
 $vsan_ds_name = "vsanDatastore-01"
 
 # vSAN Disk Group type
-$vsan_dg_type = "Hybrid" # Hybrid or AllFlash
+$vsan_dg_type = "AllFlash" # Hybrid or AllFlash
 
 # vSAN Disk settings
 $vsan_cache_disk_size_gb = 100
