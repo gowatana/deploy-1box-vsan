@@ -47,8 +47,8 @@ $ntp_servers = "192.168.1.101","192.168.1.102"
 $add_vmk1 = $false # $true or $false
 $add_vmk2 = $false # $true or $false
 
-$vmotion_vmk_port = "vmk1"
-$vsan_vmk_port = "vmk2"
+$vmotion_vmk_port = "vmk0"
+$vsan_vmk_port = "vmk0"
 $witness_vmk_port = "vmk0" # vSAN WTS only
 
 $vmk1_vss = "vSwitch0"

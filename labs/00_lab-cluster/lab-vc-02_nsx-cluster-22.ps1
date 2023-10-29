@@ -4,7 +4,7 @@
 # Setup flags
 $create_esxi_vms       = $true  # $true or $false
 $create_vsphre_cluster = $true  # $true or $false
-$create_vds            = $true  # $true or $false
+$create_vds            = $false # $true or $false
 $create_witness_vm     = $false # $true or $false
 $setup_vsan_wts        = $false # $true or $false (WTS: Witness Traffic Separation)
 $create_vsan_cluster   = $false # $true or $false
@@ -31,7 +31,7 @@ $base_env_config = "$config_base/02_base-vsphere/infra-dc-01_infra-cluster-01.ps
 $nest_vc_config = "$config_base/01_vcenter-login/lab-vc-02.ps1"
 
 # Nest-vSphere environment config
-$nest_env_config = "$config_base/03_nest-vsphere/lab-cluster-22.ps1"
+$nest_env_config = "$config_base/03_nest-vsphere/nsx-cluster-22.ps1"
 
 # ----------------------------------------
 # Additional configs
