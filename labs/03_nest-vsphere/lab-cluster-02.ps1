@@ -31,6 +31,12 @@ $hv_pass = "VMware1!"
 $nest_hv_hostname_prefix = "lab-esxi-"
 $domain = "go-lab.jp"
 
+# Nested ESXi Hostname Fixed List
+$vc_hv_name_use_fqdn = $true # $true or $false
+$nest_hv_hostname_list = 1..$vm_num | % {
+    $nest_hv_hostname_prefix + ($hv_ip_4oct_start + $_ - 1).ToString("00") + "." + $domain
+}
+
 # Nested ESXi Network setting
 $hv_ip_prefix_vmk0 = "192.168.10." # $hv_ip_prefix_vmk0 + $hv_ip_4oct_start => 192.168.10.111
 $hv_vmk0_subnetmask = "255.255.255.0" # /24

@@ -12,7 +12,9 @@ function check_format($check_id, $check_name, $check_result) {
 
 # Generate VM / ESXi List
 $vm_name_list = gen_vm_name_list $vm_num $hv_ip_4oct_start $hv_ip_prefix_vmk0
-$nest_hv_hostname_list = gen_nest_hv_hostname_list $vm_num $hv_ip_4oct_start $nest_hv_hostname_prefix
+if($nest_hv_hostname_list -eq $null){
+    $nest_hv_hostname_list = gen_nest_hv_hostname_list $vm_num $hv_ip_4oct_start $nest_hv_hostname_prefix
+}
 $hv_ip_vmk0_list = gen_hv_ip_vmk0_list $vm_num $hv_ip_4oct_start $hv_ip_prefix_vmk0
 $vc_hv_name_list = $hv_ip_vmk0_list
 
@@ -83,6 +85,15 @@ $hv_ip_vmk0_list | ForEach-Object {
     task_message ("Check-02-08-" + $vm_count.ToString("00")) "if does NOT reach vmk0-IP: $hv_ip_vmk0"
     $check_result = Test-Connection -Count 2 -Quiet $hv_ip_vmk0 -ErrorAction:Ignore
     $check_table += check_format ("Check-02-08-" + $vm_count.ToString("00")) "if does NOT reach vmk0-IP: $hv_ip_vmk0" ($check_result -eq $false)
+}
+
+$vm_count = 0
+$nest_hv_hostname_list | ForEach-Object {
+    $vm_count += 1
+    $nest_hv_hostname = $_
+    task_message ("Check-02-09-" + $vm_count.ToString("00")) "exists DNS Record: $nest_hv_hostname"
+    $check_result = Resolve-DnsName $nest_hv_hostname -ErrorAction:Ignore
+    $check_table += check_format ("Check-02-09-" + $vm_count.ToString("00")) "exists DNS Record: $nest_hv_hostname" ($? -eq $true)
 }
 
 task_message "Step-02-End" "Logout from Base-vSphere"
