@@ -89,7 +89,7 @@ if($create_witness_vm -eq $true){
 
 # Generate VM / ESXi List
 $vm_name_list = @(gen_vm_name_list $vm_num $hv_ip_4oct_start $hv_ip_prefix_vmk0)
-if($nest_hv_hostname_list -eq $null){
+if($nest_hv_hostname_list.Count -eq 0){
     $nest_hv_hostname_list = @(gen_nest_hv_hostname_list $vm_num $hv_ip_4oct_start $nest_hv_hostname_prefix)
 }
 $hv_ip_vmk0_list = @(gen_hv_ip_vmk0_list $vm_num $hv_ip_4oct_start $hv_ip_prefix_vmk0)
