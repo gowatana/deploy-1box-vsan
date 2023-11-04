@@ -1,14 +1,6 @@
 # Load Functions
 . ./parts/functions.ps1
 
-# Generate VM / ESXi List
-$vm_name_list = gen_vm_name_list $vm_num $hv_ip_4oct_start $hv_ip_prefix_vmk0
-if($nest_hv_hostname_list -eq $null){
-    $nest_hv_hostname_list = gen_nest_hv_hostname_list $vm_num $hv_ip_4oct_start $nest_hv_hostname_prefix
-}
-$hv_ip_vmk0_list = gen_hv_ip_vmk0_list $vm_num $hv_ip_4oct_start $hv_ip_prefix_vmk0
-$vc_hv_name_list = $hv_ip_vmk0_list
-
 # fix VM Folder name
 if(-Not $esxi_vm_folder_name){$esxi_vm_folder_name = ("VM_VC-" + $nest_vc_address + "_" + $nest_cluster_name)}
 
