@@ -88,7 +88,7 @@ $nest_hv_hostname_list | ForEach-Object {
     $vm_count += 1
     $nest_hv_hostname = $_
     task_message ("Check-02-09-" + $vm_count.ToString("00")) "exists DNS Record: $nest_hv_hostname"
-    $check_result = Resolve-DnsName $nest_hv_hostname -ErrorAction:Ignore
+    $check_result = nslookup $nest_hv_hostname | Select-String -Pattern $hv_ip_vmk0_list[($vm_count - 1)] -Quiet
     $check_table += check_format ("Check-02-09-" + $vm_count.ToString("00")) "exists DNS Record: $nest_hv_hostname" ($? -eq $true)
 }
 
