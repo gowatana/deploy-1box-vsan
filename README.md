@@ -1,8 +1,10 @@
 # WIP: ネステッド vSAN ラボを構築するための工夫
 
-[Wiki](https://github.com/gowatana/deploy-1box-vsan/wiki)
+## Wiki
 
-設定ファイル集
+* [Wiki](https://github.com/gowatana/deploy-1box-vsan/wiki)
+
+## 旧: 設定ファイル集
 
 * https://github.com/gowatana/vsan-advent-2020
 * https://github.com/gowatana/vsan-advent-2019
