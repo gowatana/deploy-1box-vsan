@@ -78,7 +78,7 @@ PS /work/deploy-1box-vsan> ./lab_setup.ps1 ../vbox-configs/labs/lab-vc-01_lab-cl
 
 スクリプトの実行（事前環境確認 → クラスタ作成 - 実行確認なし）。
 ```
-PS /work/deploy-1box-vsan> ./lab_setup.ps1 ../vbox-configs/labs/lab-vc-01_lab-cluster-01_Hybrid.ps1 create
+PS /work/deploy-1box-vsan> ./lab_setup.ps1 ../vbox-configs/labs/lab-vc-01_lab-cluster-01_Hybrid.ps1 create skip
 ```
 
 
