@@ -11,24 +11,25 @@ function check_format($check_id, $check_name, $check_result) {
 }
 
 # ----------------------------------------
-# Test Step-01
-task_message "Step-01" "Disconnect from All vCeners"
-disconnect_all_vc
-
-task_message "Check-01-01" "`$vm_name_list"
-$vm_name_list
-
-task_message "Check-01-02" "`$nest_hv_hostname_list"
-$nest_hv_hostname_list
-
-task_message "Check-01-03" "`$hv_ip_vmk0_list"
-$hv_ip_vmk0_list
-
-task_message "Check-01-04" "`$vc_hv_name_list"
-$vc_hv_name_list
-
 # Initialize the check table
 $check_table = @()
+
+# ----------------------------------------
+# Test Step-01
+task_message "Step-01-Start" "Login to vCenter"
+
+task_message "Check-01-00" "Disconnect from All vCeners"
+disconnect_all_vc | Out-Null
+
+task_message "Check-01-01" "Connect-Test Base vCener"
+connect_vc -vc_addr $base_vc_address -vc_user $base_vc_user -vc_pass $base_vc_pass | Out-Null
+$check_table += check_format "Check-01-01" "Login to `$base_vc_address: $base_vc_address" ($? -eq $true)
+disconnect_all_vc | Out-Null
+
+task_message "Check-01-02" "Connect-Test Nest vCener"
+connect_vc -vc_addr $nest_vc_address -vc_user $nest_vc_user -vc_pass $nest_vc_pass | Out-Null
+$check_table += check_format "Check-01-02" "Login to `$nest_vc_address: $nest_vc_address" ($? -eq $true)
+disconnect_all_vc
 
 # ----------------------------------------
 # Test Step-02
@@ -158,6 +159,24 @@ if($create_vds -eq $true){
     task_message "Step-05-End" "Logout from Nested-vSphere"
     disconnect_all_vc
 }
+
+# ----------------------------------------
+# Output Target List
+
+task_message "Check-00-01" "`$vm_name_list"
+$vm_name_list
+
+task_message "Check-00-02" "`$nest_hv_hostname_list"
+$nest_hv_hostname_list
+
+task_message "Check-00-03" "`$hv_ip_vmk0_list"
+$hv_ip_vmk0_list
+
+task_message "Check-00-04" "`$vc_hv_name_list"
+$vc_hv_name_list
+
+# ----------------------------------------
+# Output Check Table
 
 task_message "END" "Show Check table"
 $check_table | ft -AutoSize
