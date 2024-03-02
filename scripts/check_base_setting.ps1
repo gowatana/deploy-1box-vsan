@@ -89,8 +89,10 @@ $nest_hv_hostname_list | ForEach-Object {
     $vm_count += 1
     $nest_hv_hostname = $_
     task_message ("Check-02-09-" + $vm_count.ToString("00")) "exists DNS Record: $nest_hv_hostname"
-    $check_result = nslookup $nest_hv_hostname | Select-String -Pattern $hv_ip_vmk0_list[($vm_count - 1)] -Quiet
-    $check_table += check_format ("Check-02-09-" + $vm_count.ToString("00")) "exists DNS Record: $nest_hv_hostname" ($? -eq $true)
+    $hv_ip = (Resolve-DnsName $nest_hv_hostname | where {($_.Type -eq "A") -and ($_.Name -eq $nest_hv_hostname) -and ($_.Section -eq "Answer")}).IPAddress
+    $check_hv_ip_vmk0 = $hv_ip_vmk0_list[($vm_count - 1)]
+    $check_result = $hv_ip -eq $check_hv_ip_vmk0
+    $check_table += check_format ("Check-02-09-" + $vm_count.ToString("00")) "exists DNS Record: $nest_hv_hostname to $check_hv_ip_vmk0" $check_result
 }
 
 task_message "Step-02-End" "Logout from Base-vSphere"
