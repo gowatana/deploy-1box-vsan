@@ -10,30 +10,29 @@ function check_format($check_id, $check_name, $check_result) {
     return $check
 }
 
-# Generate VM / ESXi List
-$vm_name_list = gen_vm_name_list $vm_num $hv_ip_4oct_start $hv_ip_prefix_vmk0
-$nest_hv_hostname_list = gen_nest_hv_hostname_list $vm_num $hv_ip_4oct_start $nest_hv_hostname_prefix
-$hv_ip_vmk0_list = gen_hv_ip_vmk0_list $vm_num $hv_ip_4oct_start $hv_ip_prefix_vmk0
-$vc_hv_name_list = $hv_ip_vmk0_list
-
-task_message "Step-01" "Disconnect from All vCeners"
-disconnect_all_vc
-
-task_message "Check-01-01" "`$vm_name_list"
-$vm_name_list
-
-task_message "Check-01-02" "`$nest_hv_hostname_list"
-$nest_hv_hostname_list
-
-task_message "Check-01-03" "`$hv_ip_vmk0_list"
-$hv_ip_vmk0_list
-
-task_message "Check-01-04" "`$vc_hv_name_list"
-$vc_hv_name_list
-
+# ----------------------------------------
 # Initialize the check table
 $check_table = @()
 
+# ----------------------------------------
+# Test Step-01
+task_message "Step-01-Start" "Login to vCenter"
+
+task_message "Check-01-00" "Disconnect from All vCeners"
+disconnect_all_vc | Out-Null
+
+task_message "Check-01-01" "Connect-Test Base vCener"
+connect_vc -vc_addr $base_vc_address -vc_user $base_vc_user -vc_pass $base_vc_pass | Out-Null
+$check_table += check_format "Check-01-01" "Login to `$base_vc_address: $base_vc_address" ($? -eq $true)
+disconnect_all_vc | Out-Null
+
+task_message "Check-01-02" "Connect-Test Nest vCener"
+connect_vc -vc_addr $nest_vc_address -vc_user $nest_vc_user -vc_pass $nest_vc_pass | Out-Null
+$check_table += check_format "Check-01-02" "Login to `$nest_vc_address: $nest_vc_address" ($? -eq $true)
+disconnect_all_vc
+
+# ----------------------------------------
+# Test Step-02
 task_message "Step-02-Start" "Login to Base-vSphere"
 connect_vc -vc_addr $base_vc_address -vc_user $base_vc_user -vc_pass $base_vc_pass
 
@@ -85,9 +84,20 @@ $hv_ip_vmk0_list | ForEach-Object {
     $check_table += check_format ("Check-02-08-" + $vm_count.ToString("00")) "if does NOT reach vmk0-IP: $hv_ip_vmk0" ($check_result -eq $false)
 }
 
+$vm_count = 0
+$nest_hv_hostname_list | ForEach-Object {
+    $vm_count += 1
+    $nest_hv_hostname = $_
+    task_message ("Check-02-09-" + $vm_count.ToString("00")) "exists DNS Record: $nest_hv_hostname"
+    $check_result = nslookup $nest_hv_hostname | Select-String -Pattern $hv_ip_vmk0_list[($vm_count - 1)] -Quiet
+    $check_table += check_format ("Check-02-09-" + $vm_count.ToString("00")) "exists DNS Record: $nest_hv_hostname" ($? -eq $true)
+}
+
 task_message "Step-02-End" "Logout from Base-vSphere"
 disconnect_all_vc
 
+# ----------------------------------------
+# Test Step-03
 task_message "Step-03-Start" "Login Nested-vSphere"
 connect_vc -vc_addr $nest_vc_address -vc_user $nest_vc_user -vc_pass $nest_vc_pass
 
@@ -106,6 +116,8 @@ $check_table += check_format "Check-03-03" "if does NOT exist `$vsan_ds_name: $v
 task_message "Step-03-End" "Logout from Nested-vSphere"
 disconnect_all_vc
 
+# ----------------------------------------
+# Test Step-04
 task_message "Step-04" "vSAN Witness VM Check"
 if($create_witness_vm -eq $true){
     task_message "Step-04-Start" "Login to Base-vSphere"
@@ -133,6 +145,8 @@ if($create_witness_vm -eq $true){
     "Skip"
 }
 
+# ----------------------------------------
+# Test Step-05
 task_message "Step-05" "vDS Check"
 if($create_vds -eq $true){
     task_message "Step-05-Start" "Login to Nested-vSphere"
@@ -145,6 +159,24 @@ if($create_vds -eq $true){
     task_message "Step-05-End" "Logout from Nested-vSphere"
     disconnect_all_vc
 }
+
+# ----------------------------------------
+# Output Target List
+
+task_message "Check-00-01" "`$vm_name_list"
+$vm_name_list
+
+task_message "Check-00-02" "`$nest_hv_hostname_list"
+$nest_hv_hostname_list
+
+task_message "Check-00-03" "`$hv_ip_vmk0_list"
+$hv_ip_vmk0_list
+
+task_message "Check-00-04" "`$vc_hv_name_list"
+$vc_hv_name_list
+
+# ----------------------------------------
+# Output Check Table
 
 task_message "END" "Show Check table"
 $check_table | ft -AutoSize

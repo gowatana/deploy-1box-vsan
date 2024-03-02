@@ -4,27 +4,6 @@ $parts_path = "./parts"
 # Load Functions
 . "$parts_path/functions.ps1"
 
-# Generate VM / ESXi List
-$vm_name_list = gen_vm_name_list $vm_num $hv_ip_4oct_start $hv_ip_prefix_vmk0
-$nest_hv_hostname_list = gen_nest_hv_hostname_list $vm_num $hv_ip_4oct_start $nest_hv_hostname_prefix
-$hv_ip_vmk0_list = gen_hv_ip_vmk0_list $vm_num $hv_ip_4oct_start $hv_ip_prefix_vmk0
-$vc_hv_name_list = $hv_ip_vmk0_list
-
-# Adjast Setup Flag
-if($create_vsan_cluster -eq $true){$create_vsphre_cluster = $true}
-if($create_vsphre_cluster -eq $true){$create_esxi_vms = $true}
-
-task_message "Pre-Setup-01" "Disconnect from All vCeners"
-disconnect_all_vc
-
-task_message "Pre-Setup-02" "Connect Base vCener"
-connect_vc -vc_addr $base_vc_address -vc_user $base_vc_user -vc_pass $base_vc_pass
-disconnect_all_vc
-
-task_message "Pre-Setup-03" "Connect Nest vCener"
-connect_vc -vc_addr $nest_vc_address -vc_user $nest_vc_user -vc_pass $nest_vc_pass
-disconnect_all_vc
-
 task_message "Step-01" "Create vSphere Cluster"
 if($create_vsphre_cluster -eq $true){
     connect_vc -vc_addr $nest_vc_address -vc_user $nest_vc_user -vc_pass $nest_vc_pass
