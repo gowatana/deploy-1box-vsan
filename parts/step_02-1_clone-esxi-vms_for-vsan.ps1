@@ -67,13 +67,37 @@ $vm_name_list | ForEach-Object {
         Sort-Object Name | select Parent,Name,NetworkName,@{N="StartConnected";E={$_.ConnectionState.StartConnected}} | ft -AutoSize
 
     task_message "02-01-04" ("Add VMDK (Cache device): " + $vm_name)
-    $vm | New-HardDisk -SizeGB $vsan_cache_disk_size_gb -StorageFormat Thin |
-        select Parent,Name,CapacityGB | ft -AutoSize
+    if($vsan_arch -eq "OSA"){
+        $vm | New-HardDisk -SizeGB $vsan_cache_disk_size_gb -StorageFormat Thin |
+            select Parent,Name,CapacityGB | ft -AutoSize
+    }else{
+        "Skip"
+    }
     
     task_message "02-01-05" ("Add VMDK (Capacity device): " + $vm_name)
-    for($i=1; $i -le $vsan_capacity_disk_count; $i++){
-        $vm | New-HardDisk -SizeGB $vsan_capacity_disk_size_gb -StorageFormat Thin |
-            select Parent,Name,CapacityGB | ft -AutoSize
+    if($vsan_arch -eq "OSA"){
+        for($i=1; $i -le $vsan_capacity_disk_count; $i++){
+            $vm | New-HardDisk -SizeGB $vsan_capacity_disk_size_gb -StorageFormat Thin |
+                select Parent,Name,CapacityGB | ft -AutoSize
+        }
+    }else{
+        "Skip"
+    }
+
+    task_message "09-01-05a" ("Add NVMe Controller: " + $vm_name)
+    if($vsan_arch -eq "ESA"){
+        task_message "09-01-01a" ("Add NVMe Controller: " + $vm_name)
+        add_nvme_controller -vm $vm
+    }else{
+        "Skip"
+    }
+
+    task_message "09-01-05b" ("Add NVMe Devices: " + $vm_name)
+    if($vsan_arch -eq "ESA"){
+        if($nvme_vmdk_count -eq $null){$nvme_vmdk_count = 1}
+        add_nvme_disk -vm $vm -vmdk_size_gb $nvme_vmdk_size_gb -nvme_vmdk_count $nvme_vmdk_count
+    }else{
+        "Skip"
     }
 
     task_message "02-01-06" ("Set ESXi vCPU: " + $vm_name)
@@ -101,6 +125,17 @@ $vm_name_list | ForEach-Object {
             $esxi_memory_gb = $esxi_memory_gb_for_multi_dg
         }
         $vm | Set-VM -MemoryGB $esxi_memory_gb -Confirm:$false
+    }else{
+        "Skip"
+    }
+
+    task_message "02-01-07c" ("Set Memory size for vSAN ESA: " + $vm_name)
+    $esxi_memory_gb_for_vsan_esa = 20
+    if ($vsan_arch -eq "ESA"){
+        if($esxi_memory_gb -lt $esxi_memory_gb_for_vsan_esa){
+            $esxi_memory_gb = $esxi_memory_gb_for_vsan_esa
+            $vm | Set-VM -MemoryGB $esxi_memory_gb -Confirm:$false
+        }
     }else{
         "Skip"
     }
