@@ -133,6 +133,57 @@ function mark_as_ssd {
 }
 
 # ----------------------------------------
+# vSAN ESA Tips
+function add_nvme_controller {
+    param (
+        $vm
+    )
+    echo "DEBUG-NVMe: $vm"# DEBUG
+    $spec = New-Object VMware.Vim.VirtualMachineConfigSpec
+    $spec.DeviceChange = New-Object VMware.Vim.VirtualDeviceConfigSpec[] (1)
+    $spec.DeviceChange[0] = New-Object VMware.Vim.VirtualDeviceConfigSpec
+    $spec.DeviceChange[0].Device = New-Object VMware.Vim.VirtualNVMEController
+    $spec.DeviceChange[0].Device.DeviceInfo = New-Object VMware.Vim.Description
+    $spec.DeviceChange[0].Device.DeviceInfo.Summary = 'NVMe Controller'
+    $spec.DeviceChange[0].Device.DeviceInfo.Label = 'NVMe Controller'
+    $spec.DeviceChange[0].Device.Key = -101
+    $spec.DeviceChange[0].Device.BusNumber = 0
+    $spec.DeviceChange[0].Operation = 'add'
+    $spec.CpuFeatureMask = New-Object VMware.Vim.VirtualMachineCpuIdInfoSpec[] (0)
+    $vm.ExtensionData.ReconfigVM($spec)
+}
+
+function add_nvme_disk {
+    param (
+        $vm,
+        [int]$vmdk_size_gb,
+        [int]$nvme_vmdk_count
+    )
+    $spec = New-Object VMware.Vim.VirtualMachineConfigSpec
+    $spec.DeviceChange = New-Object VMware.Vim.VirtualDeviceConfigSpec[] ($nvme_vmdk_count)
+    for ($d = 0; $d -lt $nvme_vmdk_count; $d++) {
+        $spec.DeviceChange[$d] = New-Object VMware.Vim.VirtualDeviceConfigSpec
+        $spec.DeviceChange[$d].FileOperation = 'create'
+        $spec.DeviceChange[$d].Device = New-Object VMware.Vim.VirtualDisk
+        $spec.DeviceChange[$d].Device.Backing = New-Object VMware.Vim.VirtualDiskFlatVer2BackingInfo
+        $spec.DeviceChange[$d].Device.Backing.FileName = ''
+        $spec.DeviceChange[$d].Device.Backing.EagerlyScrub = $false
+        $spec.DeviceChange[$d].Device.Backing.ThinProvisioned = $true
+        $spec.DeviceChange[$d].Device.Backing.DiskMode = 'persistent'
+        $spec.DeviceChange[$d].Device.ControllerKey = 31000
+        $spec.DeviceChange[$d].Device.UnitNumber = $d
+        $spec.DeviceChange[$d].Device.CapacityInKB = $vmdk_size_gb * 1024 * 1024
+        $spec.DeviceChange[$d].Device.DeviceInfo = New-Object VMware.Vim.Description
+        $spec.DeviceChange[$d].Device.DeviceInfo.Summary = 'New Hard Disk'
+        $spec.DeviceChange[$d].Device.DeviceInfo.Label = 'New Hard Disk'
+        $spec.DeviceChange[$d].Device.Key = -105 - $d
+        $spec.DeviceChange[$d].Operation = 'add'
+    }
+    $spec.CpuFeatureMask = New-Object VMware.Vim.VirtualMachineCpuIdInfoSpec[] (0)
+    $vm.ExtensionData.ReconfigVM($spec)
+}
+
+# ----------------------------------------
 # vSAN Witness Host Tips
 
 function set_vmk_witness_tag {

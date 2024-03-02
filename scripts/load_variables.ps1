@@ -102,3 +102,6 @@ if($vc_hv_name_use_fqdn){
 # Adjast Setup Flag
 if($create_vsan_cluster -eq $true){$create_vsphre_cluster = $true}
 if($create_vsphre_cluster -eq $true){$create_esxi_vms = $true}
+
+# Adjust Default Configs
+if($null -eq $vsan_arch){$vsan_arch = "OSA"}
