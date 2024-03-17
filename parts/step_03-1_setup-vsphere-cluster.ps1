@@ -35,16 +35,16 @@ task_message "03-01-04" "Remove VM Folder: Discovered virtual machine"
 Get-Folder -Type VM -Name "Discovered virtual machine" |
     where {($_ | Get-VM).Count -eq 0} | Remove-Folder -Confirm:$false
 
-task_message "03-01-05" "Set ESXi DNS Servers"
-$cluster | Get-VMHost | Get-VMHostNetwork | Set-VMHostNetwork -DnsAddress $dns_servers |
-    select HostName,DnsAddress | Sort-Object HostName | ft -AutoSize
+#task_message "03-01-05" "Set ESXi DNS Servers"
+#$cluster | Get-VMHost | Get-VMHostNetwork | Set-VMHostNetwork -DnsAddress $dns_servers |
+#    select HostName,DnsAddress | Sort-Object HostName | ft -AutoSize
 
-task_message "03-01-06" "Add ESXi NTP Servers"
-$cluster | Get-VMHost | Add-VMHostNtpServer -NtpServer $ntp_servers | Out-Null
-$cluster | Get-VMHost | Sort-Object Name | select Name,@{N="NtpServers";E={$_|Get-VMHostNtpServer}}
+#task_message "03-01-06" "Add ESXi NTP Servers"
+#$cluster | Get-VMHost | Add-VMHostNtpServer -NtpServer $ntp_servers | Out-Null
+#$cluster | Get-VMHost | Sort-Object Name | select Name,@{N="NtpServers";E={$_|Get-VMHostNtpServer}}
 
-task_message "03-01-07" "Start ESXi NTP Service"
-$cluster | Get-VMHost | Get-VMHostService | where {$_.key -eq "ntpd"} | Set-VMHostService -Policy on | Out-Null
-$cluster | Get-VMHost | Get-VMHostService | where {$_.key -eq "ntpd"} | Start-VMHostService | Out-Null
-$cluster | Get-VMHost | Get-VMHostService | where {$_.key -eq "ntpd"} | 
-    select VMHost,Key,Policy,Running | Sort-Object VMHost | ft -AutoSize
+#task_message "03-01-07" "Start ESXi NTP Service"
+#$cluster | Get-VMHost | Get-VMHostService | where {$_.key -eq "ntpd"} | Set-VMHostService -Policy on | Out-Null
+#$cluster | Get-VMHost | Get-VMHostService | where {$_.key -eq "ntpd"} | Start-VMHostService | Out-Null
+#$cluster | Get-VMHost | Get-VMHostService | where {$_.key -eq "ntpd"} | 
+#    select VMHost,Key,Policy,Running | Sort-Object VMHost | ft -AutoSize

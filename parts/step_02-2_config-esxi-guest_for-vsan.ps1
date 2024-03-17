@@ -58,4 +58,32 @@ for($i=1; $i -le $vm_num; $i++){
         nested_esxcli -ESXiVM:$vm_name -ESXiUser:$hv_user -ESXiPass:$hv_pass -ESXCLICmd $_
         sleep 1
     }
+
+    task_message "02-02-04" ("Configure Nested ESXi DNS Server: " + $vm_name)
+    # esxcli ...
+    $dns_servers | ForEach-Object {
+        $dns_server = $_
+        Write-Host "Set DNS Server: $dns_server"
+        $esxcli_cmd = "network ip dns server add --server=$dns_server"
+        nested_esxcli -ESXiVM:$vm_name -ESXiUser:$hv_user -ESXiPass:$hv_pass -ESXCLICmd $esxcli_cmd
+        sleep 1
+    }
+
+    task_message "02-02-05" ("Configure Nested ESXi DNS Search: " + $vm_name)
+    # esxcli ...
+    Write-Host "Set DNS Search: $domain"
+    $esxcli_cmd = "network ip dns search add --domain=$domain"
+    nested_esxcli -ESXiVM:$vm_name -ESXiUser:$hv_user -ESXiPass:$hv_pass -ESXCLICmd $esxcli_cmd
+    sleep 1 
+
+    task_message "02-02-06" ("Configure Nested ESXi NTP Server: " + $vm_name)
+    # esxcli ...
+    $ntp_server_list = ""
+    $ntp_servers | ForEach-Object {
+        $ntp_server = $_
+        $ntp_server_list = $ntp_server_list + " --server=$ntp_server"
+    }
+    $esxcli_cmd = "system ntp set --enabled=1" + $ntp_server_list
+    nested_esxcli -ESXiVM:$vm_name -ESXiUser:$hv_user -ESXiPass:$hv_pass -ESXCLICmd $esxcli_cmd
+    sleep 1
 }
