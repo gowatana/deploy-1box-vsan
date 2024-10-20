@@ -92,7 +92,7 @@ PS /work/deploy-1box-vsan> ./lab_setup.ps1 ../deploy-1box-vsan-configs_examples/
 Install-Module Posh-SSH -Scope CurrentUser
 ```
 
-2. config で、`$enable_gen_esxi_cert = true` を指定する。
+2. config に、`$enable_gen_esxi_cert = true` を追記する。
 
 
 # 過去遺産
