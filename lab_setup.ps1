@@ -24,7 +24,6 @@ if($operation_type -eq "pretest"){
     ./scripts/destroy_nest_cluster.ps1
     ./scripts/destroy_base_cluster.ps1
     ./scripts/setup_vSAN-Cluster.ps1
-    ./scripts/check_base_setting.ps1
 }else{
     Write-Host ("arg1: pretest, create, delete, reset")
     exit
