@@ -78,6 +78,23 @@ PS /work/deploy-1box-vsan> ./lab_setup.ps1 ../deploy-1box-vsan-configs_examples/
 PS /work/deploy-1box-vsan> ./lab_setup.ps1 ../deploy-1box-vsan-configs_examples/labs/lab-vc-01_lab-cluster-01.ps1 delete
 ```
 
+# ESXi の自己署名証明書 生成（VCF むけ）
+
+注意点
+* Windows 版 PowerShell のみで対応
+* このツールを実行するマシンから、自動作成される ESXi VM への SSH 接続が可能になっていること。
+
+利用方法
+
+1. PowerShell に、Posh-SSH をインストールしておく。
+
+```
+Install-Module Posh-SSH -Scope CurrentUser
+```
+
+2. config で、`$enable_gen_esxi_cert = true` を指定する。
+
+
 # 過去遺産
 
 ## 旧形式 設定ファイル集（アドベント カレンダーの思い出）

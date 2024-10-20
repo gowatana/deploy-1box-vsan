@@ -86,4 +86,42 @@ for($i=1; $i -le $vm_num; $i++){
     $esxcli_cmd = "system ntp set --enabled=1" + $ntp_server_list
     nested_esxcli -ESXiVM:$vm_name -ESXiUser:$hv_user -ESXiPass:$hv_pass -ESXCLICmd $esxcli_cmd
     sleep 1
+
+
+    task_message "02-02-07" ("Generate ESXi Self-Certificate: " + $vm_name)
+    # Check Posh-SSH Install.
+    if(-Not (Get-Module Posh-SSH -ListAvailable)){
+        $enable_gen_esxi_cert = $false
+    }
+    
+    if($enable_gen_esxi_cert -eq $true){
+        $ssh_password = ConvertTo-SecureString $hv_pass -AsPlainText -Force
+        $Credential = New-Object System.Management.Automation.PSCredential ($hv_user, $ssh_password)
+
+        $Session = New-SSHSession -ComputerName $hv_ip_vmk0 -Credential $Credential -AcceptKey
+
+        if ($Session) {   
+            $CommandResult = Invoke-SSHCommand -SessionId 0 -Command "/sbin/generate-certificates"
+            $CommandResult.Output
+            Start-Sleep 1
+
+            $CommandResult = Invoke-SSHCommand -SessionId 0 -Command "/etc/init.d/hostd restart"
+            $CommandResult.Output
+            Start-Sleep 1
+
+            $CommandResult = Invoke-SSHCommand -SessionId 0 -Command "/etc/init.d/vpxa restart"
+            $CommandResult.Output
+            Start-Sleep 1
+
+            $CommandResult = Invoke-SSHCommand -SessionId 0 -Command "/etc/init.d/rhttpproxy restart"
+            $CommandResult.Output
+
+        } else {
+            Write-Host "SSH-NG - Skip: Generate ESXi Self-Certificate"
+        }
+
+        Remove-SSHSession -SessionId $Session.SessionId
+    }else{
+        "Skip"
+    }
 }
